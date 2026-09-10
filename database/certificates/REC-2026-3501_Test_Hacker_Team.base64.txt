@@ -1,0 +1,1 @@
+data:image/jpeg;base64,TEST_CERTIFICATE_IMAGE_DATA_XYZ123

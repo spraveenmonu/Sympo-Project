@@ -1,0 +1,20 @@
+# robots.txt for Decode Arena
+# Flag_17: DECODE{robots_txt_shows_the_map}
+
+User-agent: *
+Disallow: /admin/
+Disallow: /api/v2/
+Disallow: /backup/
+Disallow: /config/
+Disallow: /debug/
+Disallow: /secret-dashboard/
+Disallow: /.env
+Disallow: /database/dump.sql
+
+# Internal Notes:
+# Admin panel: /admin?debug=true
+# API docs: /api/v2/docs (no auth required)
+# Backup server: backup.decodearena.local
+# Default creds: admin / decode@arena2026
+# Flag submission endpoint: /api/v2/flags/submit
+# Staging server: staging.decodearena.local:8080

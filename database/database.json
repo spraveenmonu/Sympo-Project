@@ -1,0 +1,342 @@
+[
+  {
+    "id": "REC-2026-0001",
+    "mode": "team",
+    "name": "ROOT_ADMINISTRATOR",
+    "college": "Symposium Technical Board",
+    "members": [
+      "Admin_Lead",
+      "Security_Officer",
+      "DBA_Root"
+    ],
+    "score": 1800,
+    "solved": "24/24",
+    "tier": "🏆 ELITE CYBER SPECIALIST",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 09:00",
+    "secret_flag": "DECODE{plaintext_database_storage_is_vulnerable}",
+    "stored_image_format": "none (seed)",
+    "stored_image_file": "none"
+  },
+  {
+    "id": "REC-2026-9041",
+    "mode": "team",
+    "name": "Binary Brawlers",
+    "college": "Anna University, CEG",
+    "members": [
+      "Karthik R (Lead)",
+      "Manoj K",
+      "Priya S"
+    ],
+    "score": 1100,
+    "solved": "22/24",
+    "tier": "🔥 THREAT HUNTER",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 11:20",
+    "stored_image_format": "none (seed)",
+    "stored_image_file": "none"
+  },
+  {
+    "id": "REC-2026-8712",
+    "mode": "solo",
+    "name": "Aakash V",
+    "college": "PSG College of Technology",
+    "members": [
+      "Aakash V"
+    ],
+    "score": 950,
+    "solved": "19/24",
+    "tier": "🔥 THREAT HUNTER",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 11:45",
+    "stored_image_format": "none (seed)",
+    "stored_image_file": "none"
+  },
+  {
+    "id": "REC-2026-7230",
+    "mode": "team",
+    "name": "NullPointers",
+    "college": "Government College of Technology",
+    "members": [
+      "Vignesh S (Lead)",
+      "Deepa M",
+      "Rahul K"
+    ],
+    "score": 800,
+    "solved": "16/24",
+    "tier": "🛡️ SECURITY DEFENDER",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 12:10",
+    "stored_image_format": "none (seed)",
+    "stored_image_file": "none"
+  },
+  {
+    "name": "Test Hacker Team",
+    "mode": "team",
+    "college": "PSG Tech",
+    "members": [
+      "Lead 1",
+      "Member 2",
+      "Member 3"
+    ],
+    "score": 1250,
+    "solved": "24/24",
+    "tier": "🏆 ELITE CYBER SPECIALIST",
+    "stored_image_format": "image/jpeg",
+    "id": "REC-2026-3501",
+    "server_saved_at": "2026-09-10T09:13:09.363Z",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "stored_image_file": "database/certificates/REC-2026-3501_Test_Hacker_Team.jpg",
+    "stored_image_size_kb": 0
+  },
+  {
+    "id": "REC-2026-7039",
+    "mode": "solo",
+    "name": "Praveen",
+    "college": "Grace College of Enginnering",
+    "members": [
+      "Praveen"
+    ],
+    "score": 1050,
+    "solved": "16/24",
+    "tier": "🔥 THREAT HUNTER",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 14:46",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T09:16:04.666Z",
+    "stored_image_file": "database/certificates/REC-2026-7039_Praveen.jpg",
+    "stored_image_size_kb": 111
+  },
+  {
+    "id": "REC-2026-8464",
+    "mode": "team",
+    "name": "Cyber Sparks",
+    "college": "Grace College of engineering",
+    "members": [
+      "abi (Lead)",
+      "ash",
+      "pra"
+    ],
+    "score": 250,
+    "solved": "4/24",
+    "tier": "⚡ CODE BREAKER",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:06",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T09:36:58.761Z",
+    "stored_image_file": "database/certificates/REC-2026-8464_Cyber_Sparks.jpg",
+    "stored_image_size_kb": 111
+  },
+  {
+    "id": "REC-2026-2255",
+    "mode": "team",
+    "name": "Cyber Sparks",
+    "college": "Grace College of engineering",
+    "members": [
+      "abi (Lead)",
+      "ash",
+      "pra"
+    ],
+    "score": 250,
+    "solved": "4/24",
+    "tier": "⚡ CODE BREAKER",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:23",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T09:53:19.168Z",
+    "stored_image_file": "database/certificates/REC-2026-2255_Cyber_Sparks.jpg",
+    "stored_image_size_kb": 111
+  },
+  {
+    "id": "REC-2026-6837",
+    "mode": "team",
+    "name": "Cyber Sparks",
+    "college": "Grace College of engineering",
+    "members": [
+      "abi (Lead)",
+      "ash",
+      "pra"
+    ],
+    "score": 0,
+    "solved": "0/24",
+    "tier": "🔰 CYBER SCOUT",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:24",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T09:54:55.216Z",
+    "stored_image_file": "database/certificates/REC-2026-6837_Cyber_Sparks.jpg",
+    "stored_image_size_kb": 110
+  },
+  {
+    "id": "REC-2026-1437",
+    "mode": "solo",
+    "name": "Pra",
+    "college": "Grace",
+    "members": [
+      "Pra"
+    ],
+    "score": 50,
+    "solved": "1/24",
+    "tier": "🔰 CYBER SCOUT",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:29",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T09:59:00.948Z",
+    "stored_image_file": "database/certificates/REC-2026-1437_Pra.jpg",
+    "stored_image_size_kb": 105
+  },
+  {
+    "id": "REC-TEST-WA1",
+    "mode": "solo",
+    "name": "Praveen Test Share",
+    "college": "Grace College",
+    "members": [
+      "Praveen Test Share"
+    ],
+    "score": 750,
+    "solved": "12/24",
+    "tier": "⚡ CODE BREAKER",
+    "action": "Shared to WhatsApp",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:36",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T10:06:40.726Z",
+    "stored_image_file": "database/certificates/REC-TEST-WA1_Praveen_Test_Share.jpg",
+    "stored_image_size_kb": 0
+  },
+  {
+    "id": "REC-TEST-PNG1",
+    "mode": "team",
+    "name": "Team Cyber Phoenix",
+    "college": "Anna University",
+    "members": [
+      "Alex (Lead)",
+      "Bob",
+      "Charlie"
+    ],
+    "score": 1400,
+    "solved": "20/24",
+    "tier": "🏆 ELITE CYBER SPECIALIST",
+    "action": "Downloaded PNG Score Sheet",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:36",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T10:06:40.766Z",
+    "stored_image_file": "database/certificates/REC-TEST-PNG1_Team_Cyber_Phoenix.jpg",
+    "stored_image_size_kb": 0
+  },
+  {
+    "id": "REC-2026-2723",
+    "mode": "solo",
+    "name": "Pra",
+    "college": "Grace",
+    "members": [
+      "Pra"
+    ],
+    "score": 50,
+    "solved": "1/24",
+    "tier": "🔰 CYBER SCOUT",
+    "action": "Submitted to Program Database",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:36",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T10:06:59.291Z",
+    "stored_image_file": "database/certificates/REC-2026-2723_Pra.jpg",
+    "stored_image_size_kb": 105
+  },
+  {
+    "id": "REC-2026-9031",
+    "mode": "solo",
+    "name": "Pra",
+    "college": "Grace",
+    "members": [
+      "Pra"
+    ],
+    "score": 200,
+    "solved": "3/24",
+    "tier": "⚡ CODE BREAKER",
+    "action": "Score Shared (Opened Score Sheet)",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:43",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T10:13:59.292Z",
+    "stored_image_file": "database/certificates/REC-2026-9031_Pra.jpg",
+    "stored_image_size_kb": 106
+  },
+  {
+    "id": "REC-2026-1109",
+    "mode": "solo",
+    "name": "Pra",
+    "college": "Grace",
+    "members": [
+      "Pra"
+    ],
+    "score": 200,
+    "solved": "3/24",
+    "tier": "⚡ CODE BREAKER",
+    "action": "Score Shared (Opened Score Sheet)",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:44",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T10:14:02.508Z",
+    "stored_image_file": "database/certificates/REC-2026-1109_Pra.jpg",
+    "stored_image_size_kb": 106
+  },
+  {
+    "id": "REC-2026-3642",
+    "mode": "solo",
+    "name": "Pra",
+    "college": "Grace",
+    "members": [
+      "Pra"
+    ],
+    "score": 200,
+    "solved": "3/24",
+    "tier": "⚡ CODE BREAKER",
+    "action": "Score Shared (Opened Score Sheet)",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:44",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T10:14:09.639Z",
+    "stored_image_file": "database/certificates/REC-2026-3642_Pra.jpg",
+    "stored_image_size_kb": 106
+  },
+  {
+    "id": "REC-2026-9753",
+    "mode": "solo",
+    "name": "Anonymous Hacker",
+    "college": "Symposium Participant",
+    "members": [
+      "Anonymous Hacker"
+    ],
+    "score": 50,
+    "solved": "1/24",
+    "tier": "🔰 CYBER SCOUT",
+    "action": "Score Shared (Opened Score Sheet)",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:46",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T10:16:02.682Z",
+    "stored_image_file": "database/certificates/REC-2026-9753_Anonymous_Hacker.jpg",
+    "stored_image_size_kb": 109
+  },
+  {
+    "id": "REC-2026-3150",
+    "mode": "solo",
+    "name": "Praveen Monu",
+    "college": "Grace",
+    "members": [
+      "Praveen Monu"
+    ],
+    "score": 50,
+    "solved": "1/24",
+    "tier": "🔰 CYBER SCOUT",
+    "action": "Submitted to Program Database",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:46",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T10:16:18.505Z",
+    "stored_image_file": "database/certificates/REC-2026-3150_Praveen_Monu.jpg",
+    "stored_image_size_kb": 107
+  }
+]

@@ -1,0 +1,44 @@
+-- ============================================================
+-- DECODE ARENA 2026 — Project Database Schema & Dump
+-- Vulnerability: CWE-312 (Cleartext Storage of Sensitive Information)
+-- Notice: Stored without password hashing or field encryption!
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS submissions (
+    id VARCHAR(30) PRIMARY KEY,
+    mode VARCHAR(10) NOT NULL, -- 'solo' or 'team'
+    name VARCHAR(100) NOT NULL,
+    college VARCHAR(150) NOT NULL,
+    members TEXT,
+    score INT NOT NULL,
+    solved VARCHAR(20) NOT NULL,
+    tier VARCHAR(50) NOT NULL,
+    encryption VARCHAR(50) DEFAULT 'NONE (Plaintext)',
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    stored_image_format VARCHAR(30),
+    stored_image_data LONGTEXT
+);
+
+-- Seed Submissions
+INSERT INTO submissions (id, mode, name, college, members, score, solved, tier, encryption, timestamp)
+VALUES 
+('REC-2026-9041', 'team', 'Binary Brawlers', 'Anna University, CEG', 'Karthik R (Lead), Manoj K, Priya S', 1100, '22/24', '🔥 THREAT HUNTER', 'NONE (Plaintext)', '2026-09-10 11:20:00'),
+('REC-2026-8712', 'solo', 'Aakash V', 'PSG College of Technology', 'Aakash V', 950, '19/24', '🔥 THREAT HUNTER', 'NONE (Plaintext)', '2026-09-10 11:45:00'),
+('REC-2026-7230', 'team', 'NullPointers', 'Government College of Technology', 'Vignesh S (Lead), Deepa M, Rahul K', 800, '16/24', '🛡️ SECURITY DEFENDER', 'NONE (Plaintext)', '2026-09-10 12:10:00'),
+('REC-2026-0001', 'team', 'ROOT_ADMINISTRATOR', 'Symposium Technical Board', 'Admin_Lead, Security_Officer, DBA_Root', 1800, '24/24', '🏆 ELITE CYBER SPECIALIST', 'NONE (Plaintext)', '2026-09-10 09:00:00');
+
+INSERT INTO submissions (id, mode, name, college, members, score, solved, tier, encryption, timestamp) VALUES ('REC-2026-3501', 'team', 'Test Hacker Team', 'PSG Tech', 'Lead 1, Member 2, Member 3', 1250, '24/24', '🏆 ELITE CYBER SPECIALIST', 'NONE (Plaintext)', CURRENT_TIMESTAMP);
+INSERT INTO submissions (id, mode, name, college, members, score, solved, tier, encryption, timestamp) VALUES ('REC-2026-7039', 'solo', 'Praveen', 'Grace College of Enginnering', 'Praveen', 1050, '16/24', '🔥 THREAT HUNTER', 'NONE (Plaintext)', CURRENT_TIMESTAMP);
+INSERT INTO submissions (id, mode, name, college, members, score, solved, tier, encryption, timestamp) VALUES ('REC-2026-8464', 'team', 'Cyber Sparks', 'Grace College of engineering', 'abi (Lead), ash, pra', 250, '4/24', '⚡ CODE BREAKER', 'NONE (Plaintext)', CURRENT_TIMESTAMP);
+INSERT INTO submissions (id, mode, name, college, members, score, solved, tier, encryption, image_file, timestamp) VALUES ('REC-2026-2255', 'team', 'Cyber Sparks', 'Grace College of engineering', 'abi (Lead), ash, pra', 250, '4/24', '⚡ CODE BREAKER', 'NONE (Plaintext)', 'database/certificates/REC-2026-2255_Cyber_Sparks.jpg', CURRENT_TIMESTAMP);
+INSERT INTO submissions (id, mode, name, college, members, score, solved, tier, encryption, image_file, timestamp) VALUES ('REC-2026-6837', 'team', 'Cyber Sparks', 'Grace College of engineering', 'abi (Lead), ash, pra', 0, '0/24', '🔰 CYBER SCOUT', 'NONE (Plaintext)', 'database/certificates/REC-2026-6837_Cyber_Sparks.jpg', CURRENT_TIMESTAMP);
+INSERT INTO submissions (id, mode, name, college, members, score, solved, tier, encryption, image_file, timestamp) VALUES ('REC-2026-1437', 'solo', 'Pra', 'Grace', 'Pra', 50, '1/24', '🔰 CYBER SCOUT', 'NONE (Plaintext)', 'database/certificates/REC-2026-1437_Pra.jpg', CURRENT_TIMESTAMP);
+INSERT INTO submissions (id, mode, name, college, members, score, solved, tier, action, encryption, image_file, timestamp) VALUES ('REC-TEST-WA1', 'solo', 'Praveen Test Share', 'Grace College', 'Praveen Test Share', 750, '12/24', '⚡ CODE BREAKER', 'Shared to WhatsApp', 'NONE (Plaintext)', 'database/certificates/REC-TEST-WA1_Praveen_Test_Share.jpg', CURRENT_TIMESTAMP);
+INSERT INTO submissions (id, mode, name, college, members, score, solved, tier, action, encryption, image_file, timestamp) VALUES ('REC-TEST-PNG1', 'team', 'Team Cyber Phoenix', 'Anna University', 'Alex (Lead), Bob, Charlie', 1400, '20/24', '🏆 ELITE CYBER SPECIALIST', 'Downloaded PNG Score Sheet', 'NONE (Plaintext)', 'database/certificates/REC-TEST-PNG1_Team_Cyber_Phoenix.jpg', CURRENT_TIMESTAMP);
+INSERT INTO submissions (id, mode, name, college, members, score, solved, tier, action, encryption, image_file, timestamp) VALUES ('REC-2026-2723', 'solo', 'Pra', 'Grace', 'Pra', 50, '1/24', '🔰 CYBER SCOUT', 'Submitted to Program Database', 'NONE (Plaintext)', 'database/certificates/REC-2026-2723_Pra.jpg', CURRENT_TIMESTAMP);
+INSERT INTO submissions (id, mode, name, college, members, score, solved, tier, action, encryption, image_file, timestamp) VALUES ('REC-TEST-FINAL-01', 'solo', 'Praveen Live Share Test', 'Grace College of Engineering', 'Praveen Live Share Test', 1100, '18/24', '🔥 THREAT HUNTER', 'Shared to WhatsApp', 'NONE (Plaintext)', 'database/certificates/REC-TEST-FINAL-01_Praveen_Live_Share_Test.jpg', CURRENT_TIMESTAMP);
+INSERT INTO submissions (id, mode, name, college, members, score, solved, tier, action, encryption, image_file, timestamp) VALUES ('REC-2026-9031', 'solo', 'Pra', 'Grace', 'Pra', 200, '3/24', '⚡ CODE BREAKER', 'Score Shared (Opened Score Sheet)', 'NONE (Plaintext)', 'database/certificates/REC-2026-9031_Pra.jpg', CURRENT_TIMESTAMP);
+INSERT INTO submissions (id, mode, name, college, members, score, solved, tier, action, encryption, image_file, timestamp) VALUES ('REC-2026-1109', 'solo', 'Pra', 'Grace', 'Pra', 200, '3/24', '⚡ CODE BREAKER', 'Score Shared (Opened Score Sheet)', 'NONE (Plaintext)', 'database/certificates/REC-2026-1109_Pra.jpg', CURRENT_TIMESTAMP);
+INSERT INTO submissions (id, mode, name, college, members, score, solved, tier, action, encryption, image_file, timestamp) VALUES ('REC-2026-3642', 'solo', 'Pra', 'Grace', 'Pra', 200, '3/24', '⚡ CODE BREAKER', 'Score Shared (Opened Score Sheet)', 'NONE (Plaintext)', 'database/certificates/REC-2026-3642_Pra.jpg', CURRENT_TIMESTAMP);
+INSERT INTO submissions (id, mode, name, college, members, score, solved, tier, action, encryption, image_file, timestamp) VALUES ('REC-2026-9753', 'solo', 'Anonymous Hacker', 'Symposium Participant', 'Anonymous Hacker', 50, '1/24', '🔰 CYBER SCOUT', 'Score Shared (Opened Score Sheet)', 'NONE (Plaintext)', 'database/certificates/REC-2026-9753_Anonymous_Hacker.jpg', CURRENT_TIMESTAMP);
+INSERT INTO submissions (id, mode, name, college, members, score, solved, tier, action, encryption, image_file, timestamp) VALUES ('REC-2026-3150', 'solo', 'Praveen Monu', 'Grace', 'Praveen Monu', 50, '1/24', '🔰 CYBER SCOUT', 'Submitted to Program Database', 'NONE (Plaintext)', 'database/certificates/REC-2026-3150_Praveen_Monu.jpg', CURRENT_TIMESTAMP);

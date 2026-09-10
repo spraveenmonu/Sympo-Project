@@ -1,0 +1,3106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decode Arena — Hack The Code | Symposium 2026</title>
+    <meta name="description" content="Decode Arena - The ultimate cybersecurity challenge at Symposium 2026.">
+    <!-- Admin credentials: admin / arena2026 -->
+    <!-- Flag: DECODE{html_comments_are_not_hidden} -->
+    <meta name="secret-key" content="DECODE{check_meta_tags_always}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --cyan: #00f0ff;
+            --magenta: #ff00e5;
+            --green: #39ff14;
+            --yellow: #f0ff00;
+            --orange: #ff6a00;
+            --dark: #0a0a0f;
+            --card: rgba(15, 15, 25, 0.85);
+            --card-border: rgba(0, 240, 255, 0.15);
+            --glass: rgba(10, 10, 20, 0.6);
+            --text: #e8e8f0;
+            --text-dim: #8888aa;
+            --grad: linear-gradient(135deg, #00f0ff, #ff00e5);
+            --font-head: 'Orbitron', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
+            /* secret: DECODE{css_vars_leak_secrets} */
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--dark);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* === Canvas === */
+        #matrix-canvas {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0; opacity: 0.1;
+            pointer-events: none;
+        }
+
+        /* === Nav === */
+        .nav {
+            position: fixed; top: 0; left: 0; width: 100%;
+            z-index: 1000; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            background: rgba(10,10,15,0.75);
+            border-bottom: 1px solid var(--card-border);
+            transition: all 0.4s;
+        }
+        .nav.scrolled { padding: 0.6rem 2rem; background: rgba(10,10,15,0.95); box-shadow: 0 4px 30px rgba(0,240,255,0.1); }
+        .nav-logo {
+            font-family: var(--font-head); font-size: 1.4rem; font-weight: 800;
+            background: var(--grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px; text-decoration: none;
+        }
+        .nav-logo small { font-size: 0.65em; opacity: 0.5; }
+        .nav-links { display: flex; list-style: none; gap: 1.8rem; align-items: center; }
+        .nav-links a {
+            color: var(--text-dim); text-decoration: none; font-weight: 500;
+            font-size: 1rem; letter-spacing: 1px; transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--cyan); }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+        .hamburger span { width: 26px; height: 2px; background: var(--cyan); transition: all 0.3s; }
+
+        /* === Hero === */
+        .hero {
+            position: relative; min-height: 100vh; z-index: 1;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 6rem 2rem 4rem;
+        }
+        .hero-badge {
+            display: inline-block; padding: 0.4rem 1.4rem;
+            border: 1px solid var(--cyan); border-radius: 50px;
+            font-family: var(--font-mono); font-size: 0.8rem; color: var(--cyan);
+            letter-spacing: 3px; text-transform: uppercase; margin-bottom: 2rem;
+            animation: glow 2s ease-in-out infinite;
+        }
+        @keyframes glow {
+            0%,100% { box-shadow: 0 0 10px rgba(0,240,255,0.3); }
+            50% { box-shadow: 0 0 25px rgba(0,240,255,0.6); }
+        }
+        .hero h1 {
+            font-family: var(--font-head); font-size: clamp(2.5rem,7vw,5.5rem);
+            font-weight: 900; line-height: 1.1; margin-bottom: 0.5rem;
+        }
+        .hero h1 .grad { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero h1 .sub { display: block; font-size: 0.5em; letter-spacing: 6px; opacity: 0.6; -webkit-text-fill-color: var(--text); }
+        .hero p { font-size: 1.15rem; color: var(--text-dim); max-width: 550px; margin: 1.5rem auto 2.5rem; }
+        .hero p strong { color: var(--green); }
+        .hero-btns { display: flex; gap: 1.2rem; flex-wrap: wrap; justify-content: center; }
+
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.85rem 2rem; border-radius: 12px;
+            font-family: var(--font-body); font-size: 1rem; font-weight: 600;
+            letter-spacing: 1px; text-decoration: none; cursor: pointer;
+            transition: all 0.3s; border: none;
+        }
+        .btn-primary { background: var(--grad); color: #0a0a0f; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,240,255,0.35); }
+        .btn-outline { background: transparent; border: 1.5px solid var(--magenta); color: var(--magenta); }
+        .btn-outline:hover { background: rgba(255,0,229,0.1); transform: translateY(-3px); }
+
+        .scroll-arrow {
+            position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+        .scroll-arrow span { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-dim); letter-spacing: 2px; }
+        .scroll-arrow .arr { width: 18px; height: 18px; border-right: 2px solid var(--cyan); border-bottom: 2px solid var(--cyan); transform: rotate(45deg); opacity: 0.5; }
+        @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
+
+        /* === Section Common === */
+        section { position: relative; z-index: 1; padding: 5rem 2rem; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .sec-head { text-align: center; margin-bottom: 3.5rem; }
+        .sec-tag { font-family: var(--font-mono); font-size: 0.75rem; color: var(--magenta); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 0.6rem; display: block; }
+        .sec-title { font-family: var(--font-head); font-size: clamp(1.8rem,3.5vw,2.6rem); font-weight: 700; margin-bottom: 0.8rem; }
+        .sec-title .hl { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .sec-desc { color: var(--text-dim); font-size: 1.05rem; max-width: 550px; margin: 0 auto; }
+
+        /* === About === */
+        #about { background: radial-gradient(ellipse at 20% 50%, rgba(0,240,255,0.04) 0%, transparent 60%); }
+        .about-text { max-width: 750px; margin: 0 auto; text-align: center; }
+        .about-text p { color: var(--text-dim); font-size: 1.1rem; margin-bottom: 1rem; line-height: 1.8; }
+        .about-text strong { color: var(--cyan); }
+
+        /* === Challenges === */
+        #challenges { background: radial-gradient(ellipse at 80% 50%, rgba(255,0,229,0.04) 0%, transparent 60%); }
+        .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .cat-card {
+            background: var(--card);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border); border-radius: 18px;
+            padding: 2rem 1.8rem; cursor: pointer;
+            transition: all 0.4s; position: relative; overflow: hidden;
+        }
+        .cat-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+            background: var(--grad); transform: scaleX(0); transition: transform 0.4s;
+        }
+        .cat-card:hover::before { transform: scaleX(1); }
+        .cat-card:hover { transform: translateY(-5px); border-color: rgba(0,240,255,0.3); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+        .cat-card.active { border-color: var(--cyan); box-shadow: 0 0 30px rgba(0,240,255,0.1); }
+
+        .cat-icon {
+            width: 52px; height: 52px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; margin-bottom: 1.2rem;
+        }
+        .cat-icon.c1 { background: rgba(0,240,255,0.1); border: 1px solid rgba(0,240,255,0.2); }
+        .cat-icon.c2 { background: rgba(255,0,229,0.1); border: 1px solid rgba(255,0,229,0.2); }
+        .cat-icon.c3 { background: rgba(57,255,20,0.1); border: 1px solid rgba(57,255,20,0.2); }
+        .cat-icon.c4 { background: rgba(240,255,0,0.1); border: 1px solid rgba(240,255,0,0.2); }
+        .cat-icon.c5 { background: rgba(255,106,0,0.1); border: 1px solid rgba(255,106,0,0.2); }
+        .cat-icon.c6 { background: rgba(150,100,255,0.1); border: 1px solid rgba(150,100,255,0.2); }
+
+        .cat-card h3 { font-family: var(--font-head); font-size: 1.15rem; margin-bottom: 0.5rem; font-weight: 600; }
+        .cat-card p { color: var(--text-dim); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0.8rem; }
+        .cat-toggle { font-family: var(--font-mono); font-size: 0.8rem; color: var(--cyan); display: flex; align-items: center; gap: 0.4rem; }
+        .cat-toggle .arrow-icon { transition: transform 0.3s; display: inline-block; }
+        .cat-card.active .cat-toggle .arrow-icon { transform: rotate(90deg); }
+
+        /* Challenge Items Inside Category */
+        .cat-card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .cat-badge-counter {
+            font-family: var(--font-mono); font-size: 0.75rem;
+            padding: 0.25rem 0.65rem; border-radius: 20px;
+            background: rgba(0,240,255,0.1); border: 1px solid rgba(0,240,255,0.25);
+            color: var(--cyan); letter-spacing: 1px;
+        }
+        .cat-badge-counter.complete {
+            background: rgba(57,255,20,0.15); border-color: var(--green); color: var(--green);
+            box-shadow: 0 0 10px rgba(57,255,20,0.2);
+        }
+
+        .cat-challenges {
+            max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+            margin-top: 0;
+        }
+        .cat-card.active .cat-challenges { margin-top: 1.2rem; }
+        .cat-challenges-inner { padding-top: 1rem; border-top: 1px solid var(--card-border); }
+        
+        .challenge-item {
+            background: rgba(5,5,15,0.7); border: 1px solid rgba(0,240,255,0.1);
+            border-radius: 12px; padding: 1.1rem; margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+        .challenge-item:hover { border-color: rgba(0,240,255,0.3); background: rgba(5,5,15,0.9); }
+        .challenge-item.solved {
+            border-color: var(--green);
+            background: rgba(10,35,15,0.45);
+            box-shadow: 0 0 20px rgba(57,255,20,0.15);
+        }
+        
+        .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; gap: 0.5rem; flex-wrap: wrap; }
+        .challenge-item h4 { font-family: var(--font-head); font-size: 0.88rem; margin: 0; color: var(--cyan); }
+        .challenge-item.solved h4 { color: var(--green); }
+        .challenge-item p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.5; margin: 0.4rem 0 0.8rem; }
+        
+        .diff-tag {
+            padding: 0.2rem 0.55rem; border-radius: 5px;
+            font-family: var(--font-mono); font-size: 0.72rem; font-weight: bold;
+        }
+        .diff-easy { background: rgba(57,255,20,0.1); color: var(--green); border: 1px solid rgba(57,255,20,0.2); }
+        .diff-medium { background: rgba(240,255,0,0.1); color: var(--yellow); border: 1px solid rgba(240,255,0,0.2); }
+        
+        /* Task Hint Button & Box */
+        .task-hint-wrap { margin: 0.4rem 0 0.8rem; }
+        .hint-toggle-btn {
+            background: rgba(255,106,0,0.08); border: 1px dashed rgba(255,106,0,0.4);
+            color: var(--orange); border-radius: 6px; padding: 0.3rem 0.75rem;
+            font-family: var(--font-mono); font-size: 0.76rem; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 0.35rem; transition: all 0.25s;
+        }
+        .hint-toggle-btn:hover { background: rgba(255,106,0,0.18); border-color: var(--orange); color: #fff; transform: translateY(-1px); }
+        .task-hint-box {
+            display: none; margin-top: 0.5rem; padding: 0.65rem 0.9rem;
+            background: rgba(255,106,0,0.07); border-left: 3px solid var(--orange);
+            border-radius: 0 8px 8px 0; font-family: var(--font-body); font-size: 0.88rem;
+            color: #ffe0c0; line-height: 1.5;
+        }
+        .task-hint-box.open { display: block; animation: fadeIn 0.25s ease; }
+
+        /* MCQ Options Grid */
+        .options-zone { margin-top: 0.6rem; display: none; }
+        .options-zone.open { display: block; }
+        .options-heading {
+            font-family: var(--font-mono); font-size: 0.74rem;
+            color: var(--cyan); margin-bottom: 0.4rem; letter-spacing: 1px;
+        }
+        .options-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem;
+        }
+        @media (max-width: 620px) {
+            .options-grid { grid-template-columns: 1fr; }
+        }
+        .opt-btn {
+            background: rgba(10,10,22,0.85); border: 1px solid rgba(0,240,255,0.2);
+            border-radius: 9px; padding: 0.7rem 0.85rem; color: var(--text);
+            font-family: var(--font-body); font-size: 0.92rem; text-align: left;
+            cursor: pointer; transition: all 0.25s; display: flex; align-items: center; gap: 0.65rem;
+            line-height: 1.35; width: 100%;
+        }
+        .opt-btn:hover:not(:disabled) {
+            border-color: var(--cyan); background: rgba(0,240,255,0.1);
+            transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,240,255,0.2);
+        }
+        .opt-btn:disabled {
+            cursor: not-allowed; opacity: 0.88;
+        }
+        .opt-letter {
+            font-family: var(--font-head); font-size: 0.78rem; font-weight: 700;
+            color: var(--cyan); background: rgba(0,240,255,0.12); border-radius: 5px;
+            padding: 0.2rem 0.48rem; flex-shrink: 0;
+        }
+
+        /* Option Selection States */
+        .opt-btn.correct {
+            border-color: var(--green) !important; background: rgba(57,255,20,0.18) !important;
+            color: #fff !important; font-weight: 600; box-shadow: 0 0 16px rgba(57,255,20,0.35);
+        }
+        .opt-btn.correct .opt-letter {
+            background: var(--green); color: #0a0a0f;
+        }
+        .opt-btn.wrong {
+            border-color: #ff3366 !important; background: rgba(255,51,102,0.2) !important;
+            color: #fff !important; box-shadow: 0 0 16px rgba(255,51,102,0.3);
+        }
+        .opt-btn.wrong .opt-letter {
+            background: #ff3366; color: #fff;
+        }
+        .opt-btn.reveal-correct {
+            border-color: var(--green) !important; background: rgba(57,255,20,0.12) !important;
+            color: #b0ffb0 !important; font-weight: 600;
+        }
+        .opt-btn.reveal-correct .opt-letter {
+            background: rgba(57,255,20,0.25); color: var(--green);
+        }
+
+        /* Revealed Answer Box */
+        .revealed-answer-box {
+            margin-top: 0.85rem; padding: 0.9rem 1.1rem; border-radius: 10px;
+            font-size: 0.9rem; line-height: 1.55; animation: fadeIn 0.3s ease;
+        }
+        .revealed-answer-box.correct {
+            background: rgba(57,255,20,0.08); border: 1px solid rgba(57,255,20,0.35);
+            color: #e2ffe2;
+        }
+        .revealed-answer-box.wrong {
+            background: rgba(255,51,102,0.08); border: 1px solid rgba(255,51,102,0.35);
+            color: #ffe6eb;
+        }
+        .revealed-answer-box .ra-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;
+            flex-wrap: wrap; gap: 0.5rem;
+        }
+        .revealed-answer-box .ra-title {
+            font-family: var(--font-head); font-size: 0.82rem; font-weight: 800; letter-spacing: 1px;
+        }
+        .revealed-answer-box.correct .ra-title { color: var(--green); }
+        .revealed-answer-box.wrong .ra-title { color: #ff5577; }
+        .revealed-answer-box .ra-flag {
+            font-family: var(--font-mono); font-size: 0.85rem; font-weight: bold;
+            color: var(--cyan); background: rgba(0,240,255,0.1); padding: 0.15rem 0.55rem;
+            border-radius: 4px; display: inline-block;
+        }
+        .revealed-answer-box .ra-exp {
+            color: var(--text-dim); font-size: 0.86rem; margin-top: 0.35rem;
+        }
+
+        .challenge-item.answered-wrong {
+            border-color: rgba(255,51,102,0.4);
+            background: rgba(30,10,18,0.5);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Scoreboard in Nav */
+        .nav-scoreboard {
+            display: flex; align-items: center; gap: 0.6rem;
+            background: rgba(15,15,25,0.85); border: 1px solid var(--card-border);
+            padding: 0.4rem 0.9rem; border-radius: 50px;
+            font-family: var(--font-mono); font-size: 0.85rem;
+        }
+        .score-pill { color: var(--text-dim); display: flex; align-items: center; gap: 0.35rem; }
+        .score-pill strong { color: var(--green); font-family: var(--font-head); font-size: 0.95rem; }
+
+        /* Bonus Box */
+        .bonus-validator-box {
+            margin-top: 2.5rem; background: var(--card);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0,240,255,0.25); border-radius: 16px;
+            padding: 2rem; display: flex; gap: 1.5rem; align-items: center;
+            position: relative; overflow: hidden;
+        }
+        .bonus-validator-box::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+            background: var(--grad);
+        }
+        .bonus-icon { font-size: 2.8rem; }
+        .bonus-content { flex: 1; }
+        .bonus-content h3 { font-family: var(--font-head); font-size: 1.15rem; margin-bottom: 0.3rem; color: #fff; }
+        .bonus-content p { color: var(--text-dim); font-size: 0.92rem; margin-bottom: 0.8rem; }
+        .bonus-input-row { max-width: 500px; }
+
+        /* Confetti Canvas */
+        #confetti-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 10001; display: none;
+        }
+
+        /* Congratulations Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5,5,12,0.85);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            z-index: 10000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-card {
+            background: rgba(15,15,28,0.96); border: 2px solid var(--green);
+            border-radius: 22px; padding: 2.5rem 2rem; text-align: center;
+            max-width: 480px; width: 92%; position: relative;
+            box-shadow: 0 0 60px rgba(57,255,20,0.35);
+            transform: scale(0.85); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.active .modal-card { transform: scale(1); }
+        .modal-close-btn {
+            position: absolute; top: 1rem; right: 1.2rem;
+            background: transparent; border: none; color: var(--text-dim);
+            font-size: 1.8rem; cursor: pointer; transition: color 0.2s; line-height: 1;
+        }
+        .modal-close-btn:hover { color: #fff; }
+        .modal-sparkle { font-size: 3.5rem; margin-bottom: 0.3rem; animation: bounce 1.2s infinite alternate; }
+        @keyframes bounce { 0% { transform: scale(1) translateY(0); } 100% { transform: scale(1.15) translateY(-8px); } }
+        .modal-title {
+            font-family: var(--font-head); font-size: 1.7rem; font-weight: 900;
+            background: linear-gradient(135deg, #39ff14, #00f0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        .modal-sub { color: var(--text-dim); font-size: 0.95rem; margin-top: 0.3rem; }
+        .modal-flag-box {
+            background: rgba(5,5,15,0.85); border: 1px solid rgba(57,255,20,0.35);
+            border-radius: 12px; padding: 1.2rem; margin: 1.4rem 0;
+        }
+        .flag-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan); letter-spacing: 2px; display: block; }
+        .flag-code { font-family: var(--font-mono); font-size: 1.15rem; color: var(--green); font-weight: bold; display: block; margin: 0.5rem 0 0.8rem; word-break: break-all; }
+        .btn-copy {
+            background: rgba(0,240,255,0.1); border: 1px solid var(--cyan);
+            color: var(--cyan); border-radius: 6px; padding: 0.4rem 0.9rem;
+            font-family: var(--font-mono); font-size: 0.78rem; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-copy:hover { background: var(--cyan); color: #000; }
+        .modal-stats {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem; margin-bottom: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1rem;
+        }
+        .modal-stat .m-val { font-family: var(--font-head); font-size: 1.25rem; color: var(--yellow); font-weight: 700; display: block; }
+        .modal-stat .m-lbl { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .modal-action-btn { width: 100%; justify-content: center; padding: 0.85rem; font-size: 1rem; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+        .shake { animation: shake 0.35s ease-in-out; }
+
+        /* === Common Vulnerabilities === */
+        #common { background: radial-gradient(ellipse at 50% 50%, rgba(57,255,20,0.04) 0%, transparent 55%); }
+        .vuln-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .vuln-card {
+            background: var(--card);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border); border-radius: 16px;
+            padding: 1.8rem; transition: all 0.3s;
+        }
+        .vuln-card:hover { transform: translateY(-4px); border-color: rgba(57,255,20,0.3); }
+        .vuln-card .vuln-icon { font-size: 2rem; margin-bottom: 1rem; }
+        .vuln-card h3 { font-family: var(--font-head); font-size: 1rem; margin-bottom: 0.5rem; }
+        .vuln-card p { color: var(--text-dim); font-size: 0.92rem; line-height: 1.6; }
+        .vuln-card .example {
+            margin-top: 0.8rem; padding: 0.6rem 0.8rem;
+            background: rgba(5,5,15,0.7); border-radius: 8px;
+            font-family: var(--font-mono); font-size: 0.8rem; color: var(--green);
+        }
+
+        /* === Hints === */
+        #hints { background: radial-gradient(ellipse at 70% 40%, rgba(255,106,0,0.04) 0%, transparent 55%); }
+        .hints-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .hint-card {
+            background: var(--card);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,106,0,0.15); border-radius: 16px;
+            padding: 1.8rem; transition: all 0.3s; position: relative; overflow: hidden;
+        }
+        .hint-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--orange), var(--yellow));
+        }
+        .hint-card:hover { transform: translateY(-4px); border-color: rgba(255,106,0,0.3); }
+        .hint-card .hint-num {
+            font-family: var(--font-head); font-size: 2rem; font-weight: 700;
+            color: var(--orange); opacity: 0.4; margin-bottom: 0.5rem;
+        }
+        .hint-card h3 { font-family: var(--font-head); font-size: 1rem; margin-bottom: 0.5rem; }
+        .hint-card p { color: var(--text-dim); font-size: 0.92rem; line-height: 1.6; }
+        .hint-card a {
+            display: inline-block; margin-top: 0.8rem; color: var(--orange);
+            font-family: var(--font-mono); font-size: 0.8rem; text-decoration: none;
+        }
+        .hint-card a:hover { color: var(--yellow); text-decoration: underline; }
+
+
+
+        /* === Footer === */
+        .footer {
+            position: relative; z-index: 1; padding: 2.5rem 2rem 1.5rem;
+            border-top: 1px solid var(--card-border); background: rgba(5,5,10,0.9);
+        }
+        .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .footer-logo { font-family: var(--font-head); font-size: 1.1rem; font-weight: 700; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+        .footer-links a { color: var(--text-dim); text-decoration: none; font-size: 0.85rem; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--cyan); }
+        .footer-copy { color: var(--text-dim); font-size: 0.8rem; font-family: var(--font-mono); }
+
+        /* === Particles === */
+        .particle {
+            position: fixed; width: 3px; height: 3px; border-radius: 50%;
+            pointer-events: none; z-index: 0; opacity: 0;
+            animation: floatp 6s ease-in-out infinite;
+        }
+        @keyframes floatp { 0% { opacity:0; transform: translateY(100vh) scale(0); } 10% { opacity:0.5; } 90% { opacity:0.5; } 100% { opacity:0; transform: translateY(-100vh) scale(1); } }
+
+        /* === Reveal === */
+        .reveal { opacity: 0; transform: translateY(25px); transition: all 0.6s cubic-bezier(0.25,0.8,0.25,1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* === Scrollbar === */
+        ::-webkit-scrollbar { width: 7px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: rgba(0,240,255,0.25); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0,240,255,0.45); }
+
+        /* === Responsive === */
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 260px; height: 100vh;
+                background: rgba(10,10,15,0.98);
+                -webkit-backdrop-filter: blur(20px);
+                backdrop-filter: blur(20px);
+                flex-direction: column; padding: 5rem 2rem; gap: 1.5rem;
+                transition: right 0.4s; border-left: 1px solid var(--card-border);
+            }
+            .nav-links.open { right: 0; }
+            .cat-grid { grid-template-columns: 1fr; }
+            .footer-inner { flex-direction: column; text-align: center; }
+        }
+
+        /* === Scorecard & Sharing === */
+        .btn-share-score {
+            background: linear-gradient(135deg, rgba(0,240,255,0.15), rgba(255,0,229,0.15));
+            border: 1px solid var(--cyan); color: #fff;
+            padding: 0.35rem 0.85rem; border-radius: 50px;
+            font-family: var(--font-head); font-size: 0.78rem; font-weight: 700;
+            cursor: pointer; transition: all 0.25s; letter-spacing: 0.5px;
+            display: inline-flex; align-items: center; gap: 0.35rem; margin-left: 0.3rem;
+        }
+        .btn-share-score:hover {
+            background: var(--cyan); color: #000; box-shadow: 0 0 16px rgba(0,240,255,0.5);
+            transform: translateY(-1px);
+        }
+        .btn-sheet-cta {
+            font-size: 0.92rem; padding: 0.65rem 1.4rem; border-color: rgba(0,240,255,0.4);
+            background: rgba(0,240,255,0.06); display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-sheet-cta:hover {
+            border-color: var(--cyan); background: rgba(0,240,255,0.15); box-shadow: 0 0 20px rgba(0,240,255,0.3);
+        }
+
+        /* Scorecard Modal */
+        .scorecard-modal-card {
+            background: rgba(10,12,24,0.98); border: 2px solid rgba(0,240,255,0.4);
+            border-radius: 22px; padding: 2rem 2.2rem; max-width: 820px; width: 95%;
+            max-height: 92vh; overflow-y: auto; position: relative;
+            box-shadow: 0 0 70px rgba(0,240,255,0.25), 0 0 30px rgba(255,0,229,0.15);
+            transform: scale(0.92); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.active .scorecard-modal-card { transform: scale(1); }
+
+        /* The Physical Sheet/Certificate Container */
+        .scorecard-sheet {
+            background: linear-gradient(145deg, rgba(14,18,34,0.98), rgba(8,10,20,0.99));
+            border: 1px solid rgba(0,240,255,0.3); border-radius: 16px;
+            padding: 2rem; position: relative; overflow: hidden;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+        }
+        .scorecard-sheet::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--grad);
+        }
+        .sheet-watermark {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-25deg);
+            font-family: var(--font-head); font-size: 5rem; font-weight: 900;
+            color: rgba(255,255,255,0.02); pointer-events: none; white-space: nowrap; -webkit-user-select: none; user-select: none;
+        }
+
+        .sheet-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1.2rem;
+            flex-wrap: wrap; gap: 0.8rem;
+        }
+        .sheet-brand .sheet-logo {
+            font-family: var(--font-head); font-size: 1.5rem; font-weight: 900;
+            background: var(--grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block; line-height: 1.1;
+        }
+        .sheet-brand .sheet-logo small { font-size: 0.75rem; -webkit-text-fill-color: var(--cyan); }
+        .sheet-brand .sheet-tagline {
+            font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); letter-spacing: 1px;
+        }
+        .sheet-badge-tier {
+            font-family: var(--font-head); font-size: 0.85rem; font-weight: 800;
+            padding: 0.4rem 1rem; border-radius: 50px; background: rgba(0,240,255,0.12);
+            color: var(--cyan); border: 1px solid var(--cyan); letter-spacing: 1px;
+            box-shadow: 0 0 12px rgba(0,240,255,0.2);
+        }
+
+        .sheet-title-zone {
+            text-align: center; margin: 1.5rem 0 1.2rem;
+        }
+        .sheet-title {
+            font-family: var(--font-head); font-size: 1.35rem; font-weight: 900;
+            letter-spacing: 2px; color: #fff; margin-bottom: 0.25rem;
+        }
+        .sheet-subtitle {
+            font-size: 0.85rem; color: var(--text-dim); font-family: var(--font-mono);
+        }
+
+        /* Mode Tabs (Solo vs Team) */
+        .sheet-mode-tabs {
+            display: flex; justify-content: center; gap: 0.8rem; margin: 1.1rem 0 1.3rem;
+        }
+        .sheet-mode-tab {
+            background: rgba(15,18,32,0.85); border: 1px solid rgba(0,240,255,0.3);
+            color: var(--text-dim); padding: 0.55rem 1.3rem; border-radius: 50px;
+            font-family: var(--font-head); font-size: 0.86rem; font-weight: 700;
+            cursor: pointer; transition: all 0.25s; letter-spacing: 0.5px;
+            display: inline-flex; align-items: center; gap: 0.4rem;
+        }
+        .sheet-mode-tab:hover {
+            border-color: var(--cyan); color: #fff; transform: translateY(-1px);
+        }
+        .sheet-mode-tab.active {
+            background: linear-gradient(135deg, rgba(0,240,255,0.25), rgba(255,0,229,0.25));
+            border-color: var(--cyan); color: #fff; box-shadow: 0 0 18px rgba(0,240,255,0.35);
+        }
+        .sheet-field.team-full-col {
+            grid-column: 1 / -1;
+        }
+        .sheet-members-header {
+            grid-column: 1 / -1; font-family: var(--font-mono); font-size: 0.72rem;
+            color: var(--yellow); letter-spacing: 1.5px; font-weight: bold;
+            margin-top: 0.4rem; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.6rem;
+        }
+
+        /* Participant Input Row */
+        .sheet-participant-box {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
+            background: rgba(5,6,15,0.7); border: 1px solid rgba(0,240,255,0.2);
+            border-radius: 12px; padding: 1.2rem; margin-bottom: 1.5rem;
+        }
+        @media (max-width: 600px) {
+            .sheet-participant-box { grid-template-columns: 1fr; gap: 0.8rem; }
+        }
+        .sheet-field label {
+            display: block; font-family: var(--font-mono); font-size: 0.72rem;
+            color: var(--cyan); letter-spacing: 1.5px; font-weight: bold; margin-bottom: 0.4rem;
+        }
+        .sheet-input {
+            width: 100%; background: rgba(15,18,32,0.9); border: 1px solid rgba(0,240,255,0.25);
+            border-radius: 8px; padding: 0.65rem 0.85rem; color: #fff;
+            font-family: var(--font-body); font-size: 1rem; font-weight: 600;
+            transition: all 0.25s; outline: none;
+        }
+        .sheet-input:focus {
+            border-color: var(--cyan); box-shadow: 0 0 12px rgba(0,240,255,0.3);
+            background: rgba(18,22,40,0.95);
+        }
+
+        /* Metrics Row */
+        .sheet-metrics-row {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem;
+        }
+        @media (max-width: 600px) {
+            .sheet-metrics-row { grid-template-columns: 1fr; gap: 0.6rem; }
+        }
+        .sheet-metric-card {
+            background: rgba(10,14,28,0.7); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px; padding: 1.1rem; text-align: center;
+        }
+        .sheet-metric-card.highlight {
+            background: rgba(57,255,20,0.06); border-color: rgba(57,255,20,0.35);
+        }
+        .sheet-metric-card .sm-lbl {
+            font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim);
+            letter-spacing: 1.5px; text-transform: uppercase; display: block; margin-bottom: 0.35rem;
+        }
+        .sheet-metric-card .sm-val {
+            font-family: var(--font-head); font-size: 1.6rem; font-weight: 800; color: #fff;
+        }
+        .sheet-metric-card.highlight .sm-val {
+            color: var(--green); text-shadow: 0 0 15px rgba(57,255,20,0.4);
+        }
+        .sheet-metric-card .sm-val small { font-size: 0.8rem; color: var(--cyan); }
+
+        /* Breakdown Table */
+        .sheet-breakdown { margin-bottom: 1.4rem; }
+        .sheet-section-title {
+            font-family: var(--font-mono); font-size: 0.76rem; color: var(--cyan);
+            letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.8rem;
+        }
+        .sheet-cats-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem;
+        }
+        @media (max-width: 640px) {
+            .sheet-cats-grid { grid-template-columns: 1fr; }
+        }
+        .sheet-cat-card {
+            background: rgba(5,7,18,0.7); border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px; padding: 0.65rem 0.9rem;
+            display: flex; justify-content: space-between; align-items: center; font-size: 0.86rem;
+        }
+        .sheet-cat-card .scc-name {
+            display: flex; align-items: center; gap: 0.5rem; color: var(--text); font-weight: 500;
+        }
+        .sheet-cat-card .scc-stats {
+            display: flex; align-items: center; gap: 0.6rem; font-family: var(--font-mono); font-size: 0.78rem;
+        }
+        .sheet-cat-card .scc-solved { color: var(--yellow); font-weight: 600; }
+        .sheet-cat-card .scc-pts { color: var(--green); }
+
+        /* Footer Stamp */
+        .sheet-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1rem;
+            flex-wrap: wrap; gap: 0.8rem; font-size: 0.78rem; font-family: var(--font-mono);
+        }
+        .sheet-timestamp { color: var(--text-dim); display: flex; flex-direction: column; gap: 0.2rem; }
+        .sheet-verify-hash { color: var(--cyan); font-weight: bold; }
+        .sheet-stamp {
+            text-align: right; border: 1px dashed rgba(57,255,20,0.4); border-radius: 6px;
+            padding: 0.35rem 0.75rem; background: rgba(57,255,20,0.05); color: var(--green);
+        }
+        .sheet-stamp span { display: block; font-size: 0.65rem; letter-spacing: 1px; }
+        .sheet-stamp strong { font-size: 0.78rem; letter-spacing: 1.5px; }
+
+        /* Actions Row */
+        .scorecard-actions {
+            display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.4rem; justify-content: center;
+        }
+        .scorecard-actions .btn { font-size: 0.9rem; padding: 0.65rem 1.1rem; }
+        .share-feedback {
+            text-align: center; margin-top: 0.8rem; font-family: var(--font-mono);
+            font-size: 0.85rem; color: var(--green); min-height: 1.2rem;
+        }
+
+        /* Print Media Style */
+        @media print {
+            body * { visibility: hidden; }
+            #scorecardSheet, #scorecardSheet * { visibility: visible; }
+            #scorecardSheet {
+                position: absolute; left: 0; top: 0; width: 100%;
+                background: #0f1220 !important; color: #fff !important;
+                border: 2px solid #00f0ff !important;
+            }
+            .sheet-input { border: none !important; background: transparent !important; color: #fff !important; font-size: 1.1rem !important; }
+        }
+
+
+        /* === Live Unencrypted Database Section (CWE-312) === */
+        #database {
+            background: radial-gradient(ellipse at 50% 30%, rgba(0,240,255,0.04) 0%, transparent 60%);
+            padding: 5rem 0; position: relative; z-index: 1;
+        }
+        .db-vuln-banner {
+            background: rgba(255,106,0,0.07); border: 1px solid rgba(255,106,0,0.35);
+            border-left: 4px solid var(--orange); border-radius: 12px;
+            padding: 1.2rem 1.6rem; display: flex; gap: 1.2rem; align-items: center;
+            margin-bottom: 2rem;
+        }
+        .dvb-icon { font-size: 2.2rem; flex-shrink: 0; }
+        .dvb-body h4 {
+            font-family: var(--font-head); font-size: 0.96rem; color: var(--orange);
+            margin-bottom: 0.35rem; letter-spacing: 0.5px;
+        }
+        .dvb-body p { color: #ffd8b8; font-size: 0.9rem; line-height: 1.5; margin: 0; }
+        .dvb-tag {
+            margin-left: auto; background: rgba(255,106,0,0.2); color: var(--yellow);
+            border: 1px solid var(--orange); padding: 0.3rem 0.75rem; border-radius: 6px;
+            font-family: var(--font-mono); font-size: 0.75rem; font-weight: bold; white-space: nowrap;
+        }
+        @media (max-width: 768px) {
+            .db-vuln-banner { flex-direction: column; align-items: flex-start; }
+            .dvb-tag { margin-left: 0; }
+        }
+
+        .db-controls-box {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(12,16,30,0.85); border: 1px solid var(--card-border);
+            border-radius: 14px; padding: 1rem 1.4rem; margin-bottom: 1.5rem;
+            flex-wrap: wrap; gap: 1rem;
+        }
+        .db-filters { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+        .db-filter-btn {
+            background: rgba(15,20,38,0.8); border: 1px solid rgba(0,240,255,0.25);
+            color: var(--text-dim); padding: 0.45rem 1rem; border-radius: 50px;
+            font-family: var(--font-head); font-size: 0.8rem; font-weight: 700;
+            cursor: pointer; transition: all 0.25s;
+        }
+        .db-filter-btn:hover { border-color: var(--cyan); color: #fff; }
+        .db-filter-btn.active {
+            background: var(--cyan); color: #000; box-shadow: 0 0 14px rgba(0,240,255,0.4);
+        }
+
+        .db-stats-group { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
+        .db-stat-pill {
+            font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);
+            background: rgba(5,8,18,0.7); padding: 0.35rem 0.8rem; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .db-stat-pill strong { color: #fff; }
+        .text-danger { color: #ff3366 !important; font-weight: bold; }
+        .btn-db-action {
+            background: rgba(0,240,255,0.1); border: 1px solid var(--cyan);
+            color: var(--cyan); padding: 0.4rem 0.9rem; border-radius: 8px;
+            font-family: var(--font-mono); font-size: 0.78rem; cursor: pointer; transition: all 0.25s;
+        }
+        .btn-db-action:hover { background: var(--cyan); color: #000; }
+
+        /* Database Table Card */
+        .db-table-card {
+            background: var(--card);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border); border-radius: 16px;
+            overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .db-table-responsive { width: 100%; overflow-x: auto; }
+        .db-table {
+            width: 100%; border-collapse: collapse; text-align: left;
+            font-size: 0.88rem; min-width: 850px;
+        }
+        .db-table thead th {
+            background: rgba(5,7,18,0.95); color: var(--cyan);
+            font-family: var(--font-head); font-size: 0.78rem; font-weight: 800;
+            letter-spacing: 1px; padding: 1rem 1.1rem; border-bottom: 1px solid var(--card-border);
+            white-space: nowrap;
+        }
+        .db-table tbody tr {
+            border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.2s;
+        }
+        .db-table tbody tr:hover { background: rgba(0,240,255,0.04); }
+        .db-table tbody tr.newly-added {
+            background: rgba(57,255,20,0.08); animation: glowGreen 2s ease;
+        }
+        @keyframes glowGreen {
+            0% { background: rgba(57,255,20,0.25); }
+            100% { background: rgba(57,255,20,0.08); }
+        }
+        .db-table td {
+            padding: 0.9rem 1.1rem; vertical-align: middle; color: var(--text);
+        }
+        .db-id-cell { font-family: var(--font-mono); font-size: 0.8rem; color: var(--cyan); font-weight: bold; }
+        .db-mode-badge {
+            padding: 0.2rem 0.55rem; border-radius: 4px; font-family: var(--font-mono);
+            font-size: 0.72rem; font-weight: bold; display: inline-block;
+        }
+        .db-mode-badge.solo { background: rgba(0,240,255,0.12); color: var(--cyan); border: 1px solid rgba(0,240,255,0.3); }
+        .db-mode-badge.team { background: rgba(255,0,229,0.12); color: var(--magenta); border: 1px solid rgba(255,0,229,0.3); }
+        .db-score-cell { font-family: var(--font-head); font-size: 1.05rem; color: var(--green); font-weight: bold; }
+        .db-badge-plaintext {
+            background: rgba(255,51,102,0.12); border: 1px solid #ff3366;
+            color: #ff5577; padding: 0.2rem 0.55rem; border-radius: 4px;
+            font-family: var(--font-mono); font-size: 0.7rem; font-weight: bold;
+            display: inline-flex; align-items: center; gap: 0.3rem;
+        }
+        .db-members-list {
+            font-size: 0.8rem; color: var(--text-dim); max-width: 200px;
+        }
+
+        /* Raw Dump Collapsible */
+        .db-raw-dump-box {
+            margin-top: 1.5rem; background: rgba(5,7,18,0.95);
+            border: 1px solid rgba(0,240,255,0.3); border-radius: 12px;
+            padding: 1.2rem; position: relative;
+        }
+        .raw-dump-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 0.8rem; font-family: var(--font-mono); font-size: 0.78rem;
+            color: var(--cyan); letter-spacing: 1px; font-weight: bold;
+        }
+        .btn-copy-dump {
+            background: rgba(0,240,255,0.15); border: 1px solid var(--cyan);
+            color: #fff; padding: 0.3rem 0.7rem; border-radius: 5px;
+            font-family: var(--font-mono); font-size: 0.75rem; cursor: pointer;
+        }
+        .btn-copy-dump:hover { background: var(--cyan); color: #000; }
+        .raw-dump-code {
+            background: #030408; border-radius: 8px; padding: 1rem;
+            color: #39ff14; font-family: var(--font-mono); font-size: 0.8rem;
+            max-height: 280px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;
+        }
+
+        /* Submit Section inside Scorecard Modal */
+        .sheet-submit-card {
+            margin-top: 1.5rem; background: rgba(5,7,18,0.9);
+            border: 1px solid rgba(57,255,20,0.35); border-radius: 14px;
+            padding: 1.2rem 1.4rem; display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 1rem;
+            box-shadow: 0 0 25px rgba(57,255,20,0.1);
+        }
+        .ssc-text h4 {
+            font-family: var(--font-head); font-size: 1rem; color: #fff; margin-bottom: 0.2rem;
+        }
+        .ssc-text p {
+            color: var(--text-dim); font-size: 0.85rem; margin: 0;
+        }
+        .btn-submit-db {
+            background: linear-gradient(135deg, #39ff14, #00f0ff); color: #000;
+            border: none; font-weight: 800; font-size: 0.95rem; padding: 0.75rem 1.4rem;
+            border-radius: 8px; cursor: pointer; transition: all 0.25s;
+            box-shadow: 0 0 20px rgba(57,255,20,0.35);
+        }
+        .btn-submit-db:hover {
+            transform: translateY(-2px); box-shadow: 0 0 30px rgba(57,255,20,0.55);
+        }
+        .submit-db-feedback {
+            text-align: center; margin-top: 0.7rem; font-family: var(--font-mono);
+            font-size: 0.88rem; min-height: 1.4rem; font-weight: bold;
+        }
+        .submit-db-feedback.success { color: var(--green); }
+        .submit-db-feedback.error { color: #ff3366; }
+
+
+        /* Task Answer Input Space */
+        .task-input-row {
+            display: flex; gap: 0.55rem; margin: 0.75rem 0 0.4rem; align-items: center;
+        }
+        .task-ans-input {
+            flex: 1; background: rgba(10,14,28,0.9); border: 1px solid rgba(0,240,255,0.25);
+            border-radius: 8px; padding: 0.6rem 0.85rem; color: #fff;
+            font-family: var(--font-body); font-size: 0.92rem; outline: none; transition: all 0.25s;
+        }
+        .task-ans-input:focus {
+            border-color: var(--cyan); box-shadow: 0 0 12px rgba(0,240,255,0.3);
+            background: rgba(15,20,38,0.95);
+        }
+        .task-ans-input:disabled {
+            opacity: 0.6; cursor: not-allowed; background: rgba(5,7,15,0.6);
+            border-color: rgba(255,255,255,0.1);
+        }
+        .task-submit-btn {
+            background: linear-gradient(135deg, rgba(0,240,255,0.2), rgba(57,255,20,0.2));
+            border: 1px solid var(--cyan); color: #fff; padding: 0.6rem 1.1rem;
+            border-radius: 8px; font-family: var(--font-head); font-size: 0.8rem; font-weight: 700;
+            cursor: pointer; transition: all 0.25s; white-space: nowrap; letter-spacing: 0.5px;
+        }
+        .task-submit-btn:hover:not(:disabled) {
+            background: var(--cyan); color: #000; box-shadow: 0 0 16px rgba(0,240,255,0.45);
+            transform: translateY(-1px);
+        }
+        .task-submit-btn:disabled {
+            opacity: 0.5; cursor: not-allowed; border-color: rgba(255,255,255,0.15);
+        }
+        .task-feedback {
+            font-family: var(--font-mono); font-size: 0.82rem; min-height: 1.1rem;
+            margin-bottom: 0.5rem; transition: all 0.25s;
+        }
+        .task-feedback.success { color: var(--green); font-weight: bold; }
+        .task-feedback.error { color: #ff5577; }
+
+
+        /* Linter Fix & Helper Classes */
+        .hidden-challenge-dom {
+            display: none !important;
+        }
+        .btn-congrats-scoresheet {
+            margin-top: 0.6rem;
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+        #teamFields {
+            display: none;
+        }
+        .btn-jpg-download {
+            background: linear-gradient(135deg, #ff00e5, #00f0ff);
+            border-color: #ff00e5;
+        }
+        .db-reset-notice {
+            color: var(--cyan);
+            font-size: 0.82rem;
+            display: inline-block;
+            margin-top: 0.3rem;
+        }
+        .btn-db-export-action {
+            margin-top: 0.4rem;
+            margin-bottom: 0.4rem;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix-canvas"></canvas>
+    <div id="particles"></div>
+
+    <!-- Hidden vulnerability elements -->
+    <!-- Password: s3cur1ty_2026 -->
+    <div class="hidden-challenge-dom" data-flag="DECODE{hidden_divs_are_visible_in_dom}" data-db="mysql://root:pass@localhost:3306/arena">
+        <p>Secret: DECODE{elements_hidden_by_css_still_exist}</p>
+    </div>
+
+    <!-- Nav -->
+    <nav class="nav" id="navbar">
+        <a href="#" class="nav-logo">DECODE<small>ARENA</small></a>
+        <div class="nav-scoreboard">
+            <span class="score-pill">🏆 <strong id="navScore">0</strong> PTS</span>
+            <span class="score-pill">🚩 <strong id="navSolved">0</strong>/24</span>
+            <button type="button" class="btn-share-score" onclick="openScorecard()" title="View & Share Score Sheet">
+                📜 Share Score
+            </button>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#about">About</a></li>
+            <li><a href="#challenges">Challenges</a></li>
+            <li><a href="#common">Vulnerabilities</a></li>
+            <li><a href="#hints">Hints</a></li>
+        </ul>
+        <div class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-badge">⚡ Symposium 2026 — Cybersecurity Event</div>
+        <h1>
+            <span class="grad">DECODE ARENA</span>
+            <span class="sub">Hack The Code</span>
+        </h1>
+        <p>Find vulnerabilities. Understand threats. Learn cybersecurity. <br>A beginner-friendly <strong>security challenge</strong> for all skill levels.</p>
+        <div class="hero-btns">
+            <a href="#challenges" class="btn btn-primary">🔍 Explore Challenges</a>
+            <a href="#hints" class="btn btn-outline">💡 Hints & Resources</a>
+        </div>
+        <div class="scroll-arrow"><span>Scroll</span><div class="arr"></div></div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+        <div class="container">
+            <div class="sec-head reveal">
+                <span class="sec-tag">// What is this?</span>
+                <h2 class="sec-title">Welcome to the <span class="hl">Arena</span></h2>
+            </div>
+            <div class="about-text reveal">
+                <p><strong>Decode Arena</strong> is a hands-on cybersecurity challenge where you learn by doing. Explore different categories of security vulnerabilities — from <strong>open ports</strong> and <strong>insecure protocols</strong> to <strong>common web threats</strong> and <strong>password weaknesses</strong>.</p>
+                <p>No prior hacking experience needed! Each challenge teaches you something new about how real-world security works. Click on any category below to see the challenges inside.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Challenges -->
+    <section id="challenges">
+        <div class="container">
+            <div class="sec-head reveal">
+                <span class="sec-tag">// Click to explore</span>
+                <h2 class="sec-title">Challenge <span class="hl">Categories</span></h2>
+            </div>
+
+            <div class="cat-grid">
+                <!-- Category 1: Network & Ports -->
+                <div class="cat-card reveal" onclick="toggleCat(this)">
+                    <div class="cat-card-top">
+                        <div class="cat-icon c1">🌐</div>
+                        <span class="cat-badge-counter" id="catBadge-1">0/4 Solved</span>
+                    </div>
+                    <h3>Network & Open Ports</h3>
+                    <p>Learn about common network ports, what services run on them, and why open ports are a security risk.</p>
+                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see challenges</div>
+                    <div class="cat-challenges" onclick="event.stopPropagation()">
+                        <div class="cat-challenges-inner" id="cat-inner-1"></div>
+                    </div>
+                </div>
+
+                <!-- Category 2: Protocols & Encryption -->
+                <div class="cat-card reveal" onclick="toggleCat(this)">
+                    <div class="cat-card-top">
+                        <div class="cat-icon c2">🔒</div>
+                        <span class="cat-badge-counter" id="catBadge-2">0/4 Solved</span>
+                    </div>
+                    <h3>Protocols & Encryption</h3>
+                    <p>Understand the difference between secure and insecure protocols and why encryption matters.</p>
+                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see challenges</div>
+                    <div class="cat-challenges" onclick="event.stopPropagation()">
+                        <div class="cat-challenges-inner" id="cat-inner-2"></div>
+                    </div>
+                </div>
+
+                <!-- Category 3: Threats & Attacks -->
+                <div class="cat-card reveal" onclick="toggleCat(this)">
+                    <div class="cat-card-top">
+                        <div class="cat-icon c3">⚠️</div>
+                        <span class="cat-badge-counter" id="catBadge-3">0/4 Solved</span>
+                    </div>
+                    <h3>Threats & Attacks</h3>
+                    <p>Learn about common cyber attacks like phishing, malware, and social engineering.</p>
+                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see challenges</div>
+                    <div class="cat-challenges" onclick="event.stopPropagation()">
+                        <div class="cat-challenges-inner" id="cat-inner-3"></div>
+                    </div>
+                </div>
+
+                <!-- Category 4: Password Security -->
+                <div class="cat-card reveal" onclick="toggleCat(this)">
+                    <div class="cat-card-top">
+                        <div class="cat-icon c4">🔑</div>
+                        <span class="cat-badge-counter" id="catBadge-4">0/4 Solved</span>
+                    </div>
+                    <h3>Password Security</h3>
+                    <p>Discover why weak passwords are dangerous and how attackers crack them.</p>
+                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see challenges</div>
+                    <div class="cat-challenges" onclick="event.stopPropagation()">
+                        <div class="cat-challenges-inner" id="cat-inner-4"></div>
+                    </div>
+                </div>
+
+                <!-- Category 5: Web Security Basics -->
+                <div class="cat-card reveal" onclick="toggleCat(this)">
+                    <div class="cat-card-top">
+                        <div class="cat-icon c5">🕸️</div>
+                        <span class="cat-badge-counter" id="catBadge-5">0/4 Solved</span>
+                    </div>
+                    <h3>Web Security Basics</h3>
+                    <p>Explore how websites leak information through source code, cookies, and hidden elements.</p>
+                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see challenges</div>
+                    <div class="cat-challenges" onclick="event.stopPropagation()">
+                        <div class="cat-challenges-inner" id="cat-inner-5"></div>
+                    </div>
+                </div>
+
+                <!-- Category 6: Security Awareness -->
+                <div class="cat-card reveal" onclick="toggleCat(this)">
+                    <div class="cat-card-top">
+                        <div class="cat-icon c6">🛡️</div>
+                        <span class="cat-badge-counter" id="catBadge-6">0/4 Solved</span>
+                    </div>
+                    <h3>Security Awareness</h3>
+                    <p>Learn about firewalls, VPNs, antivirus, and basic security practices everyone should know.</p>
+                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see challenges</div>
+                    <div class="cat-challenges" onclick="event.stopPropagation()">
+                        <div class="cat-challenges-inner" id="cat-inner-6"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bonus Secret Flag Box -->
+            <div class="bonus-validator-box reveal">
+                <div class="bonus-icon">🕵️</div>
+                <div class="bonus-content">
+                    <h3>Found a Secret Hidden Flag on this Website?</h3>
+                    <p>Discovered a secret in <strong>View Source</strong>, <strong>Inspect Element</strong>, <strong>Meta Tags</strong>, or <strong>CSS Variables</strong>? Paste any <code>DECODE{...}</code> flag here to claim your bonus score!</p>
+                    <div class="input-row bonus-input-row">
+                        <input type="text" id="bonusFlagInput" class="ans-input" placeholder="DECODE{...}" onkeydown="if(event.key==='Enter')submitBonusFlag()">
+                        <button class="ans-submit-btn bonus-btn" onclick="submitBonusFlag()">Claim Flag</button>
+                    </div>
+                    <div class="ans-feedback" id="bonusFeedback"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Common Vulnerabilities -->
+    <section id="common">
+        <div class="container">
+            <div class="sec-head reveal">
+                <span class="sec-tag">// Must know</span>
+                <h2 class="sec-title">Common <span class="hl">Vulnerabilities</span></h2>
+                <p class="sec-desc">These are real-world security weaknesses found in websites and systems every day.</p>
+            </div>
+            <div class="vuln-grid">
+                <div class="vuln-card reveal">
+                    <div class="vuln-icon">🚪</div>
+                    <h3>Open Ports</h3>
+                    <p>Leaving unnecessary ports open on a server is like leaving doors unlocked. Attackers scan for open ports to find ways in. Always close ports you don't need.</p>
+                    <div class="example">Common risky ports: 21 (FTP), 23 (Telnet), 3389 (RDP)</div>
+                </div>
+                <div class="vuln-card reveal">
+                    <div class="vuln-icon">📡</div>
+                    <h3>Insecure Protocols</h3>
+                    <p>Using HTTP instead of HTTPS, or Telnet instead of SSH, means your data travels without encryption. Anyone on the same network can read it.</p>
+                    <div class="example">Always use: HTTPS, SSH, SFTP, TLS</div>
+                </div>
+                <div class="vuln-card reveal">
+                    <div class="vuln-icon">🔓</div>
+                    <h3>Weak Passwords</h3>
+                    <p>Passwords like "123456", "password", or "admin" can be cracked in seconds. Use long, unique passwords with numbers and symbols.</p>
+                    <div class="example">Bad: admin123 | Good: Tr@f!c_L1ght$_42</div>
+                </div>
+                <div class="vuln-card reveal">
+                    <div class="vuln-icon">🐛</div>
+                    <h3>Unpatched Software</h3>
+                    <p>Old software has known bugs that attackers exploit. Regular updates and patches fix these vulnerabilities before attackers can use them.</p>
+                    <div class="example">Always update: OS, browsers, plugins, apps</div>
+                </div>
+                <div class="vuln-card reveal">
+                    <div class="vuln-icon">🎣</div>
+                    <h3>Phishing</h3>
+                    <p>Fake emails or websites that look real but steal your information. Always check the URL and sender's email address before clicking links.</p>
+                    <div class="example">Fake: g00gle.com | Real: google.com</div>
+                </div>
+                <div class="vuln-card reveal">
+                    <div class="vuln-icon">💾</div>
+                    <h3>Data Exposure</h3>
+                    <p>Websites accidentally exposing sensitive info through HTML comments, error messages, or publicly accessible files like robots.txt.</p>
+                    <div class="example">Check: View Source, /robots.txt, Console logs</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hints Section -->
+    <section id="hints">
+        <div class="container">
+            <div class="sec-head reveal">
+                <span class="sec-tag">// Learn more</span>
+                <h2 class="sec-title">Hints & <span class="hl">Resources</span></h2>
+                <p class="sec-desc">Explore these tips and resources to improve your cybersecurity knowledge.</p>
+            </div>
+            <div class="hints-grid">
+                <div class="hint-card reveal">
+                    <div class="hint-num">01</div>
+                    <h3>Learn Browser DevTools</h3>
+                    <p>Press F12 in any browser to open Developer Tools. Explore the Elements, Console, Network, and Application tabs — they reveal everything about a webpage.</p>
+                    <a href="https://developer.chrome.com/docs/devtools" target="_blank" rel="noopener noreferrer">📖 Chrome DevTools Guide →</a>
+                </div>
+                <div class="hint-card reveal">
+                    <div class="hint-num">02</div>
+                    <h3>Understand Common Ports</h3>
+                    <p>Port 80 (HTTP), 443 (HTTPS), 22 (SSH), 21 (FTP), 25 (SMTP), 53 (DNS), 3306 (MySQL). Knowing these helps you understand network security.</p>
+                    <a href="https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers" target="_blank" rel="noopener noreferrer">📖 Port Numbers List →</a>
+                </div>
+                <div class="hint-card reveal">
+                    <div class="hint-num">03</div>
+                    <h3>Try Free CTF Platforms</h3>
+                    <p>Practice your skills on beginner-friendly platforms like TryHackMe, PicoCTF, and OverTheWire. They teach you step-by-step with guided challenges.</p>
+                    <a href="https://tryhackme.com" target="_blank" rel="noopener noreferrer">📖 TryHackMe →</a>
+                </div>
+                <div class="hint-card reveal">
+                    <div class="hint-num">04</div>
+                    <h3>Learn About OWASP Top 10</h3>
+                    <p>OWASP Top 10 is a list of the most critical web security risks. Understanding these helps you identify vulnerabilities in real applications.</p>
+                    <a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener noreferrer">📖 OWASP Top 10 →</a>
+                </div>
+                <div class="hint-card reveal">
+                    <div class="hint-num">05</div>
+                    <h3>Check robots.txt</h3>
+                    <p>Every website can have a robots.txt file. It tells search engines what to index, but often accidentally reveals hidden admin pages and sensitive paths.</p>
+                    <a href="#" onclick="alert('Try visiting /robots.txt on any website!')">📖 What is robots.txt? →</a>
+                </div>
+                <div class="hint-card reveal">
+                    <div class="hint-num">06</div>
+                    <h3>Stay Ethical!</h3>
+                    <p>Only test security on systems you have permission to test. Unauthorized hacking is illegal. Use your knowledge to protect, not to harm.</p>
+                    <a href="https://www.eccouncil.org/ethical-hacking/" target="_blank" rel="noopener noreferrer">📖 Ethical Hacking Code →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-logo">DECODE ARENA</div>
+            <ul class="footer-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#challenges">Challenges</a></li>
+                <li><a href="#common">Vulnerabilities</a></li>
+                <li><a href="#hints">Hints</a></li>
+            </ul>
+            <div class="footer-copy">© 2026 Decode Arena. All Rights Reserved.</div>
+        </div>
+    </footer>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Congratulations Modal -->
+    <div class="modal-overlay" id="congratsModal" onclick="if(event.target===this)closeCongratsModal()">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeCongratsModal()" title="Close">×</button>
+            <div class="modal-sparkle">🎉</div>
+            <h3 class="modal-title">CONGRATULATIONS!</h3>
+            <p class="modal-sub" id="modalSub">Awesome job! You cracked the challenge!</p>
+            
+            <div class="modal-flag-box">
+                <span class="flag-label">🚩 CAPTURED FLAG</span>
+                <code class="flag-code" id="modalFlagCode">DECODE{port_80}</code>
+                <button class="btn-copy" id="btnCopyModal" onclick="copyModalFlag()">📋 Copy Flag</button>
+            </div>
+
+            <div class="modal-stats">
+                <div class="modal-stat">
+                    <span class="m-val" id="modalPoints">+50</span>
+                    <span class="m-lbl">Points</span>
+                </div>
+                <div class="modal-stat">
+                    <span class="m-val" id="modalTotalScore">50</span>
+                    <span class="m-lbl">Total Score</span>
+                </div>
+                <div class="modal-stat">
+                    <span class="m-val" id="modalSolvedRatio">1/24</span>
+                    <span class="m-lbl">Challenges</span>
+                </div>
+            </div>
+
+            <button class="btn btn-primary modal-action-btn" onclick="closeCongratsModal()">🚀 Continue Hacking</button>
+            <button class="btn btn-outline modal-action-btn btn-congrats-scoresheet" onclick="openScorecardFromCongrats()">📜 View & Share Score Sheet</button>
+        </div>
+    </div>
+
+    <!-- Official Participant Score Sheet Modal -->
+    <div class="modal-overlay" id="scorecardModal" onclick="if(event.target===this)closeScorecard()">
+        <div class="scorecard-modal-card">
+            <button class="modal-close-btn" onclick="closeScorecard()" title="Close">×</button>
+            
+            <!-- Physical Certificate / Score Sheet Box -->
+            <div class="scorecard-sheet" id="scorecardSheet">
+                <div class="sheet-watermark">DECODE ARENA</div>
+                
+                <div class="sheet-header">
+                    <div class="sheet-brand">
+                        <span class="sheet-logo">DECODE<small>ARENA</small></span>
+                        <span class="sheet-tagline">Cybersecurity Symposium 2026</span>
+                    </div>
+                    <div class="sheet-badge-tier" id="sheetTierBadge">🔰 CYBER SCOUT</div>
+                </div>
+
+                <div class="sheet-title-zone">
+                    <h2 class="sheet-title">OFFICIAL PARTICIPANT SCORE SHEET</h2>
+                    <p class="sheet-subtitle">// Verified Assessment & Cyber Challenge Completion Record</p>
+                </div>
+
+                <!-- Mode Switcher (Solo vs Team) -->
+                <div class="sheet-mode-tabs">
+                    <button type="button" class="sheet-mode-tab active" id="tabSolo" onclick="setScorecardMode('solo')">
+                        👤 Solo Mode
+                    </button>
+                    <button type="button" class="sheet-mode-tab" id="tabTeam" onclick="setScorecardMode('team')">
+                        👥 Team Mode (3 Members)
+                    </button>
+                </div>
+
+                <!-- Solo Participant Fields -->
+                <div class="sheet-participant-box" id="soloFields">
+                    <div class="sheet-field">
+                        <label for="sheetParticipantName">PARTICIPANT NAME</label>
+                        <input type="text" id="sheetParticipantName" class="sheet-input" placeholder="Enter Your Full Name" oninput="saveParticipantInfo()">
+                    </div>
+                    <div class="sheet-field">
+                        <label for="sheetCollegeName">COLLEGE / INSTITUTION</label>
+                        <input type="text" id="sheetCollegeName" class="sheet-input" placeholder="Enter Your College Name" oninput="saveParticipantInfo()">
+                    </div>
+                </div>
+
+                <!-- Team Fields (3 Members) -->
+                <div class="sheet-participant-box" id="teamFields">
+                    <div class="sheet-field">
+                        <label for="sheetTeamName">TEAM NAME</label>
+                        <input type="text" id="sheetTeamName" class="sheet-input" placeholder="e.g. Cyber Phantoms" oninput="saveParticipantInfo()">
+                    </div>
+                    <div class="sheet-field">
+                        <label for="sheetTeamCollege">COLLEGE / INSTITUTION</label>
+                        <input type="text" id="sheetTeamCollege" class="sheet-input" placeholder="Enter Your College Name" oninput="saveParticipantInfo()">
+                    </div>
+                    <div class="sheet-members-header">👥 TEAM MEMBERS (3 MEMBERS)</div>
+                    <div class="sheet-field">
+                        <label for="sheetMember1">MEMBER 1 (LEAD / CAPTAIN)</label>
+                        <input type="text" id="sheetMember1" class="sheet-input" placeholder="Name of Member 1" oninput="saveParticipantInfo()">
+                    </div>
+                    <div class="sheet-field">
+                        <label for="sheetMember2">MEMBER 2</label>
+                        <input type="text" id="sheetMember2" class="sheet-input" placeholder="Name of Member 2" oninput="saveParticipantInfo()">
+                    </div>
+                    <div class="sheet-field team-full-col">
+                        <label for="sheetMember3">MEMBER 3</label>
+                        <input type="text" id="sheetMember3" class="sheet-input" placeholder="Name of Member 3" oninput="saveParticipantInfo()">
+                    </div>
+                </div>
+
+                <!-- Score Metrics Highlights -->
+                <div class="sheet-metrics-row">
+                    <div class="sheet-metric-card highlight">
+                        <span class="sm-lbl">TOTAL SCORE</span>
+                        <span class="sm-val" id="sheetTotalScore">0 <small>PTS</small></span>
+                    </div>
+                    <div class="sheet-metric-card">
+                        <span class="sm-lbl">CHALLENGES SOLVED</span>
+                        <span class="sm-val" id="sheetSolvedCount">0 / 24</span>
+                    </div>
+                    <div class="sheet-metric-card">
+                        <span class="sm-lbl">COMPLETION STATUS</span>
+                        <span class="sm-val" id="sheetStatusText">In Progress</span>
+                    </div>
+                </div>
+
+                <!-- Category Breakdown Grid -->
+                <div class="sheet-breakdown">
+                    <h4 class="sheet-section-title">CATEGORY BREAKDOWN</h4>
+                    <div class="sheet-cats-grid" id="sheetCatsGrid"></div>
+                </div>
+
+                <!-- Footer stamp -->
+                <div class="sheet-footer">
+                    <div class="sheet-timestamp">
+                        <span>Issued: <strong id="sheetTimestamp">2026-09-10</strong></span>
+                        <span class="sheet-verify-hash" id="sheetVerifyHash">VERIFIED ID: DA-2026-SEC</span>
+                    </div>
+                    <div class="sheet-stamp">
+                        <span>OFFICIAL RECORD</span>
+                        <strong>SYMPOSIUM 2026</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit to Program Database Section (Stores without encryption + Stored Image) -->
+            <div class="sheet-submit-card">
+                <div class="ssc-text">
+                    <h4>🚀 Submit to Program Database</h4>
+                    <p>Save this score and the generated certificate image into the program's unencrypted database storage.</p>
+                </div>
+                <button type="button" class="btn-submit-db" onclick="submitScoreToProgramDatabase()">
+                    🚀 Submit to Program DB
+                </button>
+            </div>
+            <div id="submitDbFeedback" class="submit-db-feedback"></div>
+
+            <!-- Action Buttons: PNG & JPG Downloads + Sharing + DB Export -->
+            <div class="scorecard-actions">
+                <button class="btn btn-primary" onclick="downloadScoreSheetImage('png')">
+                    📥 Download PNG
+                </button>
+                <button class="btn btn-primary btn-jpg-download" onclick="downloadScoreSheetImage('jpg')">
+                    📥 Download JPG
+                </button>
+                <button class="btn btn-outline" onclick="copyScoreSummary()">
+                    📋 Copy Text Summary
+                </button>
+                <button class="btn btn-outline" onclick="shareToWhatsApp()">
+                    💬 Share to WhatsApp
+                </button>
+                <button class="btn btn-outline" onclick="exportProgramDatabaseJSON()" title="Download unencrypted program database with stored images">
+                    📦 Export Program DB (.json)
+                </button>
+                <button class="btn btn-outline" onclick="promptResetProgress()" title="Reset score and challenges for a fresh attempt">
+                    🔄 Reset Progress
+                </button>
+            </div>
+            <div id="shareFeedback" class="share-feedback"></div>
+        </div>
+    </div>
+
+    <script>
+        // Console flag for curious participants
+        console.log("%c🚩 DECODE{console_logs_reveal_secrets}", "color: #39ff14; font-size: 16px; font-weight: bold;");
+        console.log("%cGood job checking the console! Developers sometimes leave secrets here.", "color: #00f0ff; font-size: 11px;");
+
+        // === Challenge Database (24 Tasks with Input Space, Hints & MCQs) ===
+        const CHALLENGES = {
+            // Category 1: Network & Open Ports
+            "c1_1": {
+                cat: 1, title: "What Port Does HTTP Use?", diff: "Easy", points: 50,
+                desc: "When browsing an unencrypted website with 'http://', which standard network port does your browser communicate on?",
+                hint: "It is a standard two-digit number ending with 0. Think of 8 followed by zero!",
+                options: ["Port 21", "Port 80", "Port 443", "Port 22"],
+                correct: 1, flag: "DECODE{port_80}",
+                answers: ["80", "port 80", "port80", "http 80", "decode{port_80}"],
+                explanation: "Port 80 is the standard port for unencrypted HTTP traffic. Anyone sniffing network packets can view usernames and passwords in plaintext!"
+            },
+            "c1_2": {
+                cat: 1, title: "The Secure Web Port (HTTPS)", diff: "Easy", points: 50,
+                desc: "When you see the padlock icon in your browser address bar (HTTPS with TLS encryption), which port is being utilized?",
+                hint: "It is a three-digit number starting with 4 and ending with 3 (4_3).",
+                options: ["Port 80", "Port 8080", "Port 443", "Port 25"],
+                correct: 2, flag: "DECODE{port_443}",
+                answers: ["443", "port 443", "port443", "https 443", "decode{port_443}"],
+                explanation: "Port 443 is used for HTTPS. It encrypts all client-server communication using SSL/TLS, preventing eavesdropping."
+            },
+            "c1_3": {
+                cat: 1, title: "The File Transfer Port (FTP)", diff: "Easy", points: 50,
+                desc: "Legacy File Transfer Protocol (FTP) sends credentials in plain text across the network. Which default port does FTP use?",
+                hint: "It is one less than SSH's default port (22).",
+                options: ["Port 21", "Port 23", "Port 25", "Port 53"],
+                correct: 0, flag: "DECODE{port_21_ftp}",
+                answers: ["21", "port 21", "port21", "ftp 21", "decode{port_21_ftp}", "ftp"],
+                explanation: "FTP uses Port 21 and transmits passwords without encryption! Modern security requires encrypted alternatives like SFTP or FTPS."
+            },
+            "c1_4": {
+                cat: 1, title: "Remote Access Risk (SSH)", diff: "Medium", points: 100,
+                desc: "System administrators connect securely to Linux command lines using SSH. Which default port is an attractive target for brute-force attacks?",
+                hint: "It is a famous pair of twin digits: two twos.",
+                options: ["Port 21", "Port 22", "Port 3389", "Port 8080"],
+                correct: 1, flag: "DECODE{port_22_ssh}",
+                answers: ["22", "port 22", "port22", "ssh 22", "decode{port_22_ssh}", "ssh"],
+                explanation: "Port 22 is the default for SSH (Secure Shell). Leaving Port 22 exposed to the public internet attracts automated brute-force bots."
+            },
+
+            // Category 2: Protocols & Encryption
+            "c2_1": {
+                cat: 2, title: "HTTP vs HTTPS", diff: "Easy", points: 50,
+                desc: "Which protocol sends all data — including passwords and session tokens — in plaintext readable by network sniffers?",
+                hint: "Notice the missing 'S' (which stands for Secure).",
+                options: ["HTTPS", "HTTP", "SSH", "SFTP"],
+                correct: 1, flag: "DECODE{http_is_not_secure}",
+                answers: ["http", "decode{http_is_not_secure}"],
+                explanation: "HTTP lacks encryption. Attackers on the same Wi-Fi network can capture credentials using tools like Wireshark."
+            },
+            "c2_2": {
+                cat: 2, title: "The Telnet Danger", diff: "Easy", points: 50,
+                desc: "Telnet transmits user keystrokes unencrypted. Which secure cryptographic protocol was created to replace Telnet for terminal access?",
+                hint: "It stands for Secure Shell and operates over port 22.",
+                options: ["FTP", "SNMP", "SSH", "RDP"],
+                correct: 2, flag: "DECODE{ssh_replaced_telnet}",
+                answers: ["ssh", "secure shell", "decode{ssh_replaced_telnet}"],
+                explanation: "SSH (Secure Shell) provides strong end-to-end encryption for remote command-line login, completely replacing the obsolete Telnet."
+            },
+            "c2_3": {
+                cat: 2, title: "The Phonebook of the Internet", diff: "Easy", points: 50,
+                desc: "What does the 'DNS' protocol stand for when translating domain names like 'google.com' into computer IP addresses?",
+                hint: "Three words: Domain ... System.",
+                options: ["Domain Name System", "Data Network Service", "Digital Name Server", "Dynamic Node Switch"],
+                correct: 0, flag: "DECODE{domain_name_system}",
+                answers: ["domain name system", "domain name server", "dns", "decode{domain_name_system}"],
+                explanation: "DNS stands for Domain Name System. Standard DNS is unencrypted, allowing eavesdroppers or malicious DNS servers to hijack traffic."
+            },
+            "c2_4": {
+                cat: 2, title: "Insecure File Transfer", diff: "Medium", points: 100,
+                desc: "To safely transfer files over an encrypted SSH tunnel instead of insecure plaintext FTP, which protocol should you use?",
+                hint: "It adds an 'S' in front of FTP.",
+                options: ["TFTP", "SFTP", "Telnet", "HTTP"],
+                correct: 1, flag: "DECODE{sftp_is_secure_ftp}",
+                answers: ["sftp", "secure ftp", "ssh file transfer protocol", "decode{sftp_is_secure_ftp}"],
+                explanation: "SFTP (SSH File Transfer Protocol) encrypts authentication credentials and file contents, preventing interception during transfer."
+            },
+
+            // Category 3: Threats & Attacks
+            "c3_1": {
+                cat: 3, title: "Deceptive Emails", diff: "Easy", points: 50,
+                desc: "An attacker sends a fraudulent email posing as your college bank, urging you to 'verify your password immediately'. What attack is this?",
+                hint: "Sounds like a sport involving a fishing rod and bait!",
+                options: ["SQL Injection", "Phishing", "DDoS", "Buffer Overflow"],
+                correct: 1, flag: "DECODE{phishing_attack}",
+                answers: ["phishing", "phishing attack", "decode{phishing_attack}"],
+                explanation: "Phishing tricks victims into sharing sensitive credentials or opening infected attachments by impersonating trusted entities."
+            },
+            "c3_2": {
+                cat: 3, title: "Encrypted Files & Extortion", diff: "Easy", points: 50,
+                desc: "Malware infects a computer, encrypts all personal files, and displays a note demanding cryptocurrency to decrypt them. What is it?",
+                hint: "Combines the word for an extortion payment + 'ware'.",
+                options: ["Adware", "Spyware", "Ransomware", "Trojan"],
+                correct: 2, flag: "DECODE{ransomware}",
+                answers: ["ransomware", "ransom", "decode{ransomware}"],
+                explanation: "Ransomware holds your data hostage. Frequent offline backups and avoiding suspicious email attachments are critical defenses."
+            },
+            "c3_3": {
+                cat: 3, title: "The Human Weakness", diff: "Medium", points: 100,
+                desc: "Manipulating individuals psychologically to reveal confidential credentials rather than hacking computer code is known as what?",
+                hint: "It applies engineering principles to social psychology.",
+                options: ["Social Engineering", "Hardware Keylogging", "Port Scanning", "Network Sniffing"],
+                correct: 0, flag: "DECODE{social_engineering}",
+                answers: ["social engineering", "social engineer", "decode{social_engineering}"],
+                explanation: "Social engineering exploits human trust, urgency, or authority. Humans are frequently the most exploited vulnerability in security."
+            },
+            "c3_4": {
+                cat: 3, title: "Flooding the Server", diff: "Easy", points: 50,
+                desc: "A massive botnet of thousands of compromised devices floods a server with bogus traffic to crash it. What is this attack called?",
+                hint: "Stands for Distributed Denial of Service (4 letters).",
+                options: ["Cross-Site Scripting", "DDoS Attack", "Zero-Day Exploit", "Man-in-the-Middle"],
+                correct: 1, flag: "DECODE{ddos_attack}",
+                answers: ["ddos", "dos", "ddos attack", "denial of service", "distributed denial of service", "decode{ddos_attack}"],
+                explanation: "A DDoS (Distributed Denial of Service) attack saturates bandwidth and resources, rendering services inaccessible to real users."
+            },
+
+            // Category 4: Password Security
+            "c4_1": {
+                cat: 4, title: "World's Most Common Password", diff: "Easy", points: 50,
+                desc: "According to global cybersecurity breach reports, what sequence of consecutive numbers is consistently the most hacked password?",
+                hint: "Six sequential digits starting from 1.",
+                options: ["password99", "123456", "admin2026", "qwerty123"],
+                correct: 1, flag: "DECODE{123456}",
+                answers: ["123456", "12345678", "decode{123456}"],
+                explanation: "'123456' can be cracked in less than a millisecond. Always use strong, unique passphrases with special symbols and letters."
+            },
+            "c4_2": {
+                cat: 4, title: "Exhaustive Guessing Attack", diff: "Easy", points: 50,
+                desc: "An automated script methodically tests every single possible alphanumeric character combination until finding the right password. What is this?",
+                hint: "It relies on sheer computational force rather than clever tricks.",
+                options: ["Brute Force Attack", "Social Phishing", "Eavesdropping", "ARP Poisoning"],
+                correct: 0, flag: "DECODE{brute_force_attack}",
+                answers: ["brute force", "bruteforce", "brute force attack", "decode{brute_force_attack}"],
+                explanation: "Brute Force attacks systematically test all possible passwords. Account lockouts, rate limiting, and 2FA successfully defeat it."
+            },
+            "c4_3": {
+                cat: 4, title: "The Dual Defense (2FA)", diff: "Medium", points: 100,
+                desc: "What security mechanism requires both your master password AND a one-time timed verification code from an authenticator app?",
+                hint: "Commonly known as 2FA or MFA.",
+                options: ["Single Sign-On", "Two-Factor Authentication (2FA)", "CAPTCHA", "Password Recovery"],
+                correct: 1, flag: "DECODE{two_factor_authentication}",
+                answers: ["2fa", "mfa", "two factor", "two-factor", "two factor authentication", "two-factor authentication", "multi factor authentication", "decode{two_factor_authentication}"],
+                explanation: "Two-Factor Authentication (2FA) ensures that even if an attacker steals your password, they cannot gain access without your second device factor."
+            },
+            "c4_4": {
+                cat: 4, title: "Default Router Passwords", diff: "Easy", points: 50,
+                desc: "When setting up a new Wi-Fi router with default credentials 'admin' and 'admin', what is the critical first action you should take?",
+                hint: "Leaving factory defaults allows anyone on your network to hijack your router.",
+                options: ["Keep it for convenience", "Change the default password", "Disable the firewall", "Turn off encryption"],
+                correct: 1, flag: "DECODE{change_default_passwords}",
+                answers: ["change", "change default passwords", "change password", "change it", "update", "decode{change_default_passwords}"],
+                explanation: "Attackers scan networks specifically for hardware with default credentials. Changing factory passwords immediately is essential hygiene."
+            },
+
+            // Category 5: Web Security Basics
+            "c5_1": {
+                cat: 5, title: "View the Source Code", diff: "Easy", points: 50,
+                desc: "Where do careless web developers sometimes leave internal comments, database credentials, or test flags exposed to any visitor?",
+                hint: "Written between <!-- and --> inside the webpage HTML.",
+                options: ["Server RAM", "HTML Comments in Source Code", "Encrypted SSL Session", "DNS Records"],
+                correct: 1, flag: "DECODE{html_comments_are_not_hidden}",
+                answers: ["html comments", "html comment", "html comments in source code", "source code", "decode{html_comments_are_not_hidden}"],
+                explanation: "HTML comments (<!-- ... -->) are delivered directly to the browser! Anyone can right-click 'View Page Source' and read them."
+            },
+            "c5_2": {
+                cat: 5, title: "Stolen Cookies", diff: "Medium", points: 100,
+                desc: "If an attacker sniffs your active authentication cookie over an unencrypted network, what attack allows them to hijack your session?",
+                hint: "It hijacks your active logged-in browser session.",
+                options: ["Session Hijacking", "SQL Injection", "DDoS", "Denial of Service"],
+                correct: 0, flag: "DECODE{session_hijacking}",
+                answers: ["session hijacking", "session hijack", "cookie hijacking", "decode{session_hijacking}"],
+                explanation: "Session hijacking occurs when an attacker obtains your session identifier cookie, allowing them to impersonate you without needing your password."
+            },
+            "c5_3": {
+                cat: 5, title: "Inspect Element & Hidden CSS", diff: "Easy", points: 50,
+                desc: "If a webpage contains secret data inside an element styled with CSS 'display: none;', can a visitor still view it?",
+                hint: "CSS only affects graphical rendering; the HTML text is still downloaded.",
+                options: ["No, hidden CSS deletes the data", "Yes, DOM elements still exist", "Only with root server rights", "Only after decrypting HTTPS"],
+                correct: 1, flag: "DECODE{hidden_divs_are_visible_in_dom}",
+                answers: ["yes", "yes, dom elements still exist", "dom elements still exist", "decode{hidden_divs_are_visible_in_dom}", "decode{elements_hidden_by_css_still_exist}"],
+                explanation: "Setting 'display: none' does NOT hide sensitive data! Anyone can inspect the DOM tree using browser DevTools and read the secret."
+            },
+            "c5_4": {
+                cat: 5, title: "Check the Browser Console", diff: "Easy", points: 50,
+                desc: "Which browser DevTools tab should security researchers check to see debugging output, developer error logs, or leaked variables?",
+                hint: "Accessed by opening DevTools (F12) and clicking the Console tab.",
+                options: ["Memory Profiler", "Console Tab", "Network Waterfall", "Performance Tab"],
+                correct: 1, flag: "DECODE{console_logs_reveal_secrets}",
+                answers: ["console", "console tab", "browser console", "decode{console_logs_reveal_secrets}"],
+                explanation: "Developers frequently use console.log() to debug during development and accidentally forget to remove secrets before deploying to production!"
+            },
+
+            // Category 6: Security Awareness
+            "c6_1": {
+                cat: 6, title: "The Network Barrier", diff: "Easy", points: 50,
+                desc: "What security system monitors incoming and outgoing network traffic and blocks unauthorized packets based on defined rules?",
+                hint: "It acts like a protective barrier preventing digital fires from spreading.",
+                options: ["Firewall", "Web Browser", "Graphics Driver", "Search Engine"],
+                correct: 0, flag: "DECODE{firewall}",
+                answers: ["firewall", "decode{firewall}"],
+                explanation: "A Firewall filters network traffic between trusted internal networks and untrusted external networks like the open internet."
+            },
+            "c6_2": {
+                cat: 6, title: "Encrypted Internet Tunnel", diff: "Easy", points: 50,
+                desc: "When using public airport or cafe Wi-Fi, what tool encrypts all your device's traffic through a secure remote tunnel?",
+                hint: "Three letters: Virtual Private Network.",
+                options: ["FTP Client", "VPN (Virtual Private Network)", "Torrent Downloader", "P2P Client"],
+                correct: 1, flag: "DECODE{vpn_virtual_private_network}",
+                answers: ["vpn", "virtual private network", "decode{vpn_virtual_private_network}"],
+                explanation: "A VPN encrypts all internet traffic from your machine, protecting your data from eavesdroppers or rogue access points on public Wi-Fi."
+            },
+            "c6_3": {
+                cat: 6, title: "The Padlock Certificate", diff: "Medium", points: 100,
+                desc: "What digital certificate validates a website's cryptographic identity and activates the secure HTTPS padlock in the address bar?",
+                hint: "Issued by Certificate Authorities (CA) like Let's Encrypt.",
+                options: ["SSL/TLS Certificate", "DNS Record", "Cookie Policy", "MAC Address"],
+                correct: 0, flag: "DECODE{ssl_tls_certificate}",
+                answers: ["ssl", "tls", "ssl/tls", "ssl certificate", "tls certificate", "ssl/tls certificate", "decode{ssl_tls_certificate}"],
+                explanation: "SSL/TLS certificates authenticate web server identities and enable encrypted symmetric communication using public-key cryptography."
+            },
+            "c6_4": {
+                cat: 6, title: "Patching Known Vulnerabilities", diff: "Easy", points: 50,
+                desc: "Software vendors release regular system updates to fix discovered security holes before attackers can exploit them. What is this called?",
+                hint: "Like patching a leak or hole.",
+                options: ["Security Patch", "Beta Release", "Adware Extension", "Trial Version"],
+                correct: 0, flag: "DECODE{security_patch}",
+                answers: ["patch", "security patch", "update", "software patch", "decode{security_patch}"],
+                explanation: "Applying security patches promptly closes known vulnerabilities, protecting systems from widespread automated exploitation."
+            }
+        };
+
+        const BONUS_FLAGS = {
+            "decode{plaintext_database_storage_is_vulnerable}": { points: 100, label: "Unencrypted Database Storage Secret", flag: "DECODE{plaintext_database_storage_is_vulnerable}" },
+            "decode{check_meta_tags_always}": { points: 100, label: "Meta Tag Inspection Secret", flag: "DECODE{check_meta_tags_always}" },
+            "decode{css_vars_leak_secrets}": { points: 100, label: "CSS Variable Leak Secret", flag: "DECODE{css_vars_leak_secrets}" },
+            "decode{elements_hidden_by_css_still_exist}": { points: 100, label: "Hidden CSS DOM Element Secret", flag: "DECODE{elements_hidden_by_css_still_exist}" },
+            "decode{html_comments_are_not_hidden}": { points: 50, label: "HTML Comment Secret", flag: "DECODE{html_comments_are_not_hidden}" },
+            "decode{console_logs_reveal_secrets}": { points: 50, label: "Browser Console Secret", flag: "DECODE{console_logs_reveal_secrets}" },
+            "decode{hidden_divs_are_visible_in_dom}": { points: 50, label: "DOM Data-Flag Secret", flag: "DECODE{hidden_divs_are_visible_in_dom}" }
+        };
+
+        // === User Progress State ===
+        let userAnswers = JSON.parse(localStorage.getItem('da_mcq_answers') || '{}');
+        let redeemedBonus = JSON.parse(localStorage.getItem('da_bonus') || '[]');
+        let totalScore = parseInt(localStorage.getItem('da_score') || '0', 10);
+        let unlockedHints = JSON.parse(localStorage.getItem('da_unlocked_hints') || '{}');
+
+        function saveProgress() {
+            localStorage.setItem('da_mcq_answers', JSON.stringify(userAnswers));
+            localStorage.setItem('da_bonus', JSON.stringify(redeemedBonus));
+            localStorage.setItem('da_score', totalScore.toString());
+            localStorage.setItem('da_unlocked_hints', JSON.stringify(unlockedHints));
+        }
+
+        function getSolvedCount() {
+            return Object.keys(userAnswers).filter(k => userAnswers[k] && userAnswers[k].isCorrect).length;
+        }
+
+        function updateScoreboard() {
+            const scoreEl = document.getElementById('navScore');
+            const solvedEl = document.getElementById('navSolved');
+            if (scoreEl) scoreEl.textContent = totalScore;
+            if (solvedEl) solvedEl.textContent = getSolvedCount();
+
+            // Update category badge counters
+            for (let c = 1; c <= 6; c++) {
+                const badge = document.getElementById(`catBadge-${c}`);
+                if (badge) {
+                    const catTotal = Object.keys(CHALLENGES).filter(k => CHALLENGES[k].cat === c).length;
+                    const catSolved = Object.keys(CHALLENGES).filter(k => CHALLENGES[k].cat === c && userAnswers[k] && userAnswers[k].isCorrect).length;
+                    badge.textContent = `${catSolved}/${catTotal} Solved`;
+                    badge.classList.toggle('complete', catSolved === catTotal);
+                }
+            }
+        }
+
+        // === Audio Synthesizer (Arcade Victory Chime) ===
+        function playVictorySound() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                notes.forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.09);
+                    gain.gain.setValueAtTime(0.22, ctx.currentTime + idx * 0.09);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.09 + 0.35);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime + idx * 0.09);
+                    osc.stop(ctx.currentTime + idx * 0.09 + 0.38);
+                });
+            } catch(e) {}
+        }
+
+        // === Confetti Shower ===
+        function launchConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            canvas.style.display = 'block';
+
+            const particles = [];
+            const colors = ['#00f0ff', '#ff00e5', '#39ff14', '#f0ff00', '#ff6a00', '#ffffff'];
+            for (let i = 0; i < 90; i++) {
+                particles.push({
+                    x: window.innerWidth / 2,
+                    y: window.innerHeight / 2,
+                    vx: (Math.random() - 0.5) * 18,
+                    vy: (Math.random() - 0.75) * 18,
+                    size: Math.random() * 9 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rot: Math.random() * 360,
+                    rotSpeed: (Math.random() - 0.5) * 12,
+                    life: 1
+                });
+            }
+
+            let frame = 0;
+            function step() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let anyAlive = false;
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.38;
+                    p.rot += p.rotSpeed;
+                    p.life -= 0.014;
+                    if (p.life > 0) {
+                        anyAlive = true;
+                        ctx.save();
+                        ctx.translate(p.x, p.y);
+                        ctx.rotate((p.rot * Math.PI) / 180);
+                        ctx.fillStyle = p.color;
+                        ctx.globalAlpha = Math.max(0, p.life);
+                        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+                        ctx.restore();
+                    }
+                });
+                if (anyAlive && frame < 130) {
+                    frame++;
+                    requestAnimationFrame(step);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    canvas.style.display = 'none';
+                }
+            }
+            step();
+        }
+
+        // === Congrats Modal ===
+        function showCongratsModal(title, flag, points) {
+            const modal = document.getElementById('congratsModal');
+            if (!modal) return;
+            document.getElementById('modalSub').textContent = `Awesome! You solved: "${title}"`;
+            document.getElementById('modalFlagCode').textContent = flag;
+            document.getElementById('modalPoints').textContent = `+${points}`;
+            document.getElementById('modalTotalScore').textContent = totalScore;
+            document.getElementById('modalSolvedRatio').textContent = `${getSolvedCount()}/24`;
+            const copyBtn = document.getElementById('btnCopyModal');
+            if (copyBtn) copyBtn.textContent = '📋 Copy Flag';
+            modal.classList.add('active');
+        }
+
+        function closeCongratsModal() {
+            const modal = document.getElementById('congratsModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function copyModalFlag() {
+            const flag = document.getElementById('modalFlagCode').textContent;
+            navigator.clipboard.writeText(flag).then(() => {
+                const btn = document.getElementById('btnCopyModal');
+                if (btn) btn.textContent = '✅ Copied!';
+            }).catch(() => {});
+        }
+
+        // === Challenge Rendering with Answer Space & Hint-Triggered Options ===
+        const OPTION_LETTERS = ['A', 'B', 'C', 'D'];
+
+        function buildChallengeHTML(id) {
+            const ch = CHALLENGES[id];
+            if (!ch) return '';
+
+            const ans = userAnswers[id];
+            const hasAnswered = ans !== undefined;
+            const isCorrect = hasAnswered && ans.isCorrect;
+            const isWrong = hasAnswered && !ans.isCorrect;
+            const isUnlocked = unlockedHints[id] || hasAnswered;
+
+            let itemClass = 'challenge-item';
+            if (isCorrect) itemClass += ' solved';
+            if (isWrong) itemClass += ' answered-wrong';
+
+            const diffClass = ch.diff === 'Medium' ? 'diff-medium' : 'diff-easy';
+
+            // Options HTML
+            let optionsHTML = '<div class="options-grid">';
+            ch.options.forEach((optText, idx) => {
+                const letter = OPTION_LETTERS[idx];
+                let btnClass = 'opt-btn';
+                let disabledAttr = hasAnswered ? 'disabled' : '';
+
+                if (hasAnswered) {
+                    if (ans.chosen === idx) {
+                        btnClass += isCorrect ? ' correct' : ' wrong';
+                    } else if (idx === ch.correct && isWrong) {
+                        btnClass += ' reveal-correct';
+                    }
+                }
+
+                const clickHandler = hasAnswered ? '' : `onclick="selectOption('${id}', ${idx})"`;
+
+                optionsHTML += `
+                    <button type="button" class="${btnClass}" ${disabledAttr} ${clickHandler}>
+                        <span class="opt-letter">${letter}</span>
+                        <span class="opt-text">${optText}</span>
+                    </button>
+                `;
+            });
+            optionsHTML += '</div>';
+
+            // Revealed Answer Box (revealed once chosen!)
+            let revealBoxHTML = '';
+            if (hasAnswered) {
+                const correctLetter = OPTION_LETTERS[ch.correct];
+                const correctText = ch.options[ch.correct];
+
+                revealBoxHTML = `
+                    <div class="revealed-answer-box ${isCorrect ? 'correct' : 'wrong'}">
+                        <div class="ra-header">
+                            <span class="ra-title">${isCorrect ? '✅ CORRECT! (+' + ch.points + ' PTS)' : '❌ LOCKED IN (INCORRECT)'}</span>
+                            <span class="ra-flag">🚩 ${ch.flag}</span>
+                        </div>
+                        <div><strong>Correct Answer:</strong> [${correctLetter}] ${correctText}</div>
+                        <div class="ra-exp">💡 <strong>Cybersecurity Takeaway:</strong> ${ch.explanation}</div>
+                    </div>
+                `;
+            }
+
+            // Hint Box & Options visibility
+            const hintBoxClass = isUnlocked ? 'task-hint-box open' : 'task-hint-box';
+            const hintBtnText = isUnlocked ? '💡 Hint & Options Revealed' : '💡 Need a Hint? (Reveal Options)';
+            const optionsClass = isUnlocked ? 'options-zone open' : 'options-zone';
+            const inputVal = (hasAnswered && ans.typedVal) ? ans.typedVal : '';
+
+            return `
+                <div class="${itemClass}" id="item-${id}">
+                    <div class="challenge-header">
+                        <h4 class="challenge-title">${ch.title}</h4>
+                        <div class="challenge-meta">
+                            <span class="diff-badge ${diffClass}">${ch.diff}</span>
+                            <span class="challenge-pts">${ch.points} PTS</span>
+                        </div>
+                    </div>
+                    <p class="challenge-desc">${ch.desc}</p>
+                    
+                    <!-- Space for Answer (Direct Submission) -->
+                    <div class="task-input-row" id="input-row-${id}">
+                        <input type="text" class="task-ans-input" id="ans-input-${id}" 
+                               placeholder="Type your answer or flag here..." 
+                               value="${inputVal}"
+                               ${hasAnswered ? 'disabled' : ''} 
+                               onkeydown="if(event.key==='Enter')submitTypedAnswer('${id}')">
+                        <button type="button" class="task-submit-btn" id="btn-sub-${id}" 
+                                onclick="submitTypedAnswer('${id}')" 
+                                ${hasAnswered ? 'disabled' : ''}>
+                            Submit Answer
+                        </button>
+                    </div>
+                    <div class="task-feedback" id="task-fb-${id}"></div>
+
+                    <!-- Hint Button (Reveals Hint AND Options if not known) -->
+                    <div class="task-hint-wrap">
+                        <button type="button" class="hint-toggle-btn" id="hint-btn-${id}" onclick="unlockHintAndOptions('${id}')">
+                            ${hintBtnText}
+                        </button>
+                        <div class="${hintBoxClass}" id="hint-${id}">
+                            💡 <strong>Cybersecurity Hint:</strong> ${ch.hint}
+                        </div>
+                    </div>
+
+                    <!-- MCQ Options (Revealed after clicking hint) -->
+                    <div class="${optionsClass}" id="opts-${id}">
+                        <div class="options-heading">
+                            🎯 OR CHOOSE AN OPTION BELOW (LOCKED ON CLICK):
+                        </div>
+                        ${optionsHTML}
+                    </div>
+
+                    <!-- Revealed Answer (Locks after choice or correct answer) -->
+                    <div id="reveal-${id}">
+                        ${revealBoxHTML}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderChallenges() {
+            for (let c = 1; c <= 6; c++) {
+                const container = document.getElementById(`cat-inner-${c}`);
+                if (!container) continue;
+
+                const catChallengeIds = Object.keys(CHALLENGES).filter(k => CHALLENGES[k].cat === c);
+                container.innerHTML = catChallengeIds.map(id => buildChallengeHTML(id)).join('');
+            }
+            updateScoreboard();
+        }
+
+        function renderSingleChallenge(id) {
+            const existing = document.getElementById(`item-${id}`);
+            if (!existing) return;
+            existing.outerHTML = buildChallengeHTML(id);
+        }
+
+        // Submitting directly typed answer
+        function submitTypedAnswer(id) {
+            if (userAnswers[id] !== undefined) return;
+
+            const input = document.getElementById(`ans-input-${id}`);
+            const fb = document.getElementById(`task-fb-${id}`);
+            const val = (input ? input.value : '').trim();
+            const clean = val.toLowerCase();
+
+            if (!clean) {
+                if (fb) {
+                    fb.className = 'task-feedback error';
+                    fb.textContent = '⚠️ Please enter an answer or click "Need a Hint?" below!';
+                }
+                if (input) { input.classList.add('shake'); setTimeout(() => input.classList.remove('shake'), 400); }
+                return;
+            }
+
+            const ch = CHALLENGES[id];
+            if (!ch) return;
+
+            // Check if correct against answers array, flag, or correct option text
+            const correctOptText = ch.options[ch.correct].toLowerCase();
+            const isCorrect = (ch.answers && ch.answers.some(a => a.toLowerCase() === clean)) ||
+                              clean === ch.flag.toLowerCase() ||
+                              clean === correctOptText;
+
+            if (isCorrect) {
+                // Correct typed answer!
+                userAnswers[id] = { chosen: ch.correct, isCorrect: true, typedVal: val };
+                totalScore += ch.points;
+                unlockedHints[id] = true;
+                saveProgress();
+
+                renderSingleChallenge(id);
+                updateScoreboard();
+
+                const el = document.getElementById(`item-${id}`);
+                if (el) {
+                    const cat = el.closest('.cat-challenges');
+                    if (cat) cat.style.maxHeight = (cat.scrollHeight + 200) + 'px';
+                }
+
+                playVictorySound();
+                launchConfetti();
+                showCongratsModal(ch.title, ch.flag, ch.points);
+            } else {
+                // Incorrect typed answer
+                if (input) { input.classList.add('shake'); setTimeout(() => input.classList.remove('shake'), 400); }
+                if (fb) {
+                    fb.className = 'task-feedback error';
+                    fb.textContent = '❌ Incorrect answer! Don\'t know? Hit "Need a Hint? (Reveal Options)" below!';
+                }
+            }
+        }
+
+        // Unlocking hint and options
+        function unlockHintAndOptions(id) {
+            unlockedHints[id] = true;
+            localStorage.setItem('da_unlocked_hints', JSON.stringify(unlockedHints));
+
+            const box = document.getElementById(`hint-${id}`);
+            const opts = document.getElementById(`opts-${id}`);
+            const btn = document.getElementById(`hint-btn-${id}`);
+
+            if (box) box.classList.add('open');
+            if (opts) {
+                opts.classList.add('open');
+                opts.style.animation = 'fadeIn 0.35s ease';
+            }
+            if (btn) btn.textContent = '💡 Hint & Options Revealed';
+
+            // Adjust category accordion height so options fit smoothly without clipping
+            const item = document.getElementById(`item-${id}`);
+            if (item) {
+                const catChallenges = item.closest('.cat-challenges');
+                if (catChallenges) {
+                    catChallenges.style.maxHeight = (catChallenges.scrollHeight + 220) + 'px';
+                }
+            }
+        }
+
+        // Choosing an option (cannot be changed once chosen)
+        function selectOption(id, chosenIndex) {
+            if (userAnswers[id] !== undefined) return;
+
+            const ch = CHALLENGES[id];
+            if (!ch) return;
+
+            const isCorrect = (chosenIndex === ch.correct);
+            userAnswers[id] = { chosen: chosenIndex, isCorrect: isCorrect, typedVal: ch.options[chosenIndex] };
+
+            if (isCorrect) {
+                totalScore += ch.points;
+            }
+            unlockedHints[id] = true;
+            saveProgress();
+
+            // Re-render this challenge immediately with locked state
+            renderSingleChallenge(id);
+            updateScoreboard();
+
+            // Adjust category accordion height
+            const el = document.getElementById(`item-${id}`);
+            if (el) {
+                const catChallenges = el.closest('.cat-challenges');
+                if (catChallenges) {
+                    catChallenges.style.maxHeight = (catChallenges.scrollHeight + 220) + 'px';
+                }
+            }
+
+            if (isCorrect) {
+                playVictorySound();
+                launchConfetti();
+                showCongratsModal(ch.title, ch.flag, ch.points);
+            }
+        }
+
+        // === Bonus Flag Claim Handler ===
+        function submitBonusFlag() {
+            const input = document.getElementById('bonusFlagInput');
+            const fb = document.getElementById('bonusFeedback');
+            const clean = (input ? input.value : '').trim().toLowerCase();
+
+            if (!clean) {
+                if (fb) { fb.className = 'ans-feedback error'; fb.textContent = 'Please enter a DECODE{...} flag!'; }
+                if (input) { input.classList.add('shake'); setTimeout(() => input.classList.remove('shake'), 400); }
+                return;
+            }
+
+            const bonus = BONUS_FLAGS[clean];
+
+            // Or check if it matches ANY challenge flag
+            let matchingChallenge = null;
+            let matchingId = null;
+            for (const key in CHALLENGES) {
+                if (CHALLENGES[key].flag.toLowerCase() === clean) {
+                    matchingChallenge = CHALLENGES[key];
+                    matchingId = key;
+                    break;
+                }
+            }
+
+            if (bonus) {
+                if (redeemedBonus.includes(clean)) {
+                    if (fb) { fb.className = 'ans-feedback error'; fb.textContent = 'You already claimed this secret flag! ⭐'; }
+                    return;
+                }
+                redeemedBonus.push(clean);
+                totalScore += bonus.points;
+                saveProgress();
+                updateScoreboard();
+                if (input) input.value = '';
+                if (fb) { fb.className = 'ans-feedback success'; fb.textContent = `🎉 Awesome! +${bonus.points} Bonus Points!`; }
+                playVictorySound();
+                launchConfetti();
+                showCongratsModal(bonus.label, bonus.flag, bonus.points);
+            } else if (matchingChallenge) {
+                if (userAnswers[matchingId] && userAnswers[matchingId].isCorrect) {
+                    if (fb) { fb.className = 'ans-feedback success'; fb.textContent = 'Flag verified! Already claimed! ✅'; }
+                } else {
+                    // Mark as correctly solved
+                    selectOption(matchingId, matchingChallenge.correct);
+                    if (input) input.value = '';
+                    if (fb) { fb.className = 'ans-feedback success'; fb.textContent = `🎉 Flag verified! +${matchingChallenge.points} PTS!`; }
+                }
+            } else {
+                if (input) { input.classList.add('shake'); setTimeout(() => input.classList.remove('shake'), 400); }
+                if (fb) {
+                    fb.className = 'ans-feedback error';
+                    fb.textContent = '❌ Unrecognized flag format. Inspect DevTools, source code & console!';
+                    setTimeout(() => { if (fb) fb.textContent = ''; }, 3500);
+                }
+            }
+        }
+
+        // Initialize challenges and scoreboard on load
+        renderChallenges();
+
+        // === Scorecard & Program Database System (Unencrypted Storage with Image) ===
+        let currentScorecardMode = localStorage.getItem('da_scorecard_mode') || 'solo';
+
+        // Default seed records for the program database
+        const DEFAULT_PROGRAM_DB = [
+            {
+                id: "REC-2026-9041",
+                mode: "team",
+                name: "Binary Brawlers",
+                college: "Anna University, CEG",
+                members: ["Karthik R (Lead)", "Manoj K", "Priya S"],
+                score: 1100,
+                solved: "22/24",
+                tier: "🔥 THREAT HUNTER",
+                encryption: "NONE (Unencrypted Raw Storage)",
+                timestamp: "2026-09-10 11:20",
+                stored_image_format: "none (seeded)",
+                stored_image_data: ""
+            },
+            {
+                id: "REC-2026-8712",
+                mode: "solo",
+                name: "Aakash V",
+                college: "PSG College of Technology",
+                members: ["Aakash V"],
+                score: 950,
+                solved: "19/24",
+                tier: "🔥 THREAT HUNTER",
+                encryption: "NONE (Unencrypted Raw Storage)",
+                timestamp: "2026-09-10 11:45",
+                stored_image_format: "none (seeded)",
+                stored_image_data: ""
+            },
+            {
+                id: "REC-2026-0001",
+                mode: "team",
+                name: "ROOT_ADMINISTRATOR",
+                college: "Symposium Technical Board",
+                members: ["Admin_Lead", "Security_Officer", "DBA_Root"],
+                score: 1800,
+                solved: "24/24",
+                tier: "🏆 ELITE CYBER SPECIALIST",
+                encryption: "NONE (Unencrypted Raw Storage)",
+                timestamp: "2026-09-10 09:00",
+                secret_flag: "DECODE{plaintext_database_storage_is_vulnerable}",
+                stored_image_format: "none (seeded)",
+                stored_image_data: ""
+            }
+        ];
+
+        function getProgramDatabase() {
+            try {
+                const stored = localStorage.getItem('da_program_database');
+                if (!stored) {
+                    localStorage.setItem('da_program_database', JSON.stringify(DEFAULT_PROGRAM_DB));
+                    return DEFAULT_PROGRAM_DB;
+                }
+                return JSON.parse(stored);
+            } catch(e) {
+                return DEFAULT_PROGRAM_DB;
+            }
+        }
+
+        // Expose to window for console inspection (Symposium CTF discovery)
+        window.getProgramDatabase = getProgramDatabase;
+        window.exportProgramDatabase = exportProgramDatabaseJSON;
+        console.log("%c📦 Program Database initialized! Records are stored unencrypted in program memory.", "color: #39ff14; font-size: 13px; font-weight: bold;");
+        console.log("%c💡 Type getProgramDatabase() in this console to inspect all stored unencrypted records and images!", "color: #00f0ff; font-size: 11px;");
+
+        function setScorecardMode(mode) {
+            currentScorecardMode = mode;
+            localStorage.setItem('da_scorecard_mode', mode);
+
+            const tabSolo = document.getElementById('tabSolo');
+            const tabTeam = document.getElementById('tabTeam');
+            const soloFields = document.getElementById('soloFields');
+            const teamFields = document.getElementById('teamFields');
+            const sheetTitle = document.querySelector('.sheet-title');
+
+            if (mode === 'team') {
+                if (tabSolo) tabSolo.classList.remove('active');
+                if (tabTeam) tabTeam.classList.add('active');
+                if (soloFields) soloFields.style.display = 'none';
+                if (teamFields) teamFields.style.display = 'grid';
+                if (sheetTitle) sheetTitle.textContent = 'OFFICIAL TEAM SCORE SHEET';
+            } else {
+                if (tabTeam) tabTeam.classList.remove('active');
+                if (tabSolo) tabSolo.classList.add('active');
+                if (teamFields) teamFields.style.display = 'none';
+                if (soloFields) soloFields.style.display = 'grid';
+                if (sheetTitle) sheetTitle.textContent = 'OFFICIAL PARTICIPANT SCORE SHEET';
+            }
+        }
+
+        function getSecurityTier(pts) {
+            if (pts >= 1200) return { title: "🏆 ELITE CYBER SPECIALIST", color: "#39ff14" };
+            if (pts >= 800)  return { title: "🔥 THREAT HUNTER", color: "#00f0ff" };
+            if (pts >= 450)  return { title: "🛡️ SECURITY DEFENDER", color: "#f0ff00" };
+            if (pts >= 150)  return { title: "⚡ CODE BREAKER", color: "#ff6a00" };
+            return { title: "🔰 CYBER SCOUT", color: "#00f0ff" };
+        }
+
+        function saveParticipantInfo() {
+            // Solo
+            const name = document.getElementById('sheetParticipantName') ? document.getElementById('sheetParticipantName').value : '';
+            const college = document.getElementById('sheetCollegeName') ? document.getElementById('sheetCollegeName').value : '';
+            localStorage.setItem('da_user_name', name);
+            localStorage.setItem('da_college_name', college);
+
+            // Team
+            const teamName = document.getElementById('sheetTeamName') ? document.getElementById('sheetTeamName').value : '';
+            const teamCollege = document.getElementById('sheetTeamCollege') ? document.getElementById('sheetTeamCollege').value : '';
+            const m1 = document.getElementById('sheetMember1') ? document.getElementById('sheetMember1').value : '';
+            const m2 = document.getElementById('sheetMember2') ? document.getElementById('sheetMember2').value : '';
+            const m3 = document.getElementById('sheetMember3') ? document.getElementById('sheetMember3').value : '';
+            localStorage.setItem('da_team_name', teamName);
+            localStorage.setItem('da_team_college', teamCollege);
+            localStorage.setItem('da_team_member1', m1);
+            localStorage.setItem('da_team_member2', m2);
+            localStorage.setItem('da_team_member3', m3);
+        }
+
+        function openScorecard() {
+            const modal = document.getElementById('scorecardModal');
+            if (!modal) return;
+
+            // Load saved solo values
+            const savedName = localStorage.getItem('da_user_name') || '';
+            const savedCollege = localStorage.getItem('da_college_name') || '';
+            if (document.getElementById('sheetParticipantName')) document.getElementById('sheetParticipantName').value = savedName;
+            if (document.getElementById('sheetCollegeName')) document.getElementById('sheetCollegeName').value = savedCollege;
+
+            // Load saved team values
+            const savedTeam = localStorage.getItem('da_team_name') || '';
+            const savedTeamCollege = localStorage.getItem('da_team_college') || savedCollege || '';
+            const savedM1 = localStorage.getItem('da_team_member1') || '';
+            const savedM2 = localStorage.getItem('da_team_member2') || '';
+            const savedM3 = localStorage.getItem('da_team_member3') || '';
+            if (document.getElementById('sheetTeamName')) document.getElementById('sheetTeamName').value = savedTeam;
+            if (document.getElementById('sheetTeamCollege')) document.getElementById('sheetTeamCollege').value = savedTeamCollege;
+            if (document.getElementById('sheetMember1')) document.getElementById('sheetMember1').value = savedM1;
+            if (document.getElementById('sheetMember2')) document.getElementById('sheetMember2').value = savedM2;
+            if (document.getElementById('sheetMember3')) document.getElementById('sheetMember3').value = savedM3;
+
+            // Clear previous feedback
+            const fb = document.getElementById('submitDbFeedback');
+            if (fb) fb.textContent = '';
+
+            // Restore mode & update
+            setScorecardMode(currentScorecardMode);
+            updateScorecardDisplay();
+            modal.classList.add('active');
+
+            // When user opens Share Score, automatically store the current score in database.json
+            if (totalScore > 0) {
+                storeSubmissionToDatabase({
+                    action: 'Score Shared (Opened Score Sheet)',
+                    requireFields: false,
+                    resetAfter: false,
+                    feedbackTarget: 'none'
+                });
+            }
+        }
+
+        function closeScorecard() {
+            const modal = document.getElementById('scorecardModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function openScorecardFromCongrats() {
+            closeCongratsModal();
+            setTimeout(openScorecard, 200);
+        }
+
+        function updateScorecardDisplay() {
+            const tier = getSecurityTier(totalScore);
+            const tierBadge = document.getElementById('sheetTierBadge');
+            if (tierBadge) {
+                tierBadge.textContent = tier.title;
+                tierBadge.style.color = tier.color;
+                tierBadge.style.borderColor = tier.color;
+            }
+
+            const totalScoreEl = document.getElementById('sheetTotalScore');
+            if (totalScoreEl) totalScoreEl.innerHTML = `${totalScore} <small>PTS</small>`;
+
+            const solvedCount = getSolvedCount();
+            const solvedEl = document.getElementById('sheetSolvedCount');
+            if (solvedEl) solvedEl.textContent = `${solvedCount} / 24`;
+
+            const statusEl = document.getElementById('sheetStatusText');
+            if (statusEl) {
+                if (solvedCount === 24) statusEl.textContent = '100% Completed 🏆';
+                else if (solvedCount > 0) statusEl.textContent = `${Math.round((solvedCount/24)*100)}% Completed`;
+                else statusEl.textContent = 'In Progress';
+            }
+
+            // Timestamp
+            const timeEl = document.getElementById('sheetTimestamp');
+            if (timeEl) {
+                const now = new Date();
+                timeEl.textContent = now.toISOString().split('T')[0] + ' ' + now.toTimeString().split(' ')[0].substring(0,5);
+            }
+
+            // Verification ID
+            const verifyEl = document.getElementById('sheetVerifyHash');
+            if (verifyEl) {
+                const hashSeed = (totalScore * 7919 + solvedCount * 313).toString(16).toUpperCase().padStart(4, '0');
+                verifyEl.textContent = `VERIFIED ID: DA-2026-${hashSeed}`;
+            }
+
+            // Category breakdown cards
+            const catsGrid = document.getElementById('sheetCatsGrid');
+            if (catsGrid) {
+                const catNames = [
+                    { id: 1, name: "Network & Ports", icon: "🌐" },
+                    { id: 2, name: "Protocols & Encryption", icon: "🔒" },
+                    { id: 3, name: "Threats & Attacks", icon: "⚠️" },
+                    { id: 4, name: "Password Security", icon: "🔑" },
+                    { id: 5, name: "Web Security Basics", icon: "🕸️" },
+                    { id: 6, name: "Security Awareness", icon: "🛡️" }
+                ];
+
+                catsGrid.innerHTML = catNames.map(c => {
+                    const catTotal = Object.keys(CHALLENGES).filter(k => CHALLENGES[k].cat === c.id).length;
+                    const catSolved = Object.keys(CHALLENGES).filter(k => CHALLENGES[k].cat === c.id && userAnswers[k] && userAnswers[k].isCorrect).length;
+                    const catPts = Object.keys(CHALLENGES).filter(k => CHALLENGES[k].cat === c.id && userAnswers[k] && userAnswers[k].isCorrect)
+                                          .reduce((acc, k) => acc + CHALLENGES[k].points, 0);
+                    return `
+                        <div class="sheet-cat-card">
+                            <span class="scc-name">${c.icon} ${c.name}</span>
+                            <div class="scc-stats">
+                                <span class="scc-solved">${catSolved}/${catTotal}</span>
+                                <span class="scc-pts">+${catPts} PTS</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function showShareFeedback(msg) {
+            const fb = document.getElementById('shareFeedback');
+            if (!fb) return;
+            fb.textContent = msg;
+            setTimeout(() => { if (fb.textContent === msg) fb.textContent = ''; }, 3500);
+        }
+
+        function copyScoreSummary() {
+            saveParticipantInfo();
+            const solved = getSolvedCount();
+            const tier = getSecurityTier(totalScore).title;
+
+            let text = '';
+            if (currentScorecardMode === 'team') {
+                const team = document.getElementById('sheetTeamName').value.trim() || 'Cyber Team';
+                const college = document.getElementById('sheetTeamCollege').value.trim() || 'College Symposium';
+                const m1 = document.getElementById('sheetMember1').value.trim() || 'Lead';
+                const m2 = document.getElementById('sheetMember2').value.trim() || 'Member 2';
+                const m3 = document.getElementById('sheetMember3').value.trim() || 'Member 3';
+
+                text = [
+                    '🏆 DECODE ARENA 2026 — Official Team Score Sheet',
+                    '==================================================',
+                    `👥 Team Name: ${team}`,
+                    `🏫 College:   ${college}`,
+                    '👤 Members (3):',
+                    `   1. ${m1} (Lead)`,
+                    `   2. ${m2}`,
+                    `   3. ${m3}`,
+                    `🎯 Total Score: ${totalScore} PTS`,
+                    `🚩 Solved:      ${solved}/24 Challenges`,
+                    `🛡️ Rank Tier:   ${tier}`,
+                    `📅 Event:       Cybersecurity Symposium 2026`,
+                    '==================================================',
+                    'Crack vulnerabilities & hack the code at Decode Arena!'
+                ].join('\n');
+            } else {
+                const name = document.getElementById('sheetParticipantName').value.trim() || 'Hacker';
+                const college = document.getElementById('sheetCollegeName').value.trim() || 'Symposium Participant';
+
+                text = [
+                    '🏆 DECODE ARENA 2026 — Official Participant Score Sheet',
+                    '==================================================',
+                    `👤 Participant: ${name}`,
+                    `🏫 College:     ${college}`,
+                    `🎯 Total Score: ${totalScore} PTS`,
+                    `🚩 Solved:      ${solved}/24 Challenges`,
+                    `🛡️ Rank Tier:   ${tier}`,
+                    `📅 Event:       Cybersecurity Symposium 2026`,
+                    '==================================================',
+                    'Crack vulnerabilities & hack the code at Decode Arena!'
+                ].join('\n');
+            }
+
+            navigator.clipboard.writeText(text).then(() => {
+                showShareFeedback('✅ Formatted score summary copied to clipboard!');
+            }).catch(() => {
+                showShareFeedback('📋 Copied to clipboard!');
+            });
+
+            // Automatically store shared summary data in database/arena_database.json!
+            storeSubmissionToDatabase({
+                action: 'Copied Text Summary',
+                requireFields: false,
+                resetAfter: false,
+                feedbackTarget: 'share',
+                callerMessage: 'Summary copied'
+            });
+        }
+
+        function shareToWhatsApp() {
+            saveParticipantInfo();
+            const solved = getSolvedCount();
+            const tier = getSecurityTier(totalScore).title;
+
+            let text = '';
+            if (currentScorecardMode === 'team') {
+                const team = document.getElementById('sheetTeamName').value.trim() || 'Cyber Team';
+                const college = document.getElementById('sheetTeamCollege').value.trim() || 'College Symposium';
+                const m1 = document.getElementById('sheetMember1').value.trim() || 'Lead';
+                const m2 = document.getElementById('sheetMember2').value.trim() || 'Member 2';
+                const m3 = document.getElementById('sheetMember3').value.trim() || 'Member 3';
+
+                text = `🏆 *DECODE ARENA 2026 — Official Team Score Sheet* 🏆\n\n👥 *Team:* ${team}\n🏫 *College:* ${college}\n👤 *Members:* 1. ${m1} (Lead), 2. ${m2}, 3. ${m3}\n🎯 *Total Score:* ${totalScore} PTS\n🚩 *Solved:* ${solved}/24\n🛡️ *Security Tier:* ${tier}\n📅 *Event:* Cybersecurity Symposium 2026\n\nCan your team beat our score? Decode Arena Hack The Code!`;
+            } else {
+                const name = document.getElementById('sheetParticipantName').value.trim() || 'Hacker';
+                const college = document.getElementById('sheetCollegeName').value.trim() || 'Symposium Participant';
+
+                text = `🏆 *DECODE ARENA 2026 — Cybersecurity Score Sheet* 🏆\n\n👤 *Participant:* ${name}\n🏫 *College:* ${college}\n🎯 *Total Score:* ${totalScore} PTS\n🚩 *Solved Challenges:* ${solved}/24\n🛡️ *Security Tier:* ${tier}\n📅 *Event:* Cybersecurity Symposium 2026\n\nCan you beat my score? Test your hacking skills at Decode Arena!`;
+            }
+
+            const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+
+            // Automatically store WhatsApp shared data in database/arena_database.json!
+            storeSubmissionToDatabase({
+                action: 'Shared to WhatsApp',
+                requireFields: false,
+                resetAfter: false,
+                feedbackTarget: 'share',
+                callerMessage: 'Shared to WhatsApp'
+            });
+        }
+
+        function printScoreSheet() {
+            saveParticipantInfo();
+            window.print();
+        }
+
+        // === High-Res Canvas Generator for PNG & JPG Downloads + DB Image Storage ===
+        function generateScoreSheetCanvas() {
+            saveParticipantInfo();
+            const solved = getSolvedCount();
+            const tier = getSecurityTier(totalScore).title;
+            const isTeam = (currentScorecardMode === 'team');
+
+            const canvas = document.createElement('canvas');
+            canvas.width = 1200;
+            canvas.height = isTeam ? 820 : 760;
+            const ctx = canvas.getContext('2d');
+
+            // 1. Dark Cyber Background
+            const bgGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            bgGrad.addColorStop(0, '#090b14');
+            bgGrad.addColorStop(0.5, '#0f1426');
+            bgGrad.addColorStop(1, '#080a12');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 2. Subtle Matrix Grid lines
+            ctx.strokeStyle = 'rgba(0, 240, 255, 0.04)';
+            ctx.lineWidth = 1;
+            for (let x = 30; x < canvas.width; x += 40) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+            }
+            for (let y = 30; y < canvas.height; y += 40) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+            }
+
+            // 3. Cyber Glowing Border
+            const borderGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            borderGrad.addColorStop(0, '#00f0ff');
+            borderGrad.addColorStop(0.5, '#ff00e5');
+            borderGrad.addColorStop(1, '#39ff14');
+            ctx.strokeStyle = borderGrad;
+            ctx.lineWidth = 4;
+            ctx.strokeRect(25, 25, canvas.width - 50, canvas.height - 50);
+
+            // Inner border accent
+            ctx.strokeStyle = 'rgba(0, 240, 255, 0.2)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(35, 35, canvas.width - 70, canvas.height - 70);
+
+            // Corner decorative squares
+            ctx.fillStyle = '#00f0ff';
+            ctx.fillRect(20, 20, 10, 10);
+            ctx.fillRect(canvas.width - 30, 20, 10, 10);
+            ctx.fillRect(20, canvas.height - 30, 10, 10);
+            ctx.fillRect(canvas.width - 30, canvas.height - 30, 10, 10);
+
+            // 4. Header Bar
+            ctx.fillStyle = '#00f0ff';
+            ctx.font = 'bold 22px Courier New, monospace';
+            ctx.fillText('// DECODE ARENA 2026', 60, 75);
+
+            ctx.fillStyle = '#ff00e5';
+            ctx.font = 'bold 16px Courier New, monospace';
+            ctx.fillText('CYBERSECURITY SYMPOSIUM', 60, 100);
+
+            // Tier Badge on Right
+            ctx.fillStyle = 'rgba(0, 240, 255, 0.15)';
+            ctx.strokeStyle = '#00f0ff';
+            ctx.lineWidth = 1.5;
+            ctx.fillRect(canvas.width - 370, 60, 310, 42);
+            ctx.strokeRect(canvas.width - 370, 60, 310, 42);
+            ctx.fillStyle = '#39ff14';
+            ctx.font = 'bold 16px Courier New, monospace';
+            ctx.fillText(tier, canvas.width - 355, 87);
+
+            // Divider Line
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(60, 120); ctx.lineTo(canvas.width - 60, 120); ctx.stroke();
+
+            // 5. Title Zone
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 30px Arial, sans-serif';
+            ctx.textAlign = 'center';
+            const sheetTitleText = isTeam ? 'OFFICIAL TEAM SCORE SHEET' : 'OFFICIAL PARTICIPANT SCORE SHEET';
+            ctx.fillText(sheetTitleText, canvas.width / 2, 160);
+            ctx.fillStyle = '#a0a5c0';
+            ctx.font = '14px Courier New, monospace';
+            ctx.fillText('Verified Assessment & Cybersecurity Challenge Completion Record', canvas.width / 2, 186);
+            ctx.textAlign = 'left';
+
+            // 6. Credentials Panel (Solo or Team)
+            let panelY = 210;
+            let panelH = isTeam ? 140 : 95;
+
+            ctx.fillStyle = 'rgba(5, 7, 18, 0.85)';
+            ctx.strokeStyle = 'rgba(0, 240, 255, 0.35)';
+            ctx.lineWidth = 1.5;
+            ctx.fillRect(60, panelY, canvas.width - 120, panelH);
+            ctx.strokeRect(60, panelY, canvas.width - 120, panelH);
+
+            if (isTeam) {
+                const teamName = document.getElementById('sheetTeamName').value.trim() || 'Cyber Phantoms';
+                const teamCollege = document.getElementById('sheetTeamCollege').value.trim() || 'Engineering College';
+                const m1 = document.getElementById('sheetMember1').value.trim() || 'Hacker 1';
+                const m2 = document.getElementById('sheetMember2').value.trim() || 'Hacker 2';
+                const m3 = document.getElementById('sheetMember3').value.trim() || 'Hacker 3';
+
+                // Team Name
+                ctx.fillStyle = '#00f0ff';
+                ctx.font = 'bold 12px Courier New, monospace';
+                ctx.fillText('TEAM NAME:', 85, panelY + 28);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 22px Arial, sans-serif';
+                ctx.fillText(teamName, 85, panelY + 54);
+
+                // College
+                ctx.fillStyle = '#00f0ff';
+                ctx.font = 'bold 12px Courier New, monospace';
+                ctx.fillText('COLLEGE / INSTITUTION:', 620, panelY + 28);
+                ctx.fillStyle = '#f0ff00';
+                ctx.font = 'bold 20px Arial, sans-serif';
+                ctx.fillText(teamCollege, 620, panelY + 54);
+
+                // 3 Members Row
+                ctx.fillStyle = '#39ff14';
+                ctx.font = 'bold 12px Courier New, monospace';
+                ctx.fillText('TEAM MEMBERS (3):', 85, panelY + 88);
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 15px Arial, sans-serif';
+                ctx.fillText(`1. ${m1} (Lead)`, 85, panelY + 115);
+                ctx.fillText(`2. ${m2}`, 450, panelY + 115);
+                ctx.fillText(`3. ${m3}`, 800, panelY + 115);
+            } else {
+                const name = document.getElementById('sheetParticipantName').value.trim() || 'Participant';
+                const college = document.getElementById('sheetCollegeName').value.trim() || 'Cybersecurity Symposium';
+
+                ctx.fillStyle = '#00f0ff';
+                ctx.font = 'bold 12px Courier New, monospace';
+                ctx.fillText('PARTICIPANT NAME:', 85, panelY + 32);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 24px Arial, sans-serif';
+                ctx.fillText(name, 85, panelY + 66);
+
+                ctx.fillStyle = '#00f0ff';
+                ctx.font = 'bold 12px Courier New, monospace';
+                ctx.fillText('COLLEGE / INSTITUTION:', 620, panelY + 32);
+                ctx.fillStyle = '#f0ff00';
+                ctx.font = 'bold 22px Arial, sans-serif';
+                ctx.fillText(college, 620, panelY + 66);
+            }
+
+            // 7. Three Metrics Cards
+            const metricsY = panelY + panelH + 20;
+            const metricWidth = (canvas.width - 120 - 40) / 3;
+
+            // Metric 1: Total Score
+            ctx.fillStyle = 'rgba(57, 255, 20, 0.08)';
+            ctx.strokeStyle = 'rgba(57, 255, 20, 0.4)';
+            ctx.fillRect(60, metricsY, metricWidth, 85);
+            ctx.strokeRect(60, metricsY, metricWidth, 85);
+            ctx.fillStyle = '#a0a5c0';
+            ctx.font = 'bold 12px Courier New, monospace';
+            ctx.fillText('TOTAL SCORE EARNED', 80, metricsY + 28);
+            ctx.fillStyle = '#39ff14';
+            ctx.font = 'bold 32px Arial, sans-serif';
+            ctx.fillText(`${totalScore} PTS`, 80, metricsY + 65);
+
+            // Metric 2: Solved Ratio
+            ctx.fillStyle = 'rgba(0, 240, 255, 0.08)';
+            ctx.strokeStyle = 'rgba(0, 240, 255, 0.4)';
+            ctx.fillRect(60 + metricWidth + 20, metricsY, metricWidth, 85);
+            ctx.strokeRect(60 + metricWidth + 20, metricsY, metricWidth, 85);
+            ctx.fillStyle = '#a0a5c0';
+            ctx.font = 'bold 12px Courier New, monospace';
+            ctx.fillText('CHALLENGES SOLVED', 80 + metricWidth + 20, metricsY + 28);
+            ctx.fillStyle = '#00f0ff';
+            ctx.font = 'bold 32px Arial, sans-serif';
+            ctx.fillText(`${solved} / 24`, 80 + metricWidth + 20, metricsY + 65);
+
+            // Metric 3: Verification Status
+            ctx.fillStyle = 'rgba(255, 0, 229, 0.08)';
+            ctx.strokeStyle = 'rgba(255, 0, 229, 0.4)';
+            ctx.fillRect(60 + (metricWidth + 20) * 2, metricsY, metricWidth, 85);
+            ctx.strokeRect(60 + (metricWidth + 20) * 2, metricsY, metricWidth, 85);
+            ctx.fillStyle = '#a0a5c0';
+            ctx.font = 'bold 12px Courier New, monospace';
+            ctx.fillText('ASSESSMENT STATUS', 80 + (metricWidth + 20) * 2, metricsY + 28);
+            ctx.fillStyle = '#ff00e5';
+            ctx.font = 'bold 22px Arial, sans-serif';
+            ctx.fillText(isTeam ? 'VERIFIED TEAM' : 'VERIFIED PARTICIPANT', 80 + (metricWidth + 20) * 2, metricsY + 63);
+
+            // 8. Category Breakdown Table (2 rows x 3 columns)
+            const catGridY = metricsY + 110;
+            ctx.fillStyle = '#00f0ff';
+            ctx.font = 'bold 13px Courier New, monospace';
+            ctx.fillText('CATEGORY PERFORMANCE BREAKDOWN:', 60, catGridY);
+
+            const catList = [
+                { id: 1, name: "Network & Ports" },
+                { id: 2, name: "Protocols & Encryption" },
+                { id: 3, name: "Threats & Attacks" },
+                { id: 4, name: "Password Security" },
+                { id: 5, name: "Web Security Basics" },
+                { id: 6, name: "Security Awareness" }
+            ];
+
+            const cellW = (canvas.width - 120 - 30) / 3;
+            catList.forEach((c, i) => {
+                const col = i % 3;
+                const row = Math.floor(i / 3);
+                const cx = 60 + col * (cellW + 15);
+                const cy = catGridY + 15 + row * 58;
+
+                const catTotal = Object.keys(CHALLENGES).filter(k => CHALLENGES[k].cat === c.id).length;
+                const catSolved = Object.keys(CHALLENGES).filter(k => CHALLENGES[k].cat === c.id && userAnswers[k] && userAnswers[k].isCorrect).length;
+                const catPts = Object.keys(CHALLENGES).filter(k => CHALLENGES[k].cat === c.id && userAnswers[k] && userAnswers[k].isCorrect)
+                                      .reduce((acc, k) => acc + CHALLENGES[k].points, 0);
+
+                ctx.fillStyle = 'rgba(12, 16, 32, 0.8)';
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.fillRect(cx, cy, cellW, 48);
+                ctx.strokeRect(cx, cy, cellW, 48);
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 12px Arial, sans-serif';
+                ctx.fillText(c.name, cx + 10, cy + 20);
+
+                ctx.fillStyle = '#f0ff00';
+                ctx.font = '12px Courier New, monospace';
+                ctx.fillText(`${catSolved}/${catTotal} Solved`, cx + 10, cy + 38);
+
+                ctx.fillStyle = '#39ff14';
+                ctx.font = 'bold 12px Courier New, monospace';
+                ctx.fillText(`+${catPts} PTS`, cx + cellW - 80, cy + 38);
+            });
+
+            // 9. Footer Divider & Security Stamp
+            const footerY = catGridY + 150;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+            ctx.beginPath(); ctx.moveTo(60, footerY); ctx.lineTo(canvas.width - 60, footerY); ctx.stroke();
+
+            const dateStr = new Date().toISOString().split('T')[0];
+            const hashSeed = (totalScore * 7919 + solved * 313).toString(16).toUpperCase().padStart(4, '0');
+
+            ctx.fillStyle = '#a0a5c0';
+            ctx.font = '12px Courier New, monospace';
+            ctx.fillText(`DATE: ${dateStr}  |  RECORD ID: DA-2026-${hashSeed}  |  HACK THE CODE`, 60, footerY + 30);
+
+            ctx.fillStyle = '#39ff14';
+            ctx.font = 'bold 13px Courier New, monospace';
+            ctx.textAlign = 'right';
+            ctx.fillText('[ OFFICIAL SYMPOSIUM RECORD ]', canvas.width - 60, footerY + 30);
+            ctx.textAlign = 'left';
+
+            return canvas;
+        }
+
+        // Server URL resolver for any environment (file://, localhost:3000, live-server 5500, or deployed)
+        function getDatabaseSubmitUrl() {
+            if (window.location.protocol === 'file:' || !window.location.hostname || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                if (window.location.port === '3000') {
+                    return '/api/submit-score';
+                }
+                return 'http://localhost:3000/api/submit-score';
+            }
+            return (window.location.origin || '') + '/api/submit-score';
+        }
+
+        // Unified Score Record Persister: Stores directly to database/arena_database.json & schema.sql
+        function storeSubmissionToDatabase(options = {}) {
+            saveParticipantInfo();
+            const isTeam = (currentScorecardMode === 'team');
+            const actionType = options.action || 'Scorecard Shared';
+            const resetAfter = !!options.resetAfter;
+            const feedbackTarget = options.feedbackTarget || 'submit'; // 'submit', 'share', 'both'
+
+            let name = '';
+            let college = '';
+            let members = [];
+
+            if (isTeam) {
+                name = (document.getElementById('sheetTeamName')?.value || '').trim();
+                college = (document.getElementById('sheetTeamCollege')?.value || '').trim();
+                const m1 = (document.getElementById('sheetMember1')?.value || '').trim();
+                const m2 = (document.getElementById('sheetMember2')?.value || '').trim();
+                const m3 = (document.getElementById('sheetMember3')?.value || '').trim();
+
+                if (!name && !college && !m1) {
+                    if (options.requireFields) {
+                        const fb = document.getElementById('submitDbFeedback');
+                        if (fb) {
+                            fb.className = 'submit-db-feedback error';
+                            fb.textContent = '❌ Please enter Team Name, College, and Member 1 (Lead)!';
+                        }
+                        return Promise.reject(new Error('Missing required team fields'));
+                    }
+                }
+                name = name || 'Anonymous Team';
+                college = college || 'Symposium Participant';
+                members = [m1 ? (m1 + ' (Lead)') : 'Lead Hacker'];
+                if (m2) members.push(m2);
+                if (m3) members.push(m3);
+            } else {
+                name = (document.getElementById('sheetParticipantName')?.value || '').trim();
+                college = (document.getElementById('sheetCollegeName')?.value || '').trim();
+
+                if (!name && !college) {
+                    if (options.requireFields) {
+                        const fb = document.getElementById('submitDbFeedback');
+                        if (fb) {
+                            fb.className = 'submit-db-feedback error';
+                            fb.textContent = '❌ Please enter Participant Name & College!';
+                        }
+                        return Promise.reject(new Error('Missing required solo fields'));
+                    }
+                }
+                name = name || 'Anonymous Hacker';
+                college = college || 'Symposium Participant';
+                members = [name];
+            }
+
+            // Generate scorecard image as Base64 JPEG to store directly in the database
+            const canvas = generateScoreSheetCanvas();
+            const imageBase64 = canvas.toDataURL('image/jpeg', 0.85);
+
+            const now = new Date();
+            const timeStr = now.toISOString().split('T')[0] + ' ' + now.toTimeString().split(' ')[0].substring(0, 5);
+
+            // Construct new unencrypted database record
+            const newRecord = {
+                id: 'REC-2026-' + Math.floor(1000 + Math.random() * 9000),
+                mode: currentScorecardMode,
+                name: name,
+                college: college,
+                members: members,
+                score: totalScore,
+                solved: `${getSolvedCount()}/24`,
+                tier: getSecurityTier(totalScore).title,
+                action: actionType,
+                encryption: "NONE (Unencrypted Raw Storage)",
+                timestamp: timeStr,
+                stored_image_format: "image/jpeg;base64",
+                stored_image_data: imageBase64
+            };
+
+            // Save in localStorage program database cache
+            const db = getProgramDatabase();
+            db.unshift(newRecord);
+            localStorage.setItem('da_program_database', JSON.stringify(db));
+            console.log(`%c[PROGRAM DB] Storing ${actionType} record for ${name} (${totalScore} PTS):`, "color: #00f0ff; font-weight: bold;", newRecord);
+
+            const submitFb = document.getElementById('submitDbFeedback');
+            if (feedbackTarget === 'submit' || feedbackTarget === 'both') {
+                if (submitFb) {
+                    submitFb.className = 'submit-db-feedback';
+                    submitFb.innerHTML = '⏳ Storing in Project Database (database/arena_database.json)...';
+                }
+            }
+
+            const primaryUrl = getDatabaseSubmitUrl();
+            const fallbackUrl = 'http://localhost:3000/api/submit-score';
+
+            function sendPayload(url) {
+                return fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newRecord)
+                }).then(r => {
+                    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                    return r.json();
+                });
+            }
+
+            return sendPayload(primaryUrl)
+                .catch(err => {
+                    if (primaryUrl !== fallbackUrl) {
+                        return sendPayload(fallbackUrl);
+                    }
+                    throw err;
+                })
+                .then(data => {
+                    if (data && data.success) {
+                        if (feedbackTarget === 'submit' || feedbackTarget === 'both') {
+                            if (submitFb) {
+                                submitFb.className = 'submit-db-feedback success';
+                                submitFb.innerHTML = `✅ <strong>Stored in Project Database!</strong><br>Saved to <code>database/arena_database.json</code> &amp; <code>schema.sql</code>.<br>Certificate saved to <code>${data.image_file || 'database/certificates/'}</code>` +
+                                    (resetAfter ? `<br><span class="db-reset-notice">🔄 Score and challenges have been reset to 0 for the next attempt!</span>` : '');
+                            }
+                        }
+                        if (feedbackTarget === 'share' || feedbackTarget === 'both') {
+                            showShareFeedback(`✅ ${options.callerMessage || 'Shared data'} & saved to arena_database.json!`);
+                        }
+                    }
+                    if (resetAfter) {
+                        resetScoreAndSession(false);
+                    }
+                    return data;
+                })
+                .catch(err => {
+                    console.warn('[PROGRAM DB SYNC]', err);
+                    if (feedbackTarget === 'submit' || feedbackTarget === 'both') {
+                        if (submitFb) {
+                            submitFb.className = 'submit-db-feedback success';
+                            submitFb.innerHTML = `✅ <strong>Stored in Local Database!</strong> (Local server port 3000 offline or deployed static).<br><button type="button" class="btn-db-action btn-db-export-action" onclick="exportProgramDatabaseJSON()">📥 Download updated arena_database.json</button>` +
+                                (resetAfter ? `<br><span class="db-reset-notice">🔄 Score and challenges have been reset to 0 for the next attempt!</span>` : '');
+                        }
+                    }
+                    if (feedbackTarget === 'share' || feedbackTarget === 'both') {
+                        showShareFeedback(`📋 ${options.callerMessage || 'Shared'} & stored in database/arena_database.json!`);
+                    }
+                    if (resetAfter) {
+                        resetScoreAndSession(false);
+                    }
+                });
+        }
+
+        // Download in PNG or JPG format
+        function downloadScoreSheetImage(format = 'png') {
+            const canvas = generateScoreSheetCanvas();
+            const isTeam = (currentScorecardMode === 'team');
+            const isJpg = (format.toLowerCase() === 'jpg' || format.toLowerCase() === 'jpeg');
+
+            let baseName = '';
+            if (isTeam) {
+                const teamName = document.getElementById('sheetTeamName').value.trim() || 'Team';
+                baseName = `DecodeArena_ScoreSheet_Team_${teamName.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+            } else {
+                const name = document.getElementById('sheetParticipantName').value.trim() || 'Participant';
+                baseName = `DecodeArena_ScoreSheet_Solo_${name.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+            }
+
+            const link = document.createElement('a');
+            if (isJpg) {
+                link.download = `${baseName}.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
+            } else {
+                link.download = `${baseName}.png`;
+                link.href = canvas.toDataURL('image/png');
+            }
+
+            link.click();
+            const formatUpper = isJpg ? 'JPG' : 'PNG';
+            showShareFeedback(`📥 ${isTeam ? 'Team' : 'Solo'} Score Sheet downloaded as ${formatUpper}!`);
+
+            // Automatically store this downloaded scorecard in database/arena_database.json!
+            storeSubmissionToDatabase({
+                action: `Downloaded ${formatUpper} Score Sheet`,
+                requireFields: false,
+                resetAfter: false,
+                feedbackTarget: 'share',
+                callerMessage: `Downloaded ${formatUpper}`
+            });
+        }
+
+        // Submit to Program Database (stores unencrypted + with base64 image)
+        function submitScoreToProgramDatabase() {
+            playVictorySound();
+            storeSubmissionToDatabase({
+                action: 'Submitted to Program Database',
+                requireFields: true,
+                resetAfter: true,
+                feedbackTarget: 'submit'
+            });
+        }
+
+        // Reset Score and Challenge Progress to 0 for fresh attempt
+        function resetScoreAndSession(clearFields = false) {
+            totalScore = 0;
+            userAnswers = {};
+            redeemedBonus = [];
+            unlockedHints = {};
+
+            localStorage.removeItem('da_mcq_answers');
+            localStorage.removeItem('da_bonus');
+            localStorage.removeItem('da_score');
+            localStorage.removeItem('da_unlocked_hints');
+
+            if (clearFields) {
+                localStorage.removeItem('da_user_name');
+                localStorage.removeItem('da_college_name');
+                localStorage.removeItem('da_team_name');
+                localStorage.removeItem('da_team_college');
+                localStorage.removeItem('da_team_member1');
+                localStorage.removeItem('da_team_member2');
+                localStorage.removeItem('da_team_member3');
+
+                if (document.getElementById('sheetParticipantName')) document.getElementById('sheetParticipantName').value = '';
+                if (document.getElementById('sheetCollegeName')) document.getElementById('sheetCollegeName').value = '';
+                if (document.getElementById('sheetTeamName')) document.getElementById('sheetTeamName').value = '';
+                if (document.getElementById('sheetTeamCollege')) document.getElementById('sheetTeamCollege').value = '';
+                if (document.getElementById('sheetMember1')) document.getElementById('sheetMember1').value = '';
+                if (document.getElementById('sheetMember2')) document.getElementById('sheetMember2').value = '';
+                if (document.getElementById('sheetMember3')) document.getElementById('sheetMember3').value = '';
+            }
+
+            updateScoreboard();
+            renderChallenges();
+            updateScorecardDisplay();
+
+            const modalTotalScore = document.getElementById('modalTotalScore');
+            if (modalTotalScore) modalTotalScore.textContent = '0';
+            const modalSolvedRatio = document.getElementById('modalSolvedRatio');
+            if (modalSolvedRatio) modalSolvedRatio.textContent = '0/24';
+        }
+
+        function promptResetProgress() {
+            if (confirm("Are you sure you want to reset your score and challenge progress to 0 for a fresh attempt?")) {
+                resetScoreAndSession(true);
+                showShareFeedback("🔄 Score and challenges have been reset to 0!");
+            }
+        }
+
+        // Export entire unencrypted program database as JSON file
+        function exportProgramDatabaseJSON() {
+            const records = getProgramDatabase();
+            const blob = new Blob([JSON.stringify(records, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.download = 'DecodeArena_Program_Database_Unencrypted.json';
+            a.href = url;
+            a.click();
+            URL.revokeObjectURL(url);
+            showShareFeedback('📦 Program database (.json) exported successfully!');
+        }
+
+        // === Matrix Rain ===
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resize(); window.addEventListener('resize', resize);
+        const chars = 'DECODEARENA01';
+        const fs = 14, cols = Math.floor(canvas.width / fs);
+        const drops = Array(cols).fill(1);
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10,10,15,0.08)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00f0ff'; ctx.font = `${fs}px monospace`;
+            for (let i = 0; i < drops.length; i++) {
+                ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fs, drops[i] * fs);
+                if (drops[i] * fs > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+
+        // === Particles ===
+        (function() {
+            const c = document.getElementById('particles');
+            for (let i = 0; i < 15; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = `${Math.random()*100}%`;
+                p.style.animationDelay = `${Math.random()*6}s`;
+                p.style.animationDuration = `${4+Math.random()*4}s`;
+                p.style.background = ['var(--cyan)','var(--magenta)','var(--green)'][Math.floor(Math.random()*3)];
+                c.appendChild(p);
+            }
+        })();
+
+        // === Nav scroll ===
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Close mobile nav on link click
+        document.querySelectorAll('.nav-links a').forEach(a => {
+            a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+        });
+
+        // === Category Toggle ===
+        function toggleCat(card) {
+            const challenges = card.querySelector('.cat-challenges');
+            const isActive = card.classList.contains('active');
+
+            // Close all other cards
+            document.querySelectorAll('.cat-card').forEach(c => {
+                c.classList.remove('active');
+                c.querySelector('.cat-challenges').style.maxHeight = '0';
+            });
+
+            // Toggle current
+            if (!isActive) {
+                card.classList.add('active');
+                challenges.style.maxHeight = (challenges.scrollHeight + 50) + 'px';
+            }
+        }
+
+        // === Scroll Reveal ===
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+        // === Smooth Scroll ===
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', function(e) {
+                const t = document.querySelector(this.getAttribute('href'));
+                if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+            });
+        });
+    </script>
+</body>
+</html>
