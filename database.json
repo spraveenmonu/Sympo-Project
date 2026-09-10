@@ -338,5 +338,100 @@
     "server_saved_at": "2026-09-10T10:16:18.505Z",
     "stored_image_file": "database/certificates/REC-2026-3150_Praveen_Monu.jpg",
     "stored_image_size_kb": 107
+  },
+  {
+    "id": "REC-2026-1707",
+    "mode": "solo",
+    "name": "Pra",
+    "college": "Grace",
+    "members": [
+      "Pra"
+    ],
+    "score": 200,
+    "solved": "3/24",
+    "tier": "⚡ CODE BREAKER",
+    "action": "Score Shared (Opened Score Sheet)",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:48",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T10:18:10.435Z",
+    "stored_image_file": "database/certificates/REC-2026-1707_Pra.jpg",
+    "stored_image_size_kb": 106
+  },
+  {
+    "id": "REC-2026-3229",
+    "mode": "solo",
+    "name": "Pra",
+    "college": "Grace",
+    "members": [
+      "Pra"
+    ],
+    "score": 200,
+    "solved": "3/24",
+    "tier": "⚡ CODE BREAKER",
+    "action": "Score Shared (Opened Score Sheet)",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:48",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T10:18:12.473Z",
+    "stored_image_file": "database/certificates/REC-2026-3229_Pra.jpg",
+    "stored_image_size_kb": 106
+  },
+  {
+    "id": "REC-2026-3419",
+    "mode": "solo",
+    "name": "Pra",
+    "college": "Grace",
+    "members": [
+      "Pra"
+    ],
+    "score": 200,
+    "solved": "3/24",
+    "tier": "⚡ CODE BREAKER",
+    "action": "Score Shared (Opened Score Sheet)",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:48",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T10:18:14.928Z",
+    "stored_image_file": "database/certificates/REC-2026-3419_Pra.jpg",
+    "stored_image_size_kb": 106
+  },
+  {
+    "id": "REC-2026-8779",
+    "mode": "solo",
+    "name": "Anonymous Hacker",
+    "college": "Symposium Participant",
+    "members": [
+      "Anonymous Hacker"
+    ],
+    "score": 50,
+    "solved": "1/24",
+    "tier": "🔰 CYBER SCOUT",
+    "action": "Score Shared (Opened Score Sheet)",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:48",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T10:18:40.789Z",
+    "stored_image_file": "database/certificates/REC-2026-8779_Anonymous_Hacker.jpg",
+    "stored_image_size_kb": 109
+  },
+  {
+    "id": "REC-2026-2910",
+    "mode": "solo",
+    "name": "Praxxxxxxx",
+    "college": "Grace",
+    "members": [
+      "Praxxxxxxx"
+    ],
+    "score": 50,
+    "solved": "1/24",
+    "tier": "🔰 CYBER SCOUT",
+    "action": "Submitted to Program Database",
+    "encryption": "NONE (Unencrypted Raw Storage)",
+    "timestamp": "2026-09-10 15:48",
+    "stored_image_format": "image/jpeg",
+    "server_saved_at": "2026-09-10T10:18:50.341Z",
+    "stored_image_file": "database/certificates/REC-2026-2910_Praxxxxxxx.jpg",
+    "stored_image_size_kb": 107
   }
 ]
