@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Decode Arena — Hack The Code | Symposium 2026</title>
     <meta name="description" content="Decode Arena - The ultimate cybersecurity challenge at Symposium 2026.">
+    <link rel="canonical" href="https://decodearena.netlify.app/">
+    <meta property="og:title" content="Decode Arena — Hack The Code | Symposium 2026">
+    <meta property="og:description" content="The ultimate cybersecurity challenge at Symposium 2026.">
+    <meta property="og:url" content="https://decodearena.netlify.app/">
     <!-- Admin credentials: admin / arena2026 -->
     <!-- Flag: DECODE{html_comments_are_not_hidden} -->
     <meta name="secret-key" content="DECODE{check_meta_tags_always}">
@@ -1471,9 +1475,12 @@
         // Console flag for curious participants
         console.log("%c🚩 DECODE{console_logs_reveal_secrets}", "color: #39ff14; font-size: 16px; font-weight: bold;");
         // === Global Configuration (Google Sheets Apps Script & Event Settings) ===
+        const HARDCODED_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzstKSS9wf2jgu6-1OzsOYKmkEuPLthfZxQw56YtgVwCw0RDyHVx7Zh22gd3-km07oq/exec';
         const CONFIG = {
             // Deployed Google Apps Script Web App URL (.../exec)
-            API_URL: localStorage.getItem('da_apps_script_url') || 'https://script.google.com/macros/s/AKfycbz_YOUR_APPS_SCRIPT_DEPLOYMENT_ID/exec',
+            API_URL: (localStorage.getItem('da_apps_script_url') && !localStorage.getItem('da_apps_script_url').includes('YOUR_APPS_SCRIPT_DEPLOYMENT_ID'))
+                ? localStorage.getItem('da_apps_script_url')
+                : HARDCODED_APPS_SCRIPT_URL,
             SHEET_NAME: 'ROUND_DATA',
             ROUND_NAME: 'Round 1 - Decode Arena',
             QUEUE_KEY: 'da_offline_submission_queue',
@@ -1892,18 +1899,26 @@
 
         // Configuration UI Prompt
         function promptSetSheetUrl() {
-            const current = localStorage.getItem('da_apps_script_url') || CONFIG.API_URL;
-            const entered = prompt('Enter your deployed Google Apps Script Web App URL (.../exec):\n(See GOOGLE_SHEET_SETUP.md for instructions)', current);
+            const saved = localStorage.getItem('da_apps_script_url');
+            const defaultValue = (saved && !saved.includes('YOUR_APPS_SCRIPT_DEPLOYMENT_ID')) ? saved : '';
+            const entered = prompt(
+                '📋 Paste your deployed Google Apps Script Web App URL below:\n' +
+                '(Example: https://script.google.com/macros/s/AKfycb.../exec)\n\n' +
+                'See GOOGLE_SHEET_SETUP.md for simple instructions on generating this link from your Google Sheet.',
+                defaultValue
+            );
             if (entered !== null) {
                 const trimmed = entered.trim();
-                if (trimmed) {
+                if (trimmed && trimmed.startsWith('https://script.google.com/macros/s/')) {
                     CONFIG.API_URL = trimmed;
                     localStorage.setItem('da_apps_script_url', trimmed);
-                    alert('Google Apps Script URL saved successfully!\n' + trimmed);
+                    alert('✅ Google Sheet Web App URL connected successfully!\n\nSubmissions will now stream live into your Google Sheet.');
                     syncQueue();
-                } else {
+                } else if (!trimmed) {
                     localStorage.removeItem('da_apps_script_url');
-                    alert('Reset to default Apps Script URL.');
+                    alert('ℹ️ URL reset.');
+                } else {
+                    alert('⚠️ Invalid link! Make sure the link starts with: https://script.google.com/macros/s/...');
                 }
             }
         }
@@ -2640,6 +2655,7 @@
                     `🚩 Solved:      ${solved}/24 Challenges`,
                     `🛡️ Rank Tier:   ${tier}`,
                     `📅 Event:       Cybersecurity Symposium 2026`,
+                    `🌐 Play Arena:   https://decodearena.netlify.app/`,
                     '==================================================',
                     'Crack vulnerabilities & hack the code at Decode Arena!'
                 ].join('\n');
@@ -2656,6 +2672,7 @@
                     `🚩 Solved:      ${solved}/24 Challenges`,
                     `🛡️ Rank Tier:   ${tier}`,
                     `📅 Event:       Cybersecurity Symposium 2026`,
+                    `🌐 Play Arena:   https://decodearena.netlify.app/`,
                     '==================================================',
                     'Crack vulnerabilities & hack the code at Decode Arena!'
                 ].join('\n');
@@ -2966,6 +2983,9 @@
                 }
                 return 'http://localhost:3000/api/submit-score';
             }
+            if (window.location.hostname && window.location.hostname.includes('netlify.app')) {
+                return null; // Static cloud host (Netlify); submissions flow to Google Sheets & local browser cache
+            }
             return (window.location.origin || '') + '/api/submit-score';
         }
 
@@ -3102,6 +3122,7 @@
             const fallbackUrl = 'http://localhost:3000/api/submit-score';
 
             function sendPayload(url) {
+                if (!url) return Promise.reject(new Error('Static cloud host'));
                 return fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -3112,12 +3133,12 @@
                 });
             }
 
-            const dbPromise = sendPayload(primaryUrl).catch(err => {
-                if (primaryUrl !== fallbackUrl) {
+            const dbPromise = primaryUrl ? sendPayload(primaryUrl).catch(err => {
+                if (primaryUrl !== fallbackUrl && (!window.location.hostname || !window.location.hostname.includes('netlify.app'))) {
                     return sendPayload(fallbackUrl);
                 }
                 throw err;
-            });
+            }) : Promise.reject(new Error('Static hosting (Netlify)'));
 
             return Promise.allSettled([dbPromise, sheetPromise]).then(([dbResult, sheetResult]) => {
                 const dbData = (dbResult.status === 'fulfilled') ? dbResult.value : null;

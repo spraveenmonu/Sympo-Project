@@ -118,35 +118,9 @@ function doPost(e) {
     })).setMimeType(ContentService.MimeType.JSON);
   }
 }
-
-// Optional: Test function to verify script directly from Apps Script editor
-function testSubmission() {
-  var mockEvent = {
-    postData: {
-      contents: JSON.stringify({
-        Timestamp: new Date().toISOString(),
-        Team_ID: "REC-2026-TEST",
-        Team_Name: "Cyber Sparks",
-        College: "Symposium Engineering College",
-        Members: "Alice (Lead), Bob, Charlie",
-        Mode: "team",
-        Round: "Round 1 - Decode Arena",
-        Score: 1200,
-        Total_Questions: 24,
-        Correct: 18,
-        Wrong: 6,
-        Security_Tier: "ELITE CYBER SPECIALIST",
-        Start_Time: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
-        End_Time: new Date().toISOString(),
-        Time_Taken: "15m 00s",
-        Action: "Test Submission"
-      })
-    }
-  };
-  var result = doPost(mockEvent);
-  Logger.log(result.getContent());
-}
 ```
+
+> **Tip**: You can also open the newly created [Code.gs](Code.gs) file directly in your project folder, press `Ctrl+A` (Select All) then `Ctrl+C` (Copy), and paste it into Google Apps Script.
 
 4. Click the **💾 Save project** icon (or `Ctrl+S`).
 5. Name the project: **`Decode Arena Submissions Webhook`**.
@@ -176,8 +150,9 @@ function testSubmission() {
 Open `index.html` and paste your URL into the `CONFIG.API_URL` variable near line 1460:
 
 ```javascript
+const HARDCODED_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzstKSS9wf2jgu6-1OzsOYKmkEuPLthfZxQw56YtgVwCw0RDyHVx7Zh22gd3-km07oq/exec';
 const CONFIG = {
-    API_URL: 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec', // <-- Paste your /exec URL here
+    API_URL: HARDCODED_APPS_SCRIPT_URL,
     SHEET_NAME: 'ROUND_DATA',
     ROUND_NAME: 'Round 1 - Decode Arena',
     QUEUE_KEY: 'da_offline_submission_queue',
