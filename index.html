@@ -1434,11 +1434,11 @@
             <!-- Submit to Program Database Section (Stores without encryption + Stored Image) -->
             <div class="sheet-submit-card">
                 <div class="ssc-text">
-                    <h4>🚀 Submit to Program Database</h4>
-                    <p>Save this score and the generated certificate image into the program's unencrypted database storage.</p>
+                    <h4>🚀 Submit Official Score</h4>
+                    <p>Submits your score to the official symposium Google Sheet &amp; generates your certificate.</p>
                 </div>
                 <button type="button" class="btn-submit-db" onclick="submitScoreToProgramDatabase()">
-                    🚀 Submit to Program DB
+                    🚀 Submit Official Score
                 </button>
             </div>
             <div id="submitDbFeedback" class="submit-db-feedback"></div>
@@ -1459,9 +1459,6 @@
                 </button>
                 <button class="btn btn-outline" onclick="exportProgramDatabaseJSON()" title="Download unencrypted program database with stored images">
                     📦 Export Program DB (.json)
-                </button>
-                <button class="btn btn-outline" onclick="promptSetSheetUrl()" title="Configure deployed Google Apps Script Web App URL for Google Sheets">
-                    📊 Set Google Sheet URL
                 </button>
                 <button class="btn btn-outline" onclick="promptResetProgress()" title="Reset score and challenges for a fresh attempt">
                     🔄 Reset Progress
@@ -1897,30 +1894,9 @@
             });
         }
 
-        // Configuration UI Prompt
+        // Google Sheet Connection Status
         function promptSetSheetUrl() {
-            const saved = localStorage.getItem('da_apps_script_url');
-            const defaultValue = (saved && !saved.includes('YOUR_APPS_SCRIPT_DEPLOYMENT_ID')) ? saved : '';
-            const entered = prompt(
-                '📋 Paste your deployed Google Apps Script Web App URL below:\n' +
-                '(Example: https://script.google.com/macros/s/AKfycb.../exec)\n\n' +
-                'See GOOGLE_SHEET_SETUP.md for simple instructions on generating this link from your Google Sheet.',
-                defaultValue
-            );
-            if (entered !== null) {
-                const trimmed = entered.trim();
-                if (trimmed && trimmed.startsWith('https://script.google.com/macros/s/')) {
-                    CONFIG.API_URL = trimmed;
-                    localStorage.setItem('da_apps_script_url', trimmed);
-                    alert('✅ Google Sheet Web App URL connected successfully!\n\nSubmissions will now stream live into your Google Sheet.');
-                    syncQueue();
-                } else if (!trimmed) {
-                    localStorage.removeItem('da_apps_script_url');
-                    alert('ℹ️ URL reset.');
-                } else {
-                    alert('⚠️ Invalid link! Make sure the link starts with: https://script.google.com/macros/s/...');
-                }
-            }
+            alert('✅ Google Sheet is permanently connected!\n\nAll participant submissions stream directly into your official ROUND_DATA Google Sheet in real time.');
         }
 
         // Automatic retry when coming back online
@@ -3165,7 +3141,7 @@
                     if (feedbackTarget === 'submit' || feedbackTarget === 'both') {
                         if (submitFb) {
                             submitFb.className = 'submit-db-feedback success';
-                            submitFb.innerHTML = `✅ <strong>Stored in Local Database!</strong> (Local server port 3000 offline or deployed static).<br>📲 <strong>Scorecard recorded and queued for Coordinator WhatsApp!</strong>${sheetNotice}<br><button type="button" class="btn-db-action btn-db-export-action" onclick="exportProgramDatabaseJSON()">📥 Download updated arena_database.json</button>` +
+                            submitFb.innerHTML = `✅ <strong>Official Scorecard Submitted!</strong>${sheetNotice}<br>📲 <strong>Scorecard recorded and dispatched to Coordinator WhatsApp!</strong>` +
                                 (resetAfter ? `<br><span class="db-reset-notice">🔄 Score and scenarios have been reset to 0 for the next attempt!</span>` : '');
                         }
                     }
