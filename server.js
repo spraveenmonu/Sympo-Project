@@ -11,7 +11,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Coordinator WhatsApp Configuration (Secure Backend Only - NEVER exposed to participants)
-const COORDINATOR_PHONE = process.env.COORDINATOR_PHONE || '+918778313186';
+const COORDINATOR_PHONE = process.env.COORDINATOR_PHONE || '+919531969307';
 const CALLMEBOT_API_KEY = process.env.CALLMEBOT_APIKEY || '';
 const WHATSAPP_WEBHOOK_URL = process.env.WHATSAPP_WEBHOOK_URL || '';
 
@@ -36,10 +36,10 @@ if (!fs.existsSync(DB_FILE)) {
     fs.writeFileSync(DB_FILE, '[]', 'utf8');
 }
 if (!fs.existsSync(DB_ALT_FILE)) {
-    try { fs.copyFileSync(DB_FILE, DB_ALT_FILE); } catch(e){}
+    try { fs.copyFileSync(DB_FILE, DB_ALT_FILE); } catch (e) { }
 }
 if (!fs.existsSync(DB_ROOT_FILE)) {
-    try { fs.copyFileSync(DB_FILE, DB_ROOT_FILE); } catch(e){}
+    try { fs.copyFileSync(DB_FILE, DB_ROOT_FILE); } catch (e) { }
 }
 
 function setCorsHeaders(res) {
@@ -57,9 +57,9 @@ function setCorsHeaders(res) {
 function dispatchWhatsAppAlert(record) {
     const isTeam = record.mode === 'team';
     const membersStr = Array.isArray(record.members) ? record.members.join(', ') : (record.name || 'Participant');
-    
-    const message = 
-`🎯 *DECODE ARENA 2026 — OFFICIAL SCORE ALERT* 🎯
+
+    const message =
+        `🎯 *DECODE ARENA 2026 — OFFICIAL SCORE ALERT* 🎯
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
 📋 *Event:* Cybersecurity Symposium 2026
 👤 *Type:* ${isTeam ? 'Team Participation' : 'Solo Hacker'}
@@ -89,7 +89,7 @@ function dispatchWhatsAppAlert(record) {
             const botPhone = cleanPhone.startsWith('+') ? cleanPhone : ('+' + cleanPhone);
             const encodedText = encodeURIComponent(message);
             const callMeBotUrl = `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(botPhone)}&text=${encodedText}&apikey=${encodeURIComponent(CALLMEBOT_API_KEY)}`;
-            
+
             https.get(callMeBotUrl, (resp) => {
                 let data = '';
                 resp.on('data', chunk => { data += chunk; });
@@ -99,7 +99,7 @@ function dispatchWhatsAppAlert(record) {
             }).on('error', (e) => {
                 console.warn(`[WHATSAPP CALLMEBOT ERROR] ${e.message}`);
             });
-        } catch(e) {
+        } catch (e) {
             console.warn(`[WHATSAPP CALLMEBOT EXCEPTION] ${e.message}`);
         }
     }
@@ -137,7 +137,7 @@ function dispatchWhatsAppAlert(record) {
             req.on('error', (e) => console.warn(`[WHATSAPP WEBHOOK ERROR] ${e.message}`));
             req.write(payload);
             req.end();
-        } catch(e) {
+        } catch (e) {
             console.warn(`[WHATSAPP WEBHOOK EXCEPTION] ${e.message}`);
         }
     }
@@ -168,12 +168,12 @@ const server = http.createServer((req, res) => {
         req.on('end', () => {
             try {
                 const record = JSON.parse(body);
-                
+
                 // Read current database records
                 let records = [];
                 try {
                     records = JSON.parse(fs.readFileSync(DB_FILE, 'utf8') || '[]');
-                } catch(e) {
+                } catch (e) {
                     records = [];
                 }
 
@@ -191,7 +191,7 @@ const server = http.createServer((req, res) => {
                         const imgBuf = Buffer.from(base64Data, 'base64');
                         const imgFilename = `${record.id}_${safeName}.jpg`;
                         const imgPath = path.join(CERT_DIR, imgFilename);
-                        
+
                         fs.writeFileSync(imgPath, imgBuf);
                         fs.writeFileSync(path.join(CERT_DIR, `${record.id}_${safeName}.base64.txt`), record.stored_image_data, 'utf8');
 
@@ -199,21 +199,21 @@ const server = http.createServer((req, res) => {
                         record.stored_image_format = 'image/jpeg';
                         record.stored_image_size_kb = Math.round(imgBuf.length / 1024);
                         delete record.stored_image_data; // Keep JSON clean and lightweight
-                    } catch(imgErr) {
+                    } catch (imgErr) {
                         console.error('[IMAGE SAVE ERROR]', imgErr.message);
                     }
                 } else {
                     record.stored_image_file = record.stored_image_file || 'none';
                     delete record.stored_image_data;
                 }
-                
+
                 records.push(record); // Append to bottom so newest submission is always at the end!
 
                 // Write to database files (database/arena_database.json, database/database.json, database.json)
                 const dbJsonFormatted = JSON.stringify(records, null, 2);
                 fs.writeFileSync(DB_FILE, dbJsonFormatted, 'utf8');
-                try { fs.writeFileSync(DB_ALT_FILE, dbJsonFormatted, 'utf8'); } catch(e) {}
-                try { fs.writeFileSync(DB_ROOT_FILE, dbJsonFormatted, 'utf8'); } catch(e) {}
+                try { fs.writeFileSync(DB_ALT_FILE, dbJsonFormatted, 'utf8'); } catch (e) { }
+                try { fs.writeFileSync(DB_ROOT_FILE, dbJsonFormatted, 'utf8'); } catch (e) { }
 
                 console.log(`[DATABASE UPDATE] Stored unencrypted record: ${record.name} (${record.score} PTS) [Action: ${record.action}] -> arena_database.json & database.json`);
                 if (record.stored_image_file !== 'none') {
@@ -223,9 +223,9 @@ const server = http.createServer((req, res) => {
                 // Also append SQL entry to schema.sql
                 try {
                     const membersStr = Array.isArray(record.members) ? record.members.join(', ') : record.name;
-                    const sqlInsert = `\nINSERT INTO submissions (id, mode, name, college, members, score, solved, tier, action, encryption, image_file, timestamp) VALUES ('${record.id}', '${record.mode}', '${(record.name||'').replace(/'/g,"''")}', '${(record.college||'').replace(/'/g,"''")}', '${membersStr.replace(/'/g,"''")}', ${record.score||0}, '${record.solved||'0/24'}', '${record.tier||'CYBER SCOUT'}', '${(record.action||'Submission').replace(/'/g,"''")}', 'NONE (Plaintext)', '${record.stored_image_file || 'none'}', CURRENT_TIMESTAMP);`;
+                    const sqlInsert = `\nINSERT INTO submissions (id, mode, name, college, members, score, solved, tier, action, encryption, image_file, timestamp) VALUES ('${record.id}', '${record.mode}', '${(record.name || '').replace(/'/g, "''")}', '${(record.college || '').replace(/'/g, "''")}', '${membersStr.replace(/'/g, "''")}', ${record.score || 0}, '${record.solved || '0/24'}', '${record.tier || 'CYBER SCOUT'}', '${(record.action || 'Submission').replace(/'/g, "''")}', 'NONE (Plaintext)', '${record.stored_image_file || 'none'}', CURRENT_TIMESTAMP);`;
                     fs.appendFileSync(SQL_FILE, sqlInsert, 'utf8');
-                } catch(sqlErr) {}
+                } catch (sqlErr) { }
 
                 // Dispatch to coordinator WhatsApp privately on the server
                 dispatchWhatsAppAlert(record);
@@ -243,7 +243,7 @@ const server = http.createServer((req, res) => {
                     coordinator_delivery: 'Result transmitted directly to Symposium Coordinator WhatsApp',
                     file_path: 'database/arena_database.json & database.json'
                 }));
-            } catch(err) {
+            } catch (err) {
                 res.writeHead(400, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ success: false, error: err.message }));
             }
@@ -257,7 +257,7 @@ const server = http.createServer((req, res) => {
             const data = fs.readFileSync(DB_FILE, 'utf8');
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(data);
-        } catch(e) {
+        } catch (e) {
             res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: 'Failed to read database file' }));
         }
