@@ -150,7 +150,7 @@ function doPost(e) {
 Open `index.html` and paste your URL into the `CONFIG.API_URL` variable near line 1460:
 
 ```javascript
-const HARDCODED_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzstKSS9wf2jgu6-1OzsOYKmkEuPLthfZxQw56YtgVwCw0RDyHVx7Zh22gd3-km07oq/exec';
+const HARDCODED_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBwJ_PyuHk-cNbPT1qjgDQq3DPadyWkYFVDcYCNLXcxS11tor9kTB5KeP_G532ZTJuCg/exec';
 const CONFIG = {
     API_URL: HARDCODED_APPS_SCRIPT_URL,
     SHEET_NAME: 'ROUND_DATA',

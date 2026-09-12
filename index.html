@@ -1452,12 +1452,15 @@
         // Console flag for curious participants
         console.log("%c🚩 DECODE{console_logs_reveal_secrets}", "color: #39ff14; font-size: 16px; font-weight: bold;");
         // === Global Configuration (Google Sheets Apps Script & Event Settings) ===
-        const HARDCODED_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzstKSS9wf2jgu6-1OzsOYKmkEuPLthfZxQw56YtgVwCw0RDyHVx7Zh22gd3-km07oq/exec';
+        const HARDCODED_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBwJ_PyuHk-cNbPT1qjgDQq3DPadyWkYFVDcYCNLXcxS11tor9kTB5KeP_G532ZTJuCg/exec';
+        try {
+            if (localStorage.getItem('da_apps_script_url') !== HARDCODED_APPS_SCRIPT_URL) {
+                localStorage.setItem('da_apps_script_url', HARDCODED_APPS_SCRIPT_URL);
+            }
+        } catch(e) {}
         const CONFIG = {
             // Deployed Google Apps Script Web App URL (.../exec)
-            API_URL: (localStorage.getItem('da_apps_script_url') && !localStorage.getItem('da_apps_script_url').includes('YOUR_APPS_SCRIPT_DEPLOYMENT_ID'))
-                ? localStorage.getItem('da_apps_script_url')
-                : HARDCODED_APPS_SCRIPT_URL,
+            API_URL: HARDCODED_APPS_SCRIPT_URL,
             SHEET_NAME: 'ROUND_DATA',
             ROUND_NAME: 'Round 1 - Decode Arena',
             QUEUE_KEY: 'da_offline_submission_queue',
