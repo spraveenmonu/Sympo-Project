@@ -8,7 +8,7 @@
 ### 🎯 What is Decode Arena?
 Decode Arena ("Hack The Code") is a beginner-friendly cybersecurity symposium event. 
 Participants do two things:
-1. **Solve Cyber Challenges**: Click through 6 categories of real-world cybersecurity questions (ports, protocols, phishing, passwords, etc.) and learn fundamental security concepts.
+1. **Evaluate Incident Scenarios**: Navigate 6 categories of operational cybersecurity scenarios ("In this scenario, what would you choose?") and make real-world defense decisions.
 2. **Inspect The Website**: Use browser tools (`Ctrl+U` to View Source, `F12` for DevTools & Console) to discover hidden flags and vulnerabilities planted directly into this website!
 
 ---
@@ -35,16 +35,15 @@ Choose any of these 3 easy methods:
 
 ### 📝 Step 2: How Participants Submit Answers
 
-Since there is **no login or database needed**, choose one of these simple collection methods:
+Choose any of these collection methods:
 
-1. **Google Form (Best & Automated)**:
-   - Create a Google Form with fields:
-     - Participant Name & College
-     - Category 1 to 6 Answers (or individual flag text inputs)
-     - Bonus Hidden Flags
-   - Share the Google Form QR code / link on the whiteboard or projector.
-2. **Pen & Paper / Printed Answer Sheet**:
-   - Print a simple sheet with numbered blanks (1 to 30) for participants to write down each flag `DECODE{...}` they find.
+1. **Direct Google Sheet Auto-Sync (Recommended & Built-in)**:
+   - Participants solve the scenarios in `index.html`. When they finish and submit their scorecard, JavaScript automatically transmits their scores, session timings (`Start_Time`, `End_Time`, `Time_Taken`), and team details directly to your Google Sheet (`ROUND_DATA` tab) via Google Apps Script.
+   - If the venue network is intermittent or offline, submissions are saved in the browser's `localStorage` queue and automatically flushed to the sheet upon reconnection.
+2. **Google Form (Alternative)**:
+   - Create a Google Form with fields (Participant Name, College, Category answers, Bonus flags) and share via projector/QR code.
+3. **Pen & Paper / Printed Answer Sheet**:
+   - Print a sheet with numbered blanks (1 to 30) for participants to write down flags.
 
 ---
 
@@ -52,9 +51,9 @@ Since there is **no login or database needed**, choose one of these simple colle
 
 | Time | What to Do |
 |------|------------|
-| **0:00 - 0:15** | **Briefing**: Welcome participants. Explain what a flag looks like (`DECODE{...}`). Tell them to read hints and use `F12` to inspect the site. |
-| **0:15 - 1:30** | **Challenge Time (75 mins)**: Participants explore categories, solve questions, and search the site code for hidden flags. |
-| **1:30 - 1:45** | **Submission Cutoff**: Everyone submits their Google Form, paper sheet, or downloads their **Official Score Sheet (PNG)**. |
+| **0:00 - 0:15** | **Briefing**: Welcome participants. Explain what a flag looks like (`DECODE{...}`). Tell them to read scenario clues and use `F12` to inspect the site. |
+| **0:15 - 1:30** | **Challenge Time (75 mins)**: Participants explore categories, make scenario decisions, and search the site code for hidden flags. |
+| **1:30 - 1:45** | **Submission Cutoff**: Everyone submits their scorecard via **Send to WhatsApp Coordinator**, live **Google Sheet Sync**, or downloads their **Official Score Sheet (PNG)**. |
 | **1:45 - 2:00** | **Scoring & Winner Announcement**: Use the answer key below to grade and award top scorers! |
 
 ---
@@ -68,8 +67,9 @@ The website includes a built-in **Official Score Sheet** feature:
   - 📥 **Download PNG**: Instant high-res certificate PNG export.
   - 📥 **Download JPG**: High-res certificate JPEG export.
   - 📋 **Copy Text Summary**: Formatted scorecard for Discord, Telegram, or submission forms.
-  - 💬 **Share to WhatsApp**: 1-click WhatsApp share with team/solo details, score, and rank.
-  - 🚀 **Submit to Program Database**: Stores submission and full Base64 certificate image directly into project files.
+  - 📲 **Send to WhatsApp Coordinator**: Automatically transmits the scorecard to the symposium coordinator's WhatsApp (`+91 8778313186` configured securely on `server.js`) in the background without opening WhatsApp or exposing the phone number to participants.
+  - 📊 **Set Google Sheet URL**: Configure your deployed Google Apps Script Web App URL so submissions stream directly to your Google Sheet in real time.
+  - 🚀 **Submit to Program Database**: Stores submission and full Base64 certificate image directly into project database files.
   - 📦 **Export Program DB (.json)**: Download the unencrypted program database dump anytime.
 
 ---
@@ -83,6 +83,17 @@ All participant and team submissions are stored directly in the project's dedica
 - **`view_database.js`**: Run in terminal (`node view_database.js`) to view all stored submissions and images.
 - **Intentional Vulnerability**: Demonstrates **CWE-312** (Cleartext Storage of Sensitive Information). The admin record inside leaks the secret flag: `DECODE{plaintext_database_storage_is_vulnerable}`.
 
+---
+
+### 📊 Step 6: Google Sheets Live Score Synchronization & Offline Queue
+
+The website includes an automated Google Sheets pipeline powered by Google Apps Script (`doPost(e)`):
+- **Live Spreadsheet Sync**: Every submission appends a new row to the `ROUND_DATA` sheet tab with 16 comprehensive data columns:
+  `Timestamp`, `Team_ID`, `Team_Name`, `College`, `Members`, `Mode`, `Round`, `Score`, `Total`, `Correct`, `Wrong`, `Security_Tier`, `Start_Time`, `End_Time`, `Time_Taken`, and `Action`.
+- **Duration & Timing Tracking**: Accurately tracks when the participant began (`Start_Time`), when they submitted (`End_Time`), and the elapsed duration (`Time_Taken`, e.g., `14m 32s`).
+- **Resilient Offline Queue**: If the venue Wi-Fi drops or a machine is offline, submissions are never lost. `saveOffline(data)` stores the payload in browser `localStorage`. A navbar indicator (`📡 N Pending Sync`) alerts the user, and `window.addEventListener('online', syncQueue)` automatically flushes all pending submissions to Google Sheets when connection is restored.
+- **Detailed Setup Guide**: See [GOOGLE_SHEET_SETUP.md](GOOGLE_SHEET_SETUP.md) for full instructions and the ready-to-paste `Code.gs` script.
+
 
 ---
 
@@ -90,12 +101,12 @@ All participant and team submissions are stored directly in the project's dedica
 
 | Category | Type | Flags | Points Each | Subtotal |
 |----------|------|-------|-------------|----------|
-| 1. Network & Ports | Quiz Challenge | 4 | 50 pts | 200 pts |
-| 2. Protocols & Encryption | Quiz Challenge | 4 | 50 pts | 200 pts |
-| 3. Threats & Attacks | Quiz Challenge | 4 | 50 pts | 200 pts |
-| 4. Password Security | Quiz Challenge | 4 | 50 pts | 200 pts |
-| 5. Web Security Basics | Quiz Challenge | 4 | 50 pts | 200 pts |
-| 6. Security Awareness | Quiz Challenge | 4 | 50 pts | 200 pts |
+| 1. Network & Ports | Cyber Scenario | 4 | 50 pts | 200 pts |
+| 2. Protocols & Encryption | Cyber Scenario | 4 | 50 pts | 200 pts |
+| 3. Threats & Attacks | Cyber Scenario | 4 | 50 pts | 200 pts |
+| 4. Password Security | Cyber Scenario | 4 | 50 pts | 200 pts |
+| 5. Web Security Basics | Cyber Scenario | 4 | 50 pts | 200 pts |
+| 6. Security Awareness | Cyber Scenario | 4 | 50 pts | 200 pts |
 | 7. Hidden Website Flags | Hands-on Inspection | 6 | 100 pts (Bonus) | 600 pts |
 | **TOTAL** | | **30 Flags** | | **1,800 pts** |
 

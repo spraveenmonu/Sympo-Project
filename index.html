@@ -348,6 +348,17 @@
         }
         .score-pill { color: var(--text-dim); display: flex; align-items: center; gap: 0.35rem; }
         .score-pill strong { color: var(--green); font-family: var(--font-head); font-size: 0.95rem; }
+        .queue-pill {
+            cursor: pointer;
+            border: 1px solid var(--orange);
+            background: rgba(255, 106, 0, 0.15);
+            padding: 0.2rem 0.65rem;
+            border-radius: 50px;
+            font-size: 0.76rem;
+            transition: all 0.25s;
+        }
+        .queue-pill:hover { background: rgba(255, 106, 0, 0.28); transform: translateY(-1px); }
+        .queue-pill strong { color: var(--yellow); }
 
         /* Bonus Box */
         .bonus-validator-box {
@@ -1004,6 +1015,9 @@
         <div class="nav-scoreboard">
             <span class="score-pill">🏆 <strong id="navScore">0</strong> PTS</span>
             <span class="score-pill">🚩 <strong id="navSolved">0</strong>/24</span>
+            <span class="score-pill queue-pill" id="offlineQueueBadge" style="display:none;" onclick="syncQueue()" title="Click to sync queued offline submissions with Google Sheets">
+                📡 <strong id="queueCount">0</strong> Pending Sync
+            </span>
             <button type="button" class="btn-share-score" onclick="openScorecard()" title="View & Share Score Sheet">
                 📜 Share Score
             </button>
@@ -1053,7 +1067,7 @@
         <div class="container">
             <div class="sec-head reveal">
                 <span class="sec-tag">// Click to explore</span>
-                <h2 class="sec-title">Challenge <span class="hl">Categories</span></h2>
+                <h2 class="sec-title">Cyber Scenario <span class="hl">Categories</span></h2>
             </div>
 
             <div class="cat-grid">
@@ -1065,7 +1079,7 @@
                     </div>
                     <h3>Network & Open Ports</h3>
                     <p>Learn about common network ports, what services run on them, and why open ports are a security risk.</p>
-                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see challenges</div>
+                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see scenarios</div>
                     <div class="cat-challenges" onclick="event.stopPropagation()">
                         <div class="cat-challenges-inner" id="cat-inner-1"></div>
                     </div>
@@ -1079,7 +1093,7 @@
                     </div>
                     <h3>Protocols & Encryption</h3>
                     <p>Understand the difference between secure and insecure protocols and why encryption matters.</p>
-                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see challenges</div>
+                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see scenarios</div>
                     <div class="cat-challenges" onclick="event.stopPropagation()">
                         <div class="cat-challenges-inner" id="cat-inner-2"></div>
                     </div>
@@ -1093,7 +1107,7 @@
                     </div>
                     <h3>Threats & Attacks</h3>
                     <p>Learn about common cyber attacks like phishing, malware, and social engineering.</p>
-                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see challenges</div>
+                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see scenarios</div>
                     <div class="cat-challenges" onclick="event.stopPropagation()">
                         <div class="cat-challenges-inner" id="cat-inner-3"></div>
                     </div>
@@ -1107,7 +1121,7 @@
                     </div>
                     <h3>Password Security</h3>
                     <p>Discover why weak passwords are dangerous and how attackers crack them.</p>
-                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see challenges</div>
+                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see scenarios</div>
                     <div class="cat-challenges" onclick="event.stopPropagation()">
                         <div class="cat-challenges-inner" id="cat-inner-4"></div>
                     </div>
@@ -1121,7 +1135,7 @@
                     </div>
                     <h3>Web Security Basics</h3>
                     <p>Explore how websites leak information through source code, cookies, and hidden elements.</p>
-                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see challenges</div>
+                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see scenarios</div>
                     <div class="cat-challenges" onclick="event.stopPropagation()">
                         <div class="cat-challenges-inner" id="cat-inner-5"></div>
                     </div>
@@ -1135,7 +1149,7 @@
                     </div>
                     <h3>Security Awareness</h3>
                     <p>Learn about firewalls, VPNs, antivirus, and basic security practices everyone should know.</p>
-                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see challenges</div>
+                    <div class="cat-toggle"><span class="arrow-icon">▶</span> Click to see scenarios</div>
                     <div class="cat-challenges" onclick="event.stopPropagation()">
                         <div class="cat-challenges-inner" id="cat-inner-6"></div>
                     </div>
@@ -1436,11 +1450,14 @@
                 <button class="btn btn-outline" onclick="copyScoreSummary()">
                     📋 Copy Text Summary
                 </button>
-                <button class="btn btn-outline" onclick="shareToWhatsApp()">
-                    💬 Share to WhatsApp
+                <button class="btn btn-outline btn-whatsapp-dispatch" onclick="dispatchToWhatsApp()" id="btnWhatsAppShare" title="Directly transmit scorecard to symposium coordinator">
+                    📲 Send to WhatsApp Coordinator
                 </button>
                 <button class="btn btn-outline" onclick="exportProgramDatabaseJSON()" title="Download unencrypted program database with stored images">
                     📦 Export Program DB (.json)
+                </button>
+                <button class="btn btn-outline" onclick="promptSetSheetUrl()" title="Configure deployed Google Apps Script Web App URL for Google Sheets">
+                    📊 Set Google Sheet URL
                 </button>
                 <button class="btn btn-outline" onclick="promptResetProgress()" title="Reset score and challenges for a fresh attempt">
                     🔄 Reset Progress
@@ -1453,23 +1470,31 @@
     <script>
         // Console flag for curious participants
         console.log("%c🚩 DECODE{console_logs_reveal_secrets}", "color: #39ff14; font-size: 16px; font-weight: bold;");
-        console.log("%cGood job checking the console! Developers sometimes leave secrets here.", "color: #00f0ff; font-size: 11px;");
+        // === Global Configuration (Google Sheets Apps Script & Event Settings) ===
+        const CONFIG = {
+            // Deployed Google Apps Script Web App URL (.../exec)
+            API_URL: localStorage.getItem('da_apps_script_url') || 'https://script.google.com/macros/s/AKfycbz_YOUR_APPS_SCRIPT_DEPLOYMENT_ID/exec',
+            SHEET_NAME: 'ROUND_DATA',
+            ROUND_NAME: 'Round 1 - Decode Arena',
+            QUEUE_KEY: 'da_offline_submission_queue',
+            SESSION_START_KEY: 'da_session_start_time'
+        };
 
-        // === Challenge Database (24 Tasks with Input Space, Hints & MCQs) ===
+        // === Cybersecurity Scenarios Database (24 Operational Decision Scenarios) ===
         const CHALLENGES = {
             // Category 1: Network & Open Ports
             "c1_1": {
-                cat: 1, title: "What Port Does HTTP Use?", diff: "Easy", points: 50,
-                desc: "When browsing an unencrypted website with 'http://', which standard network port does your browser communicate on?",
+                cat: 1, title: "Scenario 1: Insecure Web Traffic Inspection", diff: "Easy", points: 50,
+                desc: "Scenario: You are analyzing packet captures across an office network and identify unencrypted web communication transmitting passwords in cleartext. If you are tasked with isolating or inspecting this unencrypted HTTP traffic, which standard network port would you choose?",
                 hint: "It is a standard two-digit number ending with 0. Think of 8 followed by zero!",
                 options: ["Port 21", "Port 80", "Port 443", "Port 22"],
                 correct: 1, flag: "DECODE{port_80}",
                 answers: ["80", "port 80", "port80", "http 80", "decode{port_80}"],
-                explanation: "Port 80 is the standard port for unencrypted HTTP traffic. Anyone sniffing network packets can view usernames and passwords in plaintext!"
+                explanation: "Port 80 is the default port for unencrypted HTTP traffic. Anyone sniffing network packets can view usernames and passwords in plaintext!"
             },
             "c1_2": {
-                cat: 1, title: "The Secure Web Port (HTTPS)", diff: "Easy", points: 50,
-                desc: "When you see the padlock icon in your browser address bar (HTTPS with TLS encryption), which port is being utilized?",
+                cat: 1, title: "Scenario 2: Hardening Web Server Encryption", diff: "Easy", points: 50,
+                desc: "Scenario: You are configuring an e-commerce website where customers submit sensitive billing information. To ensure end-to-end TLS encryption with the browser padlock icon, which default secure web port would you choose to bind?",
                 hint: "It is a three-digit number starting with 4 and ending with 3 (4_3).",
                 options: ["Port 80", "Port 8080", "Port 443", "Port 25"],
                 correct: 2, flag: "DECODE{port_443}",
@@ -1477,8 +1502,8 @@
                 explanation: "Port 443 is used for HTTPS. It encrypts all client-server communication using SSL/TLS, preventing eavesdropping."
             },
             "c1_3": {
-                cat: 1, title: "The File Transfer Port (FTP)", diff: "Easy", points: 50,
-                desc: "Legacy File Transfer Protocol (FTP) sends credentials in plain text across the network. Which default port does FTP use?",
+                cat: 1, title: "Scenario 3: Legacy File Transfer Vulnerability", diff: "Easy", points: 50,
+                desc: "Scenario: An audit reveals an automated backup job transmitting credentials across the company LAN in cleartext via legacy File Transfer Protocol (FTP). Which default control port would you choose to inspect to verify if FTP is active?",
                 hint: "It is one less than SSH's default port (22).",
                 options: ["Port 21", "Port 23", "Port 25", "Port 53"],
                 correct: 0, flag: "DECODE{port_21_ftp}",
@@ -1486,8 +1511,8 @@
                 explanation: "FTP uses Port 21 and transmits passwords without encryption! Modern security requires encrypted alternatives like SFTP or FTPS."
             },
             "c1_4": {
-                cat: 1, title: "Remote Access Risk (SSH)", diff: "Medium", points: 100,
-                desc: "System administrators connect securely to Linux command lines using SSH. Which default port is an attractive target for brute-force attacks?",
+                cat: 1, title: "Scenario 4: Protecting Remote Linux Access", diff: "Medium", points: 100,
+                desc: "Scenario: You are deploying a Linux cloud server and configuring firewall access rules for administrators to connect securely over the command line. Which default port would you choose to monitor against automated brute-force attacks?",
                 hint: "It is a famous pair of twin digits: two twos.",
                 options: ["Port 21", "Port 22", "Port 3389", "Port 8080"],
                 correct: 1, flag: "DECODE{port_22_ssh}",
@@ -1497,8 +1522,8 @@
 
             // Category 2: Protocols & Encryption
             "c2_1": {
-                cat: 2, title: "HTTP vs HTTPS", diff: "Easy", points: 50,
-                desc: "Which protocol sends all data — including passwords and session tokens — in plaintext readable by network sniffers?",
+                cat: 2, title: "Scenario 5: Public Wi-Fi Sniffing Defense", diff: "Easy", points: 50,
+                desc: "Scenario: While auditing client traffic in a coffee shop, you observe authentication tokens and session data being broadcast in cleartext across the airwaves. Which protocol is responsible for transmitting this unencrypted plaintext data?",
                 hint: "Notice the missing 'S' (which stands for Secure).",
                 options: ["HTTPS", "HTTP", "SSH", "SFTP"],
                 correct: 1, flag: "DECODE{http_is_not_secure}",
@@ -1506,8 +1531,8 @@
                 explanation: "HTTP lacks encryption. Attackers on the same Wi-Fi network can capture credentials using tools like Wireshark."
             },
             "c2_2": {
-                cat: 2, title: "The Telnet Danger", diff: "Easy", points: 50,
-                desc: "Telnet transmits user keystrokes unencrypted. Which secure cryptographic protocol was created to replace Telnet for terminal access?",
+                cat: 2, title: "Scenario 6: Upgrading Insecure Terminal Sessions", diff: "Easy", points: 50,
+                desc: "Scenario: A network administrator is managing core routers using legacy Telnet, transmitting root keystrokes in plaintext. To eliminate cleartext credential exposure, which cryptographic remote access protocol would you choose to deploy?",
                 hint: "It stands for Secure Shell and operates over port 22.",
                 options: ["FTP", "SNMP", "SSH", "RDP"],
                 correct: 2, flag: "DECODE{ssh_replaced_telnet}",
@@ -1515,8 +1540,8 @@
                 explanation: "SSH (Secure Shell) provides strong end-to-end encryption for remote command-line login, completely replacing the obsolete Telnet."
             },
             "c2_3": {
-                cat: 2, title: "The Phonebook of the Internet", diff: "Easy", points: 50,
-                desc: "What does the 'DNS' protocol stand for when translating domain names like 'google.com' into computer IP addresses?",
+                cat: 2, title: "Scenario 7: Domain Resolution Troubleshooting", diff: "Easy", points: 50,
+                desc: "Scenario: Users report that typing website domain names into their browser fails, although direct IP pings work correctly. Which internet protocol responsible for translating hostnames to IP addresses would you choose to troubleshoot?",
                 hint: "Three words: Domain ... System.",
                 options: ["Domain Name System", "Data Network Service", "Digital Name Server", "Dynamic Node Switch"],
                 correct: 0, flag: "DECODE{domain_name_system}",
@@ -1524,8 +1549,8 @@
                 explanation: "DNS stands for Domain Name System. Standard DNS is unencrypted, allowing eavesdroppers or malicious DNS servers to hijack traffic."
             },
             "c2_4": {
-                cat: 2, title: "Insecure File Transfer", diff: "Medium", points: 100,
-                desc: "To safely transfer files over an encrypted SSH tunnel instead of insecure plaintext FTP, which protocol should you use?",
+                cat: 2, title: "Scenario 8: Secure Confidential File Dispatch", diff: "Medium", points: 100,
+                desc: "Scenario: Your enterprise must transfer confidential payroll archives between servers over an untrusted WAN, and unencrypted FTP is strictly disallowed by security policy. Which SSH-tunneled secure file transfer protocol would you choose?",
                 hint: "It adds an 'S' in front of FTP.",
                 options: ["TFTP", "SFTP", "Telnet", "HTTP"],
                 correct: 1, flag: "DECODE{sftp_is_secure_ftp}",
@@ -1535,8 +1560,8 @@
 
             // Category 3: Threats & Attacks
             "c3_1": {
-                cat: 3, title: "Deceptive Emails", diff: "Easy", points: 50,
-                desc: "An attacker sends a fraudulent email posing as your college bank, urging you to 'verify your password immediately'. What attack is this?",
+                cat: 3, title: "Scenario 9: Fraudulent Account Verification Alert", diff: "Easy", points: 50,
+                desc: "Scenario: An employee receives an urgent email appearing to come from the university payroll department warning that their direct deposit is blocked unless they click an external link to verify their login. If classifying this attack, what would you choose?",
                 hint: "Sounds like a sport involving a fishing rod and bait!",
                 options: ["SQL Injection", "Phishing", "DDoS", "Buffer Overflow"],
                 correct: 1, flag: "DECODE{phishing_attack}",
@@ -1544,8 +1569,8 @@
                 explanation: "Phishing tricks victims into sharing sensitive credentials or opening infected attachments by impersonating trusted entities."
             },
             "c3_2": {
-                cat: 3, title: "Encrypted Files & Extortion", diff: "Easy", points: 50,
-                desc: "Malware infects a computer, encrypts all personal files, and displays a note demanding cryptocurrency to decrypt them. What is it?",
+                cat: 3, title: "Scenario 10: Midnight System Lockout Incident", diff: "Easy", points: 50,
+                desc: "Scenario: Hospital workstations suddenly display locked splash screens, documents have been encrypted with AES keys, and attackers leave a message demanding 5 Bitcoins for recovery. Which malware category would you choose to identify this incident?",
                 hint: "Combines the word for an extortion payment + 'ware'.",
                 options: ["Adware", "Spyware", "Ransomware", "Trojan"],
                 correct: 2, flag: "DECODE{ransomware}",
@@ -1553,8 +1578,8 @@
                 explanation: "Ransomware holds your data hostage. Frequent offline backups and avoiding suspicious email attachments are critical defenses."
             },
             "c3_3": {
-                cat: 3, title: "The Human Weakness", diff: "Medium", points: 100,
-                desc: "Manipulating individuals psychologically to reveal confidential credentials rather than hacking computer code is known as what?",
+                cat: 3, title: "Scenario 11: The Executive Impostor Phone Call", diff: "Medium", points: 100,
+                desc: "Scenario: A Help Desk technician receives an urgent call from someone claiming to be the CEO stranded at an airport terminal, pressuring the technician to bypass multi-factor authentication and reset their password. What attack vector would you choose?",
                 hint: "It applies engineering principles to social psychology.",
                 options: ["Social Engineering", "Hardware Keylogging", "Port Scanning", "Network Sniffing"],
                 correct: 0, flag: "DECODE{social_engineering}",
@@ -1562,8 +1587,8 @@
                 explanation: "Social engineering exploits human trust, urgency, or authority. Humans are frequently the most exploited vulnerability in security."
             },
             "c3_4": {
-                cat: 3, title: "Flooding the Server", diff: "Easy", points: 50,
-                desc: "A massive botnet of thousands of compromised devices floods a server with bogus traffic to crash it. What is this attack called?",
+                cat: 3, title: "Scenario 12: Massive Traffic Saturation Incident", diff: "Easy", points: 50,
+                desc: "Scenario: During high-stakes event registration, a distributed botnet of compromised IoT webcams sends millions of spoofed requests per second, taking the registration portal offline. If identifying this attack vector, what would you choose?",
                 hint: "Stands for Distributed Denial of Service (4 letters).",
                 options: ["Cross-Site Scripting", "DDoS Attack", "Zero-Day Exploit", "Man-in-the-Middle"],
                 correct: 1, flag: "DECODE{ddos_attack}",
@@ -1573,8 +1598,8 @@
 
             // Category 4: Password Security
             "c4_1": {
-                cat: 4, title: "World's Most Common Password", diff: "Easy", points: 50,
-                desc: "According to global cybersecurity breach reports, what sequence of consecutive numbers is consistently the most hacked password?",
+                cat: 4, title: "Scenario 13: Auditing Weak User Credentials", diff: "Easy", points: 50,
+                desc: "Scenario: While performing an internal credential stuffing audit against user accounts, you search for the most frequently breached sequential numeric password globally. Which vulnerable sequence would you choose to test first?",
                 hint: "Six sequential digits starting from 1.",
                 options: ["password99", "123456", "admin2026", "qwerty123"],
                 correct: 1, flag: "DECODE{123456}",
@@ -1582,8 +1607,8 @@
                 explanation: "'123456' can be cracked in less than a millisecond. Always use strong, unique passphrases with special symbols and letters."
             },
             "c4_2": {
-                cat: 4, title: "Exhaustive Guessing Attack", diff: "Easy", points: 50,
-                desc: "An automated script methodically tests every single possible alphanumeric character combination until finding the right password. What is this?",
+                cat: 4, title: "Scenario 14: Defending Against High-Speed Guessing", diff: "Easy", points: 50,
+                desc: "Scenario: Authentication server logs reveal an attacker script cycling through every possible permutation of alphabetical and numeric characters at 25,000 attempts per second. Which attack methodology would you choose to describe this activity?",
                 hint: "It relies on sheer computational force rather than clever tricks.",
                 options: ["Brute Force Attack", "Social Phishing", "Eavesdropping", "ARP Poisoning"],
                 correct: 0, flag: "DECODE{brute_force_attack}",
@@ -1591,8 +1616,8 @@
                 explanation: "Brute Force attacks systematically test all possible passwords. Account lockouts, rate limiting, and 2FA successfully defeat it."
             },
             "c4_3": {
-                cat: 4, title: "The Dual Defense (2FA)", diff: "Medium", points: 100,
-                desc: "What security mechanism requires both your master password AND a one-time timed verification code from an authenticator app?",
+                cat: 4, title: "Scenario 15: Neutralizing Stolen Master Passwords", diff: "Medium", points: 100,
+                desc: "Scenario: An executive's master password was compromised in an external credential dump. To ensure an attacker still cannot log in without a physical time-based code from the executive's device, which defense mechanism would you choose to enforce?",
                 hint: "Commonly known as 2FA or MFA.",
                 options: ["Single Sign-On", "Two-Factor Authentication (2FA)", "CAPTCHA", "Password Recovery"],
                 correct: 1, flag: "DECODE{two_factor_authentication}",
@@ -1600,8 +1625,8 @@
                 explanation: "Two-Factor Authentication (2FA) ensures that even if an attacker steals your password, they cannot gain access without your second device factor."
             },
             "c4_4": {
-                cat: 4, title: "Default Router Passwords", diff: "Easy", points: 50,
-                desc: "When setting up a new Wi-Fi router with default credentials 'admin' and 'admin', what is the critical first action you should take?",
+                cat: 4, title: "Scenario 16: Out-of-the-Box Hardware Hardening", diff: "Easy", points: 50,
+                desc: "Scenario: You just unboxed a new perimeter Wi-Fi router configured by default with username 'admin' and password 'admin'. Before connecting the device to the live network, which critical security action would you choose to execute first?",
                 hint: "Leaving factory defaults allows anyone on your network to hijack your router.",
                 options: ["Keep it for convenience", "Change the default password", "Disable the firewall", "Turn off encryption"],
                 correct: 1, flag: "DECODE{change_default_passwords}",
@@ -1611,8 +1636,8 @@
 
             // Category 5: Web Security Basics
             "c5_1": {
-                cat: 5, title: "View the Source Code", diff: "Easy", points: 50,
-                desc: "Where do careless web developers sometimes leave internal comments, database credentials, or test flags exposed to any visitor?",
+                cat: 5, title: "Scenario 17: Inspecting Client-Side Source Secrets", diff: "Easy", points: 50,
+                desc: "Scenario: During a black-box web evaluation, you inspect client-side markup where rushed developers often leave internal notes, test credentials, or staging flags without rendering them on screen. Where in the page structure would you choose to look?",
                 hint: "Written between <!-- and --> inside the webpage HTML.",
                 options: ["Server RAM", "HTML Comments in Source Code", "Encrypted SSL Session", "DNS Records"],
                 correct: 1, flag: "DECODE{html_comments_are_not_hidden}",
@@ -1620,8 +1645,8 @@
                 explanation: "HTML comments (<!-- ... -->) are delivered directly to the browser! Anyone can right-click 'View Page Source' and read them."
             },
             "c5_2": {
-                cat: 5, title: "Stolen Cookies", diff: "Medium", points: 100,
-                desc: "If an attacker sniffs your active authentication cookie over an unencrypted network, what attack allows them to hijack your session?",
+                cat: 5, title: "Scenario 18: Session Cookie Interception", diff: "Medium", points: 100,
+                desc: "Scenario: An attacker captures an authenticated user's session cookie over an insecure transmission channel and injects it into their own browser to impersonate the user without ever knowing their password. What attack type would you choose?",
                 hint: "It hijacks your active logged-in browser session.",
                 options: ["Session Hijacking", "SQL Injection", "DDoS", "Denial of Service"],
                 correct: 0, flag: "DECODE{session_hijacking}",
@@ -1629,8 +1654,8 @@
                 explanation: "Session hijacking occurs when an attacker obtains your session identifier cookie, allowing them to impersonate you without needing your password."
             },
             "c5_3": {
-                cat: 5, title: "Inspect Element & Hidden CSS", diff: "Easy", points: 50,
-                desc: "If a webpage contains secret data inside an element styled with CSS 'display: none;', can a visitor still view it?",
+                cat: 5, title: "Scenario 19: Evaluating Hidden CSS Visibility", diff: "Easy", points: 50,
+                desc: "Scenario: A junior web designer tries to hide confidential admin text by wrapping it in a container styled with CSS 'display: none;'. As a cybersecurity analyst reviewing whether this data remains accessible to any visitor, which conclusion would you choose?",
                 hint: "CSS only affects graphical rendering; the HTML text is still downloaded.",
                 options: ["No, hidden CSS deletes the data", "Yes, DOM elements still exist", "Only with root server rights", "Only after decrypting HTTPS"],
                 correct: 1, flag: "DECODE{hidden_divs_are_visible_in_dom}",
@@ -1638,8 +1663,8 @@
                 explanation: "Setting 'display: none' does NOT hide sensitive data! Anyone can inspect the DOM tree using browser DevTools and read the secret."
             },
             "c5_4": {
-                cat: 5, title: "Check the Browser Console", diff: "Easy", points: 50,
-                desc: "Which browser DevTools tab should security researchers check to see debugging output, developer error logs, or leaked variables?",
+                cat: 5, title: "Scenario 20: Uncovering Leaked Runtime Diagnostics", diff: "Easy", points: 50,
+                desc: "Scenario: You are auditing a web application for sensitive client-side data leaks. In which browser Developer Tools panel would you choose to look to uncover active JavaScript log messages, leaked token outputs, and runtime debug variables?",
                 hint: "Accessed by opening DevTools (F12) and clicking the Console tab.",
                 options: ["Memory Profiler", "Console Tab", "Network Waterfall", "Performance Tab"],
                 correct: 1, flag: "DECODE{console_logs_reveal_secrets}",
@@ -1649,8 +1674,8 @@
 
             // Category 6: Security Awareness
             "c6_1": {
-                cat: 6, title: "The Network Barrier", diff: "Easy", points: 50,
-                desc: "What security system monitors incoming and outgoing network traffic and blocks unauthorized packets based on defined rules?",
+                cat: 6, title: "Scenario 21: Perimeter Network Traffic Filtering", diff: "Easy", points: 50,
+                desc: "Scenario: Your network architecture requires a dedicated security gateway between the public internet and internal databases to filter packets, block unauthorized ports, and drop suspicious connections. Which security appliance would you choose to deploy?",
                 hint: "It acts like a protective barrier preventing digital fires from spreading.",
                 options: ["Firewall", "Web Browser", "Graphics Driver", "Search Engine"],
                 correct: 0, flag: "DECODE{firewall}",
@@ -1658,8 +1683,8 @@
                 explanation: "A Firewall filters network traffic between trusted internal networks and untrusted external networks like the open internet."
             },
             "c6_2": {
-                cat: 6, title: "Encrypted Internet Tunnel", diff: "Easy", points: 50,
-                desc: "When using public airport or cafe Wi-Fi, what tool encrypts all your device's traffic through a secure remote tunnel?",
+                cat: 6, title: "Scenario 22: Securing Remote Staff on Public Wi-Fi", diff: "Easy", points: 50,
+                desc: "Scenario: Traveling employees must access internal intranet resources while connected to untrusted hotel and airport Wi-Fi hotspots. To tunnel and encrypt all their device's traffic against packet interception, which tool would you choose?",
                 hint: "Three letters: Virtual Private Network.",
                 options: ["FTP Client", "VPN (Virtual Private Network)", "Torrent Downloader", "P2P Client"],
                 correct: 1, flag: "DECODE{vpn_virtual_private_network}",
@@ -1667,8 +1692,8 @@
                 explanation: "A VPN encrypts all internet traffic from your machine, protecting your data from eavesdroppers or rogue access points on public Wi-Fi."
             },
             "c6_3": {
-                cat: 6, title: "The Padlock Certificate", diff: "Medium", points: 100,
-                desc: "What digital certificate validates a website's cryptographic identity and activates the secure HTTPS padlock in the address bar?",
+                cat: 6, title: "Scenario 23: Authenticating Server Identity & Encryption", diff: "Medium", points: 100,
+                desc: "Scenario: You are deploying a new web service and must prove the server's authentic cryptographic identity to client browsers while enabling HTTPS symmetric session encryption. Which digital certificate would you choose to install on the web server?",
                 hint: "Issued by Certificate Authorities (CA) like Let's Encrypt.",
                 options: ["SSL/TLS Certificate", "DNS Record", "Cookie Policy", "MAC Address"],
                 correct: 0, flag: "DECODE{ssl_tls_certificate}",
@@ -1676,8 +1701,8 @@
                 explanation: "SSL/TLS certificates authenticate web server identities and enable encrypted symmetric communication using public-key cryptography."
             },
             "c6_4": {
-                cat: 6, title: "Patching Known Vulnerabilities", diff: "Easy", points: 50,
-                desc: "Software vendors release regular system updates to fix discovered security holes before attackers can exploit them. What is this called?",
+                cat: 6, title: "Scenario 24: Remediation of Discovered System Flaws", diff: "Easy", points: 50,
+                desc: "Scenario: A critical zero-day vulnerability is publicly disclosed in your web server software, and threat actors are actively scanning the internet to exploit it. When the vendor publishes a verified software update to fix the hole, which action would you choose to execute immediately?",
                 hint: "Like patching a leak or hole.",
                 options: ["Security Patch", "Beta Release", "Adware Extension", "Trial Version"],
                 correct: 0, flag: "DECODE{security_patch}",
@@ -1713,6 +1738,190 @@
             return Object.keys(userAnswers).filter(k => userAnswers[k] && userAnswers[k].isCorrect).length;
         }
 
+        // Session Start Time Tracking (for Google Sheets Start_Time, End_Time, Time_Taken)
+        let sessionStartTime = localStorage.getItem(CONFIG.SESSION_START_KEY);
+        if (!sessionStartTime) {
+            sessionStartTime = new Date().toISOString();
+            localStorage.setItem(CONFIG.SESSION_START_KEY, sessionStartTime);
+        }
+
+        function formatDuration(ms) {
+            if (!ms || ms < 0) return '0s';
+            const totalSecs = Math.floor(ms / 1000);
+            const hrs = Math.floor(totalSecs / 3600);
+            const mins = Math.floor((totalSecs % 3600) / 60);
+            const secs = totalSecs % 60;
+            if (hrs > 0) return `${hrs}h ${mins}m ${secs}s`;
+            if (mins > 0) return `${mins}m ${secs}s`;
+            return `${secs}s`;
+        }
+
+        // === Offline Submission Queue & Google Apps Script Sync Engine ===
+        function getOfflineQueue() {
+            try {
+                return JSON.parse(localStorage.getItem(CONFIG.QUEUE_KEY) || '[]');
+            } catch(e) {
+                return [];
+            }
+        }
+
+        function saveOffline(data) {
+            const queue = getOfflineQueue();
+            data._queue_id = 'OFFLINE-' + Date.now() + '-' + Math.floor(1000 + Math.random() * 9000);
+            data._queued_at = new Date().toISOString();
+            queue.push(data);
+            localStorage.setItem(CONFIG.QUEUE_KEY, JSON.stringify(queue));
+            console.log(`%c[OFFLINE QUEUE] Stored submission in localStorage queue (${queue.length} pending):`, "color: #ff6a00; font-weight: bold;", data);
+            updateOfflineBadge();
+            return data;
+        }
+
+        function updateOfflineBadge() {
+            const queue = getOfflineQueue();
+            const badge = document.getElementById('offlineQueueBadge');
+            const countEl = document.getElementById('queueCount');
+            if (badge) {
+                if (queue.length > 0) {
+                    badge.style.display = 'inline-flex';
+                    if (countEl) countEl.textContent = queue.length;
+                    badge.title = `${queue.length} submission(s) queued offline. Click to sync with Google Sheet now.`;
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+
+        let isSyncingQueue = false;
+        async function syncQueue() {
+            if (isSyncingQueue) return;
+            if (!navigator.onLine) {
+                console.log('[OFFLINE QUEUE] Device is currently offline. Will sync when connection is restored.');
+                updateOfflineBadge();
+                return;
+            }
+
+            const queue = getOfflineQueue();
+            if (!queue || queue.length === 0) {
+                updateOfflineBadge();
+                return;
+            }
+
+            if (!CONFIG.API_URL || CONFIG.API_URL.includes('YOUR_APPS_SCRIPT_DEPLOYMENT_ID')) {
+                console.log('[OFFLINE QUEUE] Google Apps Script URL not configured yet. Items remain safely stored in localStorage queue.');
+                updateOfflineBadge();
+                return;
+            }
+
+            isSyncingQueue = true;
+            console.log(`%c[OFFLINE QUEUE] Attempting to sync ${queue.length} queued scorecards to Google Sheets...`, "color: #39ff14; font-weight: bold;");
+
+            const remaining = [];
+            for (let i = 0; i < queue.length; i++) {
+                const item = queue[i];
+                try {
+                    const response = await fetch(CONFIG.API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(item)
+                    });
+                    
+                    let resJson = null;
+                    try {
+                        const txt = await response.text();
+                        resJson = JSON.parse(txt);
+                    } catch(e){}
+
+                    console.log(`[OFFLINE QUEUE] Synced item ${item.Team_ID || item.id} to Google Sheet:`, resJson);
+                } catch(syncErr) {
+                    console.warn(`[OFFLINE QUEUE] Sync failed for ${item.Team_ID || item.id}, retaining in queue:`, syncErr.message);
+                    remaining.push(item);
+                }
+            }
+
+            localStorage.setItem(CONFIG.QUEUE_KEY, JSON.stringify(remaining));
+            isSyncingQueue = false;
+            updateOfflineBadge();
+
+            if (remaining.length === 0 && queue.length > 0) {
+                console.log('%c[OFFLINE QUEUE] All queued scorecards successfully synchronized to Google Sheet!', "color: #39ff14; font-weight: bold;");
+                if (typeof showShareFeedback === 'function') {
+                    showShareFeedback('✅ All queued submissions synced to Google Sheet!');
+                }
+            }
+        }
+
+        // Send submission to Google Apps Script Web App (Step-by-step pipeline)
+        function processSubmission(data) {
+            console.log(`%c[SHEET PROCESS] Processing submission for Google Sheet:`, "color: #00f0ff; font-weight: bold;", data);
+
+            if (!navigator.onLine) {
+                console.warn('[SHEET PROCESS] Device is offline. Pushing to localStorage queue.');
+                saveOffline(data);
+                return Promise.resolve({ status: 'offline_queued', message: 'Saved to offline queue (offline)' });
+            }
+
+            if (!CONFIG.API_URL || CONFIG.API_URL.includes('YOUR_APPS_SCRIPT_DEPLOYMENT_ID')) {
+                console.warn('[SHEET PROCESS] Google Apps Script URL not configured yet. Saving to offline queue.');
+                saveOffline(data);
+                return Promise.resolve({ status: 'offline_queued', message: 'Apps Script URL not set yet' });
+            }
+
+            // Using text/plain content type prevents browser CORS preflight OPTIONS check with Google Apps Script
+            return fetch(CONFIG.API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.text())
+            .then(txt => {
+                let parsed;
+                try {
+                    parsed = JSON.parse(txt);
+                } catch(e) {
+                    parsed = { status: 'success', raw: txt };
+                }
+                console.log('[SHEET PROCESS] Google Sheet responded:', parsed);
+                return parsed;
+            })
+            .catch(err => {
+                console.warn('[SHEET PROCESS ERROR] Submission failed, saving offline to retry later:', err);
+                saveOffline(data);
+                return { status: 'offline_queued', error: err.message };
+            });
+        }
+
+        // Configuration UI Prompt
+        function promptSetSheetUrl() {
+            const current = localStorage.getItem('da_apps_script_url') || CONFIG.API_URL;
+            const entered = prompt('Enter your deployed Google Apps Script Web App URL (.../exec):\n(See GOOGLE_SHEET_SETUP.md for instructions)', current);
+            if (entered !== null) {
+                const trimmed = entered.trim();
+                if (trimmed) {
+                    CONFIG.API_URL = trimmed;
+                    localStorage.setItem('da_apps_script_url', trimmed);
+                    alert('Google Apps Script URL saved successfully!\n' + trimmed);
+                    syncQueue();
+                } else {
+                    localStorage.removeItem('da_apps_script_url');
+                    alert('Reset to default Apps Script URL.');
+                }
+            }
+        }
+
+        // Automatic retry when coming back online
+        window.addEventListener('online', () => {
+            console.log('%c[NETWORK] Connection restored. Triggering offline queue sync...', "color: #39ff14; font-weight: bold;");
+            syncQueue();
+        });
+
+        // Initial offline queue check on script load
+        try {
+            updateOfflineBadge();
+            if (typeof navigator !== 'undefined' && navigator.onLine) {
+                setTimeout(syncQueue, 1200);
+            }
+        } catch(e) {}
+
         function updateScoreboard() {
             const scoreEl = document.getElementById('navScore');
             const solvedEl = document.getElementById('navSolved');
@@ -1729,6 +1938,9 @@
                     badge.classList.toggle('complete', catSolved === catTotal);
                 }
             }
+
+            // Update offline sync badge counter
+            updateOfflineBadge();
         }
 
         // === Audio Synthesizer (Arcade Victory Chime) ===
@@ -1891,18 +2103,18 @@
                 revealBoxHTML = `
                     <div class="revealed-answer-box ${isCorrect ? 'correct' : 'wrong'}">
                         <div class="ra-header">
-                            <span class="ra-title">${isCorrect ? '✅ CORRECT! (+' + ch.points + ' PTS)' : '❌ LOCKED IN (INCORRECT)'}</span>
+                            <span class="ra-title">${isCorrect ? '✅ DECISION VERIFIED! (+' + ch.points + ' PTS)' : '❌ LOCKED IN (SUB-OPTIMAL DECISION)'}</span>
                             <span class="ra-flag">🚩 ${ch.flag}</span>
                         </div>
-                        <div><strong>Correct Answer:</strong> [${correctLetter}] ${correctText}</div>
-                        <div class="ra-exp">💡 <strong>Cybersecurity Takeaway:</strong> ${ch.explanation}</div>
+                        <div><strong>Optimal Scenario Decision:</strong> [${correctLetter}] ${correctText}</div>
+                        <div class="ra-exp">💡 <strong>Scenario Takeaway:</strong> ${ch.explanation}</div>
                     </div>
                 `;
             }
 
             // Hint Box & Options visibility
             const hintBoxClass = isUnlocked ? 'task-hint-box open' : 'task-hint-box';
-            const hintBtnText = isUnlocked ? '💡 Hint & Options Revealed' : '💡 Need a Hint? (Reveal Options)';
+            const hintBtnText = isUnlocked ? '💡 Clues & Scenario Choices Revealed' : '💡 Need Clues? (Reveal Scenario Choices)';
             const optionsClass = isUnlocked ? 'options-zone open' : 'options-zone';
             const inputVal = (hasAnswered && ans.typedVal) ? ans.typedVal : '';
 
@@ -1917,35 +2129,35 @@
                     </div>
                     <p class="challenge-desc">${ch.desc}</p>
                     
-                    <!-- Space for Answer (Direct Submission) -->
+                    <!-- Space for Decision (Direct Submission) -->
                     <div class="task-input-row" id="input-row-${id}">
                         <input type="text" class="task-ans-input" id="ans-input-${id}" 
-                               placeholder="Type your answer or flag here..." 
+                               placeholder="Enter your scenario decision or flag..." 
                                value="${inputVal}"
                                ${hasAnswered ? 'disabled' : ''} 
                                onkeydown="if(event.key==='Enter')submitTypedAnswer('${id}')">
                         <button type="button" class="task-submit-btn" id="btn-sub-${id}" 
                                 onclick="submitTypedAnswer('${id}')" 
                                 ${hasAnswered ? 'disabled' : ''}>
-                            Submit Answer
+                            Submit Decision
                         </button>
                     </div>
                     <div class="task-feedback" id="task-fb-${id}"></div>
 
-                    <!-- Hint Button (Reveals Hint AND Options if not known) -->
+                    <!-- Clues Button (Reveals Clue AND Choices) -->
                     <div class="task-hint-wrap">
                         <button type="button" class="hint-toggle-btn" id="hint-btn-${id}" onclick="unlockHintAndOptions('${id}')">
                             ${hintBtnText}
                         </button>
                         <div class="${hintBoxClass}" id="hint-${id}">
-                            💡 <strong>Cybersecurity Hint:</strong> ${ch.hint}
+                            💡 <strong>Scenario Clue:</strong> ${ch.hint}
                         </div>
                     </div>
 
-                    <!-- MCQ Options (Revealed after clicking hint) -->
+                    <!-- Choices Zone (Revealed after clicking clue) -->
                     <div class="${optionsClass}" id="opts-${id}">
                         <div class="options-heading">
-                            🎯 OR CHOOSE AN OPTION BELOW (LOCKED ON CLICK):
+                            🎯 IN THIS SCENARIO, WHAT WOULD YOU CHOOSE? (SELECT TO LOCK IN):
                         </div>
                         ${optionsHTML}
                     </div>
@@ -1987,7 +2199,7 @@
             if (!clean) {
                 if (fb) {
                     fb.className = 'task-feedback error';
-                    fb.textContent = '⚠️ Please enter an answer or click "Need a Hint?" below!';
+                    fb.textContent = '⚠️ Please enter your scenario decision or click "Need Clues?" below!';
                 }
                 if (input) { input.classList.add('shake'); setTimeout(() => input.classList.remove('shake'), 400); }
                 return;
@@ -2026,7 +2238,7 @@
                 if (input) { input.classList.add('shake'); setTimeout(() => input.classList.remove('shake'), 400); }
                 if (fb) {
                     fb.className = 'task-feedback error';
-                    fb.textContent = '❌ Incorrect answer! Don\'t know? Hit "Need a Hint? (Reveal Options)" below!';
+                    fb.textContent = '❌ Sub-optimal decision! Don\'t know? Click "Need Clues? (Reveal Scenario Choices)" below!';
                 }
             }
         }
@@ -2045,7 +2257,7 @@
                 opts.classList.add('open');
                 opts.style.animation = 'fadeIn 0.35s ease';
             }
-            if (btn) btn.textContent = '💡 Hint & Options Revealed';
+            if (btn) btn.textContent = '💡 Clues & Scenario Choices Revealed';
 
             // Adjust category accordion height so options fit smoothly without clipping
             const item = document.getElementById(`item-${id}`);
@@ -2465,38 +2677,26 @@
             });
         }
 
-        function shareToWhatsApp() {
+        function dispatchToWhatsApp() {
             saveParticipantInfo();
-            const solved = getSolvedCount();
-            const tier = getSecurityTier(totalScore).title;
+            showShareFeedback(`⏳ Transmitting score report to Symposium Coordinator WhatsApp...`);
 
-            let text = '';
-            if (currentScorecardMode === 'team') {
-                const team = document.getElementById('sheetTeamName').value.trim() || 'Cyber Team';
-                const college = document.getElementById('sheetTeamCollege').value.trim() || 'College Symposium';
-                const m1 = document.getElementById('sheetMember1').value.trim() || 'Lead';
-                const m2 = document.getElementById('sheetMember2').value.trim() || 'Member 2';
-                const m3 = document.getElementById('sheetMember3').value.trim() || 'Member 3';
-
-                text = `🏆 *DECODE ARENA 2026 — Official Team Score Sheet* 🏆\n\n👥 *Team:* ${team}\n🏫 *College:* ${college}\n👤 *Members:* 1. ${m1} (Lead), 2. ${m2}, 3. ${m3}\n🎯 *Total Score:* ${totalScore} PTS\n🚩 *Solved:* ${solved}/24\n🛡️ *Security Tier:* ${tier}\n📅 *Event:* Cybersecurity Symposium 2026\n\nCan your team beat our score? Decode Arena Hack The Code!`;
-            } else {
-                const name = document.getElementById('sheetParticipantName').value.trim() || 'Hacker';
-                const college = document.getElementById('sheetCollegeName').value.trim() || 'Symposium Participant';
-
-                text = `🏆 *DECODE ARENA 2026 — Cybersecurity Score Sheet* 🏆\n\n👤 *Participant:* ${name}\n🏫 *College:* ${college}\n🎯 *Total Score:* ${totalScore} PTS\n🚩 *Solved Challenges:* ${solved}/24\n🛡️ *Security Tier:* ${tier}\n📅 *Event:* Cybersecurity Symposium 2026\n\nCan you beat my score? Test your hacking skills at Decode Arena!`;
-            }
-
-            const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
-            window.open(url, '_blank');
-
-            // Automatically store WhatsApp shared data in database/arena_database.json!
             storeSubmissionToDatabase({
-                action: 'Shared to WhatsApp',
+                action: 'Dispatched to Coordinator WhatsApp',
                 requireFields: false,
                 resetAfter: false,
                 feedbackTarget: 'share',
-                callerMessage: 'Shared to WhatsApp'
+                callerMessage: 'Dispatched to Coordinator WhatsApp'
+            }).then(() => {
+                showShareFeedback(`✅ Score report dispatched directly to Symposium Coordinator WhatsApp!`);
+            }).catch(() => {
+                showShareFeedback(`✅ Score report saved & queued for Coordinator WhatsApp!`);
             });
+        }
+
+        // Backward-compatible alias (dispatches without launching external WhatsApp tab)
+        function shareToWhatsApp() {
+            return dispatchToWhatsApp();
         }
 
         function printScoreSheet() {
@@ -2769,13 +2969,13 @@
             return (window.location.origin || '') + '/api/submit-score';
         }
 
-        // Unified Score Record Persister: Stores directly to database/arena_database.json & schema.sql
+        // Unified Score Record Persister: Stores directly to database/arena_database.json, dispatches to Coordinator, and syncs with Google Sheets
         function storeSubmissionToDatabase(options = {}) {
             saveParticipantInfo();
             const isTeam = (currentScorecardMode === 'team');
             const actionType = options.action || 'Scorecard Shared';
             const resetAfter = !!options.resetAfter;
-            const feedbackTarget = options.feedbackTarget || 'submit'; // 'submit', 'share', 'both'
+            const feedbackTarget = options.feedbackTarget || 'submit'; // 'submit', 'share', 'both', 'none'
 
             let name = '';
             let college = '';
@@ -2828,6 +3028,15 @@
 
             const now = new Date();
             const timeStr = now.toISOString().split('T')[0] + ' ' + now.toTimeString().split(' ')[0].substring(0, 5);
+            const endTimeIso = now.toISOString();
+            const startTimeIso = sessionStartTime || localStorage.getItem(CONFIG.SESSION_START_KEY) || endTimeIso;
+            let timeDiffMs = new Date(endTimeIso) - new Date(startTimeIso);
+            if (isNaN(timeDiffMs) || timeDiffMs < 0) timeDiffMs = 0;
+            const timeTakenStr = formatDuration(timeDiffMs);
+
+            const totalCount = (typeof CHALLENGES === 'object' && CHALLENGES) ? Object.keys(CHALLENGES).length : 24;
+            const correctCount = typeof getSolvedCount === 'function' ? getSolvedCount() : 0;
+            const wrongCount = Math.max(0, Object.keys(userAnswers || {}).filter(k => userAnswers[k] && !userAnswers[k].isCorrect).length);
 
             // Construct new unencrypted database record
             const newRecord = {
@@ -2837,9 +3046,12 @@
                 college: college,
                 members: members,
                 score: totalScore,
-                solved: `${getSolvedCount()}/24`,
+                solved: `${correctCount}/${totalCount}`,
                 tier: getSecurityTier(totalScore).title,
                 action: actionType,
+                start_time: startTimeIso,
+                end_time: endTimeIso,
+                time_taken: timeTakenStr,
                 encryption: "NONE (Unencrypted Raw Storage)",
                 timestamp: timeStr,
                 stored_image_format: "image/jpeg;base64",
@@ -2852,11 +3064,37 @@
             localStorage.setItem('da_program_database', JSON.stringify(db));
             console.log(`%c[PROGRAM DB] Storing ${actionType} record for ${name} (${totalScore} PTS):`, "color: #00f0ff; font-weight: bold;", newRecord);
 
+            // Construct Google Apps Script sheet payload matching the schema
+            const sheetPayload = {
+                Timestamp: endTimeIso,
+                Team_ID: newRecord.id,
+                Team_Name: name,
+                College: college,
+                Members: members.join(', '),
+                Mode: currentScorecardMode,
+                Round: CONFIG.ROUND_NAME || 'Round 1 - Decode Arena',
+                Score: totalScore,
+                Total_Questions: totalCount,
+                Correct: correctCount,
+                Wrong: wrongCount,
+                Security_Tier: newRecord.tier,
+                Start_Time: startTimeIso,
+                End_Time: endTimeIso,
+                Time_Taken: timeTakenStr,
+                Action: actionType
+            };
+
+            // Transmit to Google Sheet (processes online or automatically safely enqueues in localStorage queue if offline/unset)
+            const sheetPromise = processSubmission(sheetPayload).catch(sheetErr => {
+                console.warn('[SHEET SUBMISSION CAUGHT]', sheetErr);
+                return { status: 'offline_queued', error: sheetErr.message };
+            });
+
             const submitFb = document.getElementById('submitDbFeedback');
             if (feedbackTarget === 'submit' || feedbackTarget === 'both') {
                 if (submitFb) {
                     submitFb.className = 'submit-db-feedback';
-                    submitFb.innerHTML = '⏳ Storing in Project Database (database/arena_database.json)...';
+                    submitFb.innerHTML = '⏳ Storing in Project Database &amp; Transmitting Scorecard...';
                 }
             }
 
@@ -2874,47 +3112,53 @@
                 });
             }
 
-            return sendPayload(primaryUrl)
-                .catch(err => {
-                    if (primaryUrl !== fallbackUrl) {
-                        return sendPayload(fallbackUrl);
-                    }
-                    throw err;
-                })
-                .then(data => {
-                    if (data && data.success) {
-                        if (feedbackTarget === 'submit' || feedbackTarget === 'both') {
-                            if (submitFb) {
-                                submitFb.className = 'submit-db-feedback success';
-                                submitFb.innerHTML = `✅ <strong>Stored in Project Database!</strong><br>Saved to <code>database/arena_database.json</code> &amp; <code>schema.sql</code>.<br>Certificate saved to <code>${data.image_file || 'database/certificates/'}</code>` +
-                                    (resetAfter ? `<br><span class="db-reset-notice">🔄 Score and challenges have been reset to 0 for the next attempt!</span>` : '');
-                            }
-                        }
-                        if (feedbackTarget === 'share' || feedbackTarget === 'both') {
-                            showShareFeedback(`✅ ${options.callerMessage || 'Shared data'} & saved to arena_database.json!`);
-                        }
-                    }
-                    if (resetAfter) {
-                        resetScoreAndSession(false);
-                    }
-                    return data;
-                })
-                .catch(err => {
-                    console.warn('[PROGRAM DB SYNC]', err);
+            const dbPromise = sendPayload(primaryUrl).catch(err => {
+                if (primaryUrl !== fallbackUrl) {
+                    return sendPayload(fallbackUrl);
+                }
+                throw err;
+            });
+
+            return Promise.allSettled([dbPromise, sheetPromise]).then(([dbResult, sheetResult]) => {
+                const dbData = (dbResult.status === 'fulfilled') ? dbResult.value : null;
+                const sheetData = (sheetResult.status === 'fulfilled') ? sheetResult.value : null;
+
+                const isSheetSynced = sheetData && (sheetData.status === 'success' || (sheetData.raw && !sheetData.raw.includes('error')));
+                const sheetNotice = isSheetSynced
+                    ? `<br>📊 <strong>Synced to Google Sheet (ROUND_DATA)!</strong>`
+                    : `<br>📊 <strong>Google Sheet:</strong> Saved in offline queue for automatic sync.`;
+
+                if (dbData && dbData.success) {
                     if (feedbackTarget === 'submit' || feedbackTarget === 'both') {
                         if (submitFb) {
                             submitFb.className = 'submit-db-feedback success';
-                            submitFb.innerHTML = `✅ <strong>Stored in Local Database!</strong> (Local server port 3000 offline or deployed static).<br><button type="button" class="btn-db-action btn-db-export-action" onclick="exportProgramDatabaseJSON()">📥 Download updated arena_database.json</button>` +
-                                (resetAfter ? `<br><span class="db-reset-notice">🔄 Score and challenges have been reset to 0 for the next attempt!</span>` : '');
+                            submitFb.innerHTML = `✅ <strong>Stored in Project Database!</strong><br>Saved to <code>database/arena_database.json</code> &amp; <code>schema.sql</code>.<br>Certificate saved to <code>${dbData.image_file || 'database/certificates/'}</code><br>📲 <strong>Result dispatched directly to Symposium Coordinator WhatsApp!</strong>${sheetNotice}` +
+                                (resetAfter ? `<br><span class="db-reset-notice">🔄 Score and scenarios have been reset to 0 for the next attempt!</span>` : '');
                         }
                     }
                     if (feedbackTarget === 'share' || feedbackTarget === 'both') {
-                        showShareFeedback(`📋 ${options.callerMessage || 'Shared'} & stored in database/arena_database.json!`);
+                        showShareFeedback(`✅ ${options.callerMessage || 'Scorecard data'} & dispatched to Coordinator WhatsApp!`);
                     }
-                    if (resetAfter) {
-                        resetScoreAndSession(false);
+                } else {
+                    console.warn('[PROGRAM DB SYNC]', dbResult.reason);
+                    if (feedbackTarget === 'submit' || feedbackTarget === 'both') {
+                        if (submitFb) {
+                            submitFb.className = 'submit-db-feedback success';
+                            submitFb.innerHTML = `✅ <strong>Stored in Local Database!</strong> (Local server port 3000 offline or deployed static).<br>📲 <strong>Scorecard recorded and queued for Coordinator WhatsApp!</strong>${sheetNotice}<br><button type="button" class="btn-db-action btn-db-export-action" onclick="exportProgramDatabaseJSON()">📥 Download updated arena_database.json</button>` +
+                                (resetAfter ? `<br><span class="db-reset-notice">🔄 Score and scenarios have been reset to 0 for the next attempt!</span>` : '');
+                        }
                     }
-                });
+                    if (feedbackTarget === 'share' || feedbackTarget === 'both') {
+                        showShareFeedback(`📋 ${options.callerMessage || 'Scorecard'} & queued for Coordinator WhatsApp!`);
+                    }
+                }
+
+                if (resetAfter) {
+                    resetScoreAndSession(false);
+                }
+
+                return dbData || { success: true, sheet: sheetData };
+            });
         }
 
         // Download in PNG or JPG format
@@ -2977,6 +3221,10 @@
             localStorage.removeItem('da_bonus');
             localStorage.removeItem('da_score');
             localStorage.removeItem('da_unlocked_hints');
+
+            // Reset session start time for fresh attempt
+            sessionStartTime = new Date().toISOString();
+            localStorage.setItem(CONFIG.SESSION_START_KEY, sessionStartTime);
 
             if (clearFields) {
                 localStorage.removeItem('da_user_name');

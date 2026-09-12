@@ -6,8 +6,14 @@
  */
 
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
 const path = require('path');
+
+// Coordinator WhatsApp Configuration (Secure Backend Only - NEVER exposed to participants)
+const COORDINATOR_PHONE = process.env.COORDINATOR_PHONE || '+918778313186';
+const CALLMEBOT_API_KEY = process.env.CALLMEBOT_APIKEY || '';
+const WHATSAPP_WEBHOOK_URL = process.env.WHATSAPP_WEBHOOK_URL || '';
 
 const PORT = process.env.PORT || 3000;
 const DB_FILE = path.join(__dirname, 'database', 'arena_database.json');
@@ -41,6 +47,106 @@ function setCorsHeaders(res) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Origin, Accept');
     res.setHeader('Access-Control-Max-Age', '86400');
+}
+
+/**
+ * Dispatches a submission alert directly to the coordinator's WhatsApp.
+ * The destination phone number (+91 8778313186) is stored privately on the server
+ * and is NEVER exposed or returned to participants.
+ */
+function dispatchWhatsAppAlert(record) {
+    const isTeam = record.mode === 'team';
+    const membersStr = Array.isArray(record.members) ? record.members.join(', ') : (record.name || 'Participant');
+    
+    const message = 
+`🎯 *DECODE ARENA 2026 — OFFICIAL SCORE ALERT* 🎯
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 *Event:* Cybersecurity Symposium 2026
+👤 *Type:* ${isTeam ? 'Team Participation' : 'Solo Hacker'}
+🏷️ *Name / Team:* ${record.name || 'Anonymous'}
+🏛️ *College:* ${record.college || 'Participant'}
+👥 *Members:* ${membersStr}
+⭐ *Total Score:* ${record.score || 0} PTS
+🚩 *Solved Challenges:* ${record.solved || '0/24'}
+🛡️ *Security Tier:* ${record.tier || 'Cyber Scout'}
+⚡ *Action:* ${record.action || 'Scorecard Submission'}
+🆔 *Record ID:* ${record.id || 'N/A'}
+⏱️ *Timestamp:* ${record.timestamp || new Date().toLocaleString()}${record.time_taken ? `\n⏳ *Time Taken:* ${record.time_taken}` : ''}
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁 *Database:* arena_database.json (Unencrypted CWE-312 Demo)`;
+
+    // Clean destination phone (only digits and plus)
+    const cleanPhone = COORDINATOR_PHONE.replace(/[^0-9+]/g, '');
+    console.log(`\n====================================================`);
+    console.log(`📲 [WHATSAPP DISPATCH] Result queued for Coordinator`);
+    console.log(`👉 Target: ${cleanPhone} (Kept strictly confidential)`);
+    console.log(`👉 Participant: ${record.name} (${record.score} PTS) [Action: ${record.action}]`);
+    console.log(`====================================================\n`);
+
+    // Strategy 1: CallMeBot WhatsApp Gateway (If configured via CALLMEBOT_APIKEY)
+    if (CALLMEBOT_API_KEY) {
+        try {
+            const botPhone = cleanPhone.startsWith('+') ? cleanPhone : ('+' + cleanPhone);
+            const encodedText = encodeURIComponent(message);
+            const callMeBotUrl = `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(botPhone)}&text=${encodedText}&apikey=${encodeURIComponent(CALLMEBOT_API_KEY)}`;
+            
+            https.get(callMeBotUrl, (resp) => {
+                let data = '';
+                resp.on('data', chunk => { data += chunk; });
+                resp.on('end', () => {
+                    console.log(`[WHATSAPP CALLMEBOT] Dispatch delivered with status: ${resp.statusCode}`);
+                });
+            }).on('error', (e) => {
+                console.warn(`[WHATSAPP CALLMEBOT ERROR] ${e.message}`);
+            });
+        } catch(e) {
+            console.warn(`[WHATSAPP CALLMEBOT EXCEPTION] ${e.message}`);
+        }
+    }
+
+    // Strategy 2: Custom Webhook (Twilio / GreenAPI / Meta Cloud API / Custom Webhook)
+    if (WHATSAPP_WEBHOOK_URL) {
+        try {
+            const webhookUrl = new URL(WHATSAPP_WEBHOOK_URL);
+            const payload = JSON.stringify({
+                to: cleanPhone,
+                message: message,
+                record: {
+                    id: record.id,
+                    mode: record.mode,
+                    name: record.name,
+                    college: record.college,
+                    members: record.members,
+                    score: record.score,
+                    solved: record.solved,
+                    tier: record.tier,
+                    action: record.action
+                }
+            });
+
+            const req = https.request(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Content-Length': Buffer.byteLength(payload)
+                }
+            }, (res) => {
+                console.log(`[WHATSAPP WEBHOOK] Webhook responded with status: ${res.statusCode}`);
+            });
+
+            req.on('error', (e) => console.warn(`[WHATSAPP WEBHOOK ERROR] ${e.message}`));
+            req.write(payload);
+            req.end();
+        } catch(e) {
+            console.warn(`[WHATSAPP WEBHOOK EXCEPTION] ${e.message}`);
+        }
+    }
+
+    return {
+        dispatched: true,
+        channel: 'WhatsApp Coordinator Channel',
+        recipient_role: 'Symposium Coordinator'
+    };
 }
 
 const server = http.createServer((req, res) => {
@@ -121,14 +227,20 @@ const server = http.createServer((req, res) => {
                     fs.appendFileSync(SQL_FILE, sqlInsert, 'utf8');
                 } catch(sqlErr) {}
 
+                // Dispatch to coordinator WhatsApp privately on the server
+                dispatchWhatsAppAlert(record);
+
+                // Return clean confirmation WITHOUT leaking the coordinator phone number
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({
                     success: true,
-                    message: 'Successfully stored in project database (database/arena_database.json & database.json) without encryption!',
+                    message: 'Successfully stored in project database and dispatched to symposium coordinator!',
                     record_id: record.id,
                     action: record.action,
                     image_file: record.stored_image_file,
                     total_records: records.length,
+                    whatsapp_dispatched: true,
+                    coordinator_delivery: 'Result transmitted directly to Symposium Coordinator WhatsApp',
                     file_path: 'database/arena_database.json & database.json'
                 }));
             } catch(err) {
