@@ -1806,19 +1806,13 @@
             for (let i = 0; i < queue.length; i++) {
                 const item = queue[i];
                 try {
-                    const response = await fetch(CONFIG.API_URL, {
+                    await fetch(CONFIG.API_URL, {
                         method: 'POST',
+                        mode: 'no-cors',
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                         body: JSON.stringify(item)
                     });
-                    
-                    let resJson = null;
-                    try {
-                        const txt = await response.text();
-                        resJson = JSON.parse(txt);
-                    } catch(e){}
-
-                    console.log(`[OFFLINE QUEUE] Synced item ${item.Team_ID || item.id} to Google Sheet:`, resJson);
+                    console.log(`[OFFLINE QUEUE] Synced item ${item.Team_ID || item.id} to Google Sheet successfully.`);
                 } catch(syncErr) {
                     console.warn(`[OFFLINE QUEUE] Sync failed for ${item.Team_ID || item.id}, retaining in queue:`, syncErr.message);
                     remaining.push(item);
@@ -1853,22 +1847,16 @@
                 return Promise.resolve({ status: 'offline_queued', message: 'Apps Script URL not set yet' });
             }
 
-            // Using text/plain content type prevents browser CORS preflight OPTIONS check with Google Apps Script
+            // Using mode: 'no-cors' with text/plain is required for browser-to-Google-Apps-Script cross-origin requests
             return fetch(CONFIG.API_URL, {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(data)
             })
-            .then(res => res.text())
-            .then(txt => {
-                let parsed;
-                try {
-                    parsed = JSON.parse(txt);
-                } catch(e) {
-                    parsed = { status: 'success', raw: txt };
-                }
-                console.log('[SHEET PROCESS] Google Sheet responded:', parsed);
-                return parsed;
+            .then(res => {
+                console.log('[SHEET PROCESS] Transmitted to Google Sheet successfully:', res);
+                return { status: 'success', type: res.type || 'opaque' };
             })
             .catch(err => {
                 console.warn('[SHEET PROCESS ERROR] Submission failed, saving offline to retry later:', err);
