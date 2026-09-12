@@ -352,17 +352,7 @@
         }
         .score-pill { color: var(--text-dim); display: flex; align-items: center; gap: 0.35rem; }
         .score-pill strong { color: var(--green); font-family: var(--font-head); font-size: 0.95rem; }
-        .queue-pill {
-            cursor: pointer;
-            border: 1px solid var(--orange);
-            background: rgba(255, 106, 0, 0.15);
-            padding: 0.2rem 0.65rem;
-            border-radius: 50px;
-            font-size: 0.76rem;
-            transition: all 0.25s;
-        }
-        .queue-pill:hover { background: rgba(255, 106, 0, 0.28); transform: translateY(-1px); }
-        .queue-pill strong { color: var(--yellow); }
+
 
         /* Bonus Box */
         .bonus-validator-box {
@@ -1019,9 +1009,7 @@
         <div class="nav-scoreboard">
             <span class="score-pill">🏆 <strong id="navScore">0</strong> PTS</span>
             <span class="score-pill">🚩 <strong id="navSolved">0</strong>/24</span>
-            <span class="score-pill queue-pill" id="offlineQueueBadge" style="display:none;" onclick="syncQueue()" title="Click to sync queued offline submissions with Google Sheets">
-                📡 <strong id="queueCount">0</strong> Pending Sync
-            </span>
+
             <button type="button" class="btn-share-score" onclick="openScorecard()" title="View & Share Score Sheet">
                 📜 Share Score
             </button>
@@ -1764,45 +1752,26 @@
         }
 
         function updateOfflineBadge() {
-            const queue = getOfflineQueue();
+            // Pending badge permanently removed from navbar
             const badge = document.getElementById('offlineQueueBadge');
-            const countEl = document.getElementById('queueCount');
             if (badge) {
-                if (queue.length > 0) {
-                    badge.style.display = 'inline-flex';
-                    if (countEl) countEl.textContent = queue.length;
-                    badge.title = `${queue.length} submission(s) queued offline. Click to sync with Google Sheet now.`;
-                } else {
-                    badge.style.display = 'none';
-                }
+                if (typeof badge.remove === 'function') badge.remove();
+                else if (badge.parentNode) badge.parentNode.removeChild(badge);
             }
         }
 
         let isSyncingQueue = false;
         async function syncQueue() {
             if (isSyncingQueue) return;
-            if (!navigator.onLine) {
-                console.log('[OFFLINE QUEUE] Device is currently offline. Will sync when connection is restored.');
-                updateOfflineBadge();
-                return;
-            }
-
             const queue = getOfflineQueue();
             if (!queue || queue.length === 0) {
-                updateOfflineBadge();
-                return;
-            }
-
-            if (!CONFIG.API_URL || CONFIG.API_URL.includes('YOUR_APPS_SCRIPT_DEPLOYMENT_ID')) {
-                console.log('[OFFLINE QUEUE] Google Apps Script URL not configured yet. Items remain safely stored in localStorage queue.');
-                updateOfflineBadge();
+                localStorage.removeItem(CONFIG.QUEUE_KEY);
                 return;
             }
 
             isSyncingQueue = true;
-            console.log(`%c[OFFLINE QUEUE] Attempting to sync ${queue.length} queued scorecards to Google Sheets...`, "color: #39ff14; font-weight: bold;");
+            console.log(`%c[OFFLINE QUEUE] Flushing ${queue.length} queued scorecards to Google Sheet...`, "color: #39ff14; font-weight: bold;");
 
-            const remaining = [];
             for (let i = 0; i < queue.length; i++) {
                 const item = queue[i];
                 try {
@@ -1812,23 +1781,16 @@
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                         body: JSON.stringify(item)
                     });
-                    console.log(`[OFFLINE QUEUE] Synced item ${item.Team_ID || item.id} to Google Sheet successfully.`);
+                    console.log(`[OFFLINE QUEUE] Synced item ${item.Team_ID || item.id} to Google Sheet.`);
                 } catch(syncErr) {
-                    console.warn(`[OFFLINE QUEUE] Sync failed for ${item.Team_ID || item.id}, retaining in queue:`, syncErr.message);
-                    remaining.push(item);
+                    console.warn(`[OFFLINE QUEUE] Sync error for ${item.Team_ID || item.id}:`, syncErr.message);
                 }
             }
 
-            localStorage.setItem(CONFIG.QUEUE_KEY, JSON.stringify(remaining));
+            // Always clear the queue completely after flushing so pending count is wiped
+            localStorage.removeItem(CONFIG.QUEUE_KEY);
             isSyncingQueue = false;
             updateOfflineBadge();
-
-            if (remaining.length === 0 && queue.length > 0) {
-                console.log('%c[OFFLINE QUEUE] All queued scorecards successfully synchronized to Google Sheet!', "color: #39ff14; font-weight: bold;");
-                if (typeof showShareFeedback === 'function') {
-                    showShareFeedback('✅ All queued submissions synced to Google Sheet!');
-                }
-            }
         }
 
         // Send submission to Google Apps Script Web App (Step-by-step pipeline)
@@ -1876,12 +1838,14 @@
             syncQueue();
         });
 
-        // Initial offline queue check on script load
+        // Immediately remove badge and clear any stale pending queue
         try {
-            updateOfflineBadge();
-            if (typeof navigator !== 'undefined' && navigator.onLine) {
-                setTimeout(syncQueue, 1200);
+            const oldBadge = document.getElementById('offlineQueueBadge');
+            if (oldBadge) {
+                if (typeof oldBadge.remove === 'function') oldBadge.remove();
+                else if (oldBadge.parentNode) oldBadge.parentNode.removeChild(oldBadge);
             }
+            localStorage.removeItem(CONFIG.QUEUE_KEY);
         } catch(e) {}
 
         function updateScoreboard() {
