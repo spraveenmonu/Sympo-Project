@@ -2,6 +2,29 @@
  * DECODE ARENA 2026 — Google Apps Script Web App
  * Receives participant scorecards and logs rows to the ROUND_DATA sheet.
  */
+
+// Handles browser visits (GET requests) so clicking the link shows a clean status instead of an error!
+function doGet(e) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName("ROUND_DATA") || ss.getSheets()[0];
+    var totalRows = Math.max(0, sheet.getLastRow() - 1);
+
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "active",
+      message: "Decode Arena 2026 Scoreboard Webhook is ONLINE and ready!",
+      sheet_name: sheet.getName(),
+      total_submissions_received: totalRows
+    }, null, 2)).setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "active",
+      message: "Decode Arena 2026 Webhook is online."
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// Handles scorecard submissions (POST requests from index.html)
 function doPost(e) {
   try {
     if (!e || !e.postData || !e.postData.contents) {

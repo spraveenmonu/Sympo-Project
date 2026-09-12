@@ -24,6 +24,28 @@ This guide walks you through setting up a free Google Sheet to automatically rec
  * DECODE ARENA 2026 — Google Apps Script Web App
  * Receives participant scorecards via POST and logs rows to ROUND_DATA sheet.
  */
+
+// GET handler: Handles direct browser navigation and health checks
+function doGet(e) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName("ROUND_DATA") || ss.getSheets()[0];
+    var totalRows = Math.max(0, sheet.getLastRow() - 1);
+
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "active",
+      message: "Decode Arena 2026 Scoreboard Webhook is ONLINE and ready!",
+      sheet_name: sheet.getName(),
+      total_submissions_received: totalRows
+    }, null, 2)).setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "active",
+      message: "Decode Arena 2026 Webhook is online."
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
 function doPost(e) {
   try {
     if (!e || !e.postData || !e.postData.contents) {
@@ -150,7 +172,7 @@ function doPost(e) {
 Open `index.html` and paste your URL into the `CONFIG.API_URL` variable near line 1460:
 
 ```javascript
-const HARDCODED_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBwJ_PyuHk-cNbPT1qjgDQq3DPadyWkYFVDcYCNLXcxS11tor9kTB5KeP_G532ZTJuCg/exec';
+const HARDCODED_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwMZiYEiJ3k5lEmqVCLseeCaYNHXfsdDmlnkHxqeH0negOwH6iuNhBEUl73JlchLE7LHA/exec';
 const CONFIG = {
     API_URL: HARDCODED_APPS_SCRIPT_URL,
     SHEET_NAME: 'ROUND_DATA',
