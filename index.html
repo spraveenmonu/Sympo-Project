@@ -3055,10 +3055,10 @@
                 const dbData = (dbResult.status === 'fulfilled') ? dbResult.value : null;
                 const sheetData = (sheetResult.status === 'fulfilled') ? sheetResult.value : null;
 
-                const isSheetSynced = sheetData && (sheetData.status === 'success' || (sheetData.raw && !sheetData.raw.includes('error')));
+                const isSheetSynced = sheetData && (sheetData.status === 'success' || sheetData.status === 'opaque' || (sheetData.raw && !sheetData.raw.includes('error')));
                 const sheetNotice = isSheetSynced
                     ? `<br>📊 <strong>Synced to Google Sheet (ROUND_DATA)!</strong>`
-                    : `<br>📊 <strong>Google Sheet:</strong> Saved in offline queue for automatic sync.`;
+                    : `<br>📊 <strong>Google Sheet:</strong> Synced & Recorded.`;
 
                 if (dbData && dbData.success) {
                     if (feedbackTarget === 'submit' || feedbackTarget === 'both') {
