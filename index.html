@@ -1441,18 +1441,31 @@
         console.log("%c🚩 DECODE{console_logs_reveal_secrets}", "color: #39ff14; font-size: 16px; font-weight: bold;");
         // === Global Configuration (Google Sheets Apps Script & Event Settings) ===
         const HARDCODED_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwMZiYEiJ3k5lEmqVCLseeCaYNHXfsdDmlnkHxqeH0negOwH6iuNhBEUl73JlchLE7LHA/exec';
+        let savedAppsScriptUrl = null;
         try {
-            if (localStorage.getItem('da_apps_script_url') !== HARDCODED_APPS_SCRIPT_URL) {
-                localStorage.setItem('da_apps_script_url', HARDCODED_APPS_SCRIPT_URL);
-            }
+            savedAppsScriptUrl = localStorage.getItem('da_apps_script_url');
         } catch(e) {}
+        const activeAppsScriptUrl = (savedAppsScriptUrl && savedAppsScriptUrl.startsWith('https://script.google.com/macros/s/'))
+            ? savedAppsScriptUrl
+            : HARDCODED_APPS_SCRIPT_URL;
+
         const CONFIG = {
             // Deployed Google Apps Script Web App URL (.../exec)
-            API_URL: HARDCODED_APPS_SCRIPT_URL,
+            API_URL: activeAppsScriptUrl,
             SHEET_NAME: 'ROUND_DATA',
             ROUND_NAME: 'Round 1 - Decode Arena',
             QUEUE_KEY: 'da_offline_submission_queue',
             SESSION_START_KEY: 'da_session_start_time'
+        };
+
+        window.setGoogleSheetUrl = function(newUrl) {
+            if (!newUrl || !newUrl.startsWith('https://script.google.com/macros/s/')) {
+                alert('❌ Invalid URL! Please enter a valid Google Apps Script Web App URL starting with https://script.google.com/macros/s/ and ending in /exec');
+                return;
+            }
+            try { localStorage.setItem('da_apps_script_url', newUrl.trim()); } catch(e) {}
+            CONFIG.API_URL = newUrl.trim();
+            alert('✅ Google Sheet Web App URL updated successfully!\nActive URL: ' + CONFIG.API_URL);
         };
 
         // === Cybersecurity Scenarios Database (24 Operational Decision Scenarios) ===

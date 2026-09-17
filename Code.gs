@@ -3,23 +3,30 @@
  * Receives participant scorecards and logs rows to the ROUND_DATA sheet.
  */
 
-// Handles browser visits (GET requests) so clicking the link shows a clean status instead of an error!
+// Handles browser visits (GET requests) for status checks and GET-based score submissions
 function doGet(e) {
   try {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var sheet = ss.getSheetByName("ROUND_DATA") || ss.getSheets()[0];
-    var totalRows = Math.max(0, sheet.getLastRow() - 1);
 
+    // If scorecard data is passed in query parameters, record it directly!
+    if (e && e.parameter && (e.parameter.Team_Name || e.parameter.name || e.parameter.Score !== undefined || e.parameter.score !== undefined)) {
+      return recordSubmissionRow(e.parameter, sheet);
+    }
+
+    var totalRows = Math.max(0, sheet.getLastRow() - 1);
     return ContentService.createTextOutput(JSON.stringify({
       status: "active",
       message: "Decode Arena 2026 Scoreboard Webhook is ONLINE and ready!",
       sheet_name: sheet.getName(),
-      total_submissions_received: totalRows
+      total_submissions_received: totalRows,
+      timestamp: new Date().toISOString()
     }, null, 2)).setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     return ContentService.createTextOutput(JSON.stringify({
       status: "active",
-      message: "Decode Arena 2026 Webhook is online."
+      message: "Decode Arena 2026 Webhook is online.",
+      error: err.toString()
     })).setMimeType(ContentService.MimeType.JSON);
   }
 }
@@ -27,16 +34,36 @@ function doGet(e) {
 // Handles scorecard submissions (POST requests from index.html)
 function doPost(e) {
   try {
-    if (!e || !e.postData || !e.postData.contents) {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName("ROUND_DATA") || ss.getSheets()[0];
+    var data = {};
+
+    if (e && e.postData && e.postData.contents) {
+      try {
+        data = JSON.parse(e.postData.contents);
+      } catch (jsonErr) {
+        data = e.parameter || {};
+      }
+    } else if (e && e.parameter) {
+      data = e.parameter;
+    } else {
       return ContentService.createTextOutput(JSON.stringify({
         status: "error",
         message: "No post data received"
       })).setMimeType(ContentService.MimeType.JSON);
     }
 
-    var data = JSON.parse(e.postData.contents);
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName("ROUND_DATA") || ss.getSheets()[0];
+    return recordSubmissionRow(data, sheet);
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "error",
+      message: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function recordSubmissionRow(data, sheet) {
+  try {
 
     // Automatically create styled headers if the sheet is fresh
     if (sheet.getLastRow() === 0) {

@@ -149,6 +149,55 @@ function dispatchWhatsAppAlert(record) {
     };
 }
 
+/**
+ * Forwards submission directly to Google Apps Script Web App on the backend.
+ * Provides transparent logging of whether Google accepted the row (200) or rejected it (403).
+ */
+function forwardToGoogleSheet(record) {
+    const appsScriptUrl = process.env.APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycbwMZiYEiJ3k5lEmqVCLseeCaYNHXfsdDmlnkHxqeH0negOwH6iuNhBEUl73JlchLE7LHA/exec';
+    if (!appsScriptUrl || appsScriptUrl.includes('YOUR_APPS_SCRIPT_DEPLOYMENT_ID')) return;
+
+    const payload = {
+        Timestamp: record.timestamp || record.server_saved_at || new Date().toISOString(),
+        Team_ID: record.id,
+        Team_Name: record.name,
+        College: record.college,
+        Members: Array.isArray(record.members) ? record.members.join(', ') : (record.name || 'Participant'),
+        Mode: record.mode || 'solo',
+        Round: record.round || 'Round 1 - Decode Arena',
+        Score: record.score || 0,
+        Total_Questions: 24,
+        Correct: record.solved ? parseInt(record.solved) : 0,
+        Wrong: Math.max(0, 24 - (record.solved ? parseInt(record.solved) : 0)),
+        Security_Tier: record.tier || 'CYBER SCOUT',
+        Start_Time: record.start_time || 'N/A',
+        End_Time: record.end_time || new Date().toISOString(),
+        Time_Taken: record.time_taken || 'N/A',
+        Action: record.action || 'Scorecard Submission'
+    };
+
+    fetch(appsScriptUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+    })
+    .then(async res => {
+        const text = await res.text().catch(() => '');
+        if (res.status === 200 && !text.includes('You need access') && !text.includes('You need permission')) {
+            console.log(`[GOOGLE SHEETS SYNC SUCCESS] Row added to ROUND_DATA sheet for ${record.name} (${record.score} PTS)`);
+        } else if (res.status === 403 || text.includes('You need access') || text.includes('You need permission')) {
+            console.warn(`\n⚠️  [GOOGLE SHEETS PERMISSION ERROR 403]`);
+            console.warn(`Google Apps Script blocked the submission: "You need permission / You need access"`);
+            console.warn(`👉 Fix: In Google Apps Script -> Deploy -> Manage deployments -> Edit -> Set "Who has access" to "Anyone" -> Deploy!\n`);
+        } else {
+            console.warn(`[GOOGLE SHEETS SYNC STATUS ${res.status}]`, text.substring(0, 150));
+        }
+    })
+    .catch(err => {
+        console.warn(`[GOOGLE SHEETS NETWORK ERROR] ${err.message}`);
+    });
+}
+
 const server = http.createServer((req, res) => {
     setCorsHeaders(res);
 
@@ -229,6 +278,9 @@ const server = http.createServer((req, res) => {
 
                 // Dispatch to coordinator WhatsApp privately on the server
                 dispatchWhatsAppAlert(record);
+
+                // Relay submission directly to Google Sheet Web App on the backend
+                forwardToGoogleSheet(record);
 
                 // Return clean confirmation WITHOUT leaking the coordinator phone number
                 res.writeHead(200, { 'Content-Type': 'application/json' });
