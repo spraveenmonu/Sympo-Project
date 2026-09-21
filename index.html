@@ -35,6 +35,7 @@
             --font-body: 'Rajdhani', sans-serif;
             --font-mono: 'Share Tech Mono', monospace;
             /* secret: DECODE{css_vars_leak_secrets} */
+        }
 
         /* === Outside Bugs Tracker & Demo Buttons === */
         .bonus-counter-badge {
@@ -68,7 +69,18 @@
             color: #fff;
             background: rgba(0, 240, 255, 0.1);
         }
-
+        .bonus-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .bonus-header-row h3 {
+            margin-bottom: 0;
+        }
+        .bonus-desc-text {
+            margin-top: 0.6rem;
         }
 
         html { scroll-behavior: smooth; }
@@ -1158,6 +1170,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 1.5rem;
+            display: none;
         }
         .finals-header {
             text-align: center;
@@ -1203,6 +1216,7 @@
             border-radius: 10px;
             padding: 1.2rem 1.4rem;
             text-align: center;
+            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
             transition: all 0.3s;
         }
@@ -1469,6 +1483,123 @@
         }
         .wf-op-feedback.error { color: #ff3366; }
         .wf-op-feedback.success { color: var(--green); }
+
+        /* Warfare Operations Components & Helpers */
+        .wf-lab-box .lock-input-group {
+            max-width: 100%;
+            margin-bottom: 1rem;
+        }
+        .wf-clue-body ol {
+            margin-left: 1.2rem;
+            margin-top: 0.4rem;
+        }
+        .wf-code-block {
+            display: block;
+            margin: 0.5rem 0;
+            word-break: break-all;
+            color: var(--cyan);
+            background: #000;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+        }
+        .wf-btn-row {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .wf-spoof-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .wf-spoof-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: #a0a5c0;
+            cursor: pointer;
+        }
+        .wf-rate-status {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--cyan);
+        }
+        .wf-port-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        .wf-asm-block {
+            background: #000;
+            padding: 0.8rem 1rem;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            color: #00f0ff;
+            margin: 0.8rem 0;
+            font-size: 0.9rem;
+        }
+        .wf-ransom-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+        .wf-countdown-timer {
+            font-family: var(--font-mono);
+            color: #ff0055;
+            font-size: 0.95rem;
+        }
+        .wf-countdown-actions {
+            display: flex;
+            gap: 0.6rem;
+        }
+        .wf-scrub-panel {
+            background: rgba(14, 18, 30, 0.95);
+            padding: 1.2rem;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            margin-top: 1rem;
+        }
+        .wf-scrub-title {
+            font-family: var(--font-head);
+            font-size: 1rem;
+            color: #fff;
+            margin-bottom: 0.8rem;
+        }
+        .wf-scrub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        .wf-scrub-label {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: #a0a5c0;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        .wf-scrub-input {
+            padding: 0.5rem 0.8rem;
+            width: 100%;
+        }
+        .btn-gold {
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+        .finals-submit-feedback {
+            margin-top: 1.2rem;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+        }
 
         /* Finals Submission Box */
         .finals-submission-card {
@@ -1808,11 +1939,11 @@
             <div class="bonus-validator-box reveal">
                 <div class="bonus-icon">🕵️</div>
                 <div class="bonus-content">
-                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-                        <h3 style="margin-bottom: 0;">Found a Secret "Outside" Bug on this Website?</h3>
+                    <div class="bonus-header-row">
+                        <h3>Found a Secret "Outside" Bug on this Website?</h3>
                         <span class="bonus-counter-badge" id="outsideBugsCounter">Outside Bugs: 0 / 12 Claimed</span>
                     </div>
-                    <p style="margin-top: 0.6rem;">
+                    <p class="bonus-desc-text">
                         Intentional vulnerabilities are planted <strong>outside</strong> the questions across this website! Use <code>F12</code> DevTools, Inspect Element, Page Source (<code>Ctrl+U</code>), Browser Console, Cookies, LocalStorage, or URL parameters to hunt them down. Paste any <code>DECODE{...}</code> flag here to claim your bonus score!
                     </p>
                     <div class="outside-bugs-hints">
@@ -1963,7 +2094,7 @@
         </div>
 
         <!-- 2. UNLOCKED ARENA CONTENT (Visible after clearance) -->
-        <div class="finals-arena-container" id="finalsArenaContent" style="display: none;">
+        <div class="finals-arena-container" id="finalsArenaContent">
             <div class="finals-header">
                 <div class="finals-hero-badge">STAGE 2 // GRAND FINALS</div>
                 <h2 class="finals-title">APEX CYBER WARFARE LABS</h2>
@@ -2025,7 +2156,7 @@
                                 <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
                             </div>
                         </div>
-                        <div class="lock-input-group" style="max-width: 100%; margin-bottom: 1rem;">
+                        <div class="lock-input-group">
                             <input type="text" id="sqliInput" class="lock-input" placeholder="Type SQL injection (e.g. 1' UNION SELECT ...)">
                             <button type="button" class="btn btn-outline" onclick="runSqliQuery()">⚡ Execute Query</button>
                         </div>
@@ -2037,7 +2168,7 @@
                         </button>
                         <div class="wf-clue-body" id="clue_op_sqli">
                             <strong>Tactical Guidance:</strong>
-                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                            <ol>
                                 <li>The application executes: <code>SELECT id, name, price FROM items WHERE id = '$input'</code>.</li>
                                 <li>Closing the quote and appending a <code>UNION SELECT</code> query allows dumping records from the hidden <code>internal_vault</code> table.</li>
                                 <li>Ensure the number of columns matches the query (3 columns: <code>1, token, secret</code>) and terminate with a comment delimiter (<code>--</code>).</li>
@@ -2067,7 +2198,7 @@
                     </div>
                     <p class="wf-scenario-desc">
                         A compromised server leak provides the sysadmin root hash from <code>/etc/shadow</code>:
-                        <code style="display:block; margin: 0.5rem 0; word-break: break-all; color: var(--cyan); background: #000; padding: 0.4rem 0.8rem; border-radius: 4px;">$6$qZ7x8$d04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340fa</code>
+                        <code class="wf-code-block">$6$qZ7x8$d04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340fa</code>
                     </p>
 
                     <div class="wf-quick-guide">
@@ -2083,7 +2214,7 @@
                                 <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <div class="wf-btn-row">
                             <button type="button" class="btn btn-outline" onclick="loadWordlist()">📁 Step 1: Load Sympo Wordlist</button>
                             <button type="button" class="btn btn-outline" onclick="runHashCracker()">🔨 Step 2: Run Dictionary Attack</button>
                         </div>
@@ -2095,7 +2226,7 @@
                         </button>
                         <div class="wf-clue-body" id="clue_op_crack">
                             <strong>Tactical Guidance:</strong>
-                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                            <ol>
                                 <li>The hash represents a modern SHA-512 crypt entry ($6$). Pure bruteforce would take weeks, but dictionary attacks test likely passwords quickly.</li>
                                 <li>Click <em>Load Sympo Wordlist</em> to inspect candidate passwords stored in the dictionary buffer.</li>
                                 <li>Click <em>Run Dictionary Attack</em>. When the hash collision matches, the cracked cleartext password and root flag will appear in the output log.</li>
@@ -2139,14 +2270,14 @@
                                 <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; flex-wrap: wrap;">
-                            <label style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.9rem; color: #a0a5c0; cursor: pointer;">
+                        <div class="wf-spoof-row">
+                            <label class="wf-spoof-label">
                                 <input type="checkbox" id="spoofHeaderToggle" onchange="toggleIpSpoof()">
                                 🛡️ Spoof Header: <code>X-Forwarded-For: 127.0.0.1</code> (Bypass Rate-Limiter)
                             </label>
-                            <span id="rateLimitStatus" style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--cyan);">[IP Status: OK (0/3 Failed Tries)]</span>
+                            <span id="rateLimitStatus" class="wf-rate-status">[IP Status: OK (0/3 Failed Tries)]</span>
                         </div>
-                        <div class="lock-input-group" style="max-width: 100%; margin-bottom: 1rem;">
+                        <div class="lock-input-group">
                             <input type="text" id="pinInput" class="lock-input" placeholder="Enter 4-digit PIN (e.g. 74XX)" maxlength="4">
                             <button type="button" class="btn btn-outline" onclick="submitPinBruteForce()">🔑 Test PIN</button>
                         </div>
@@ -2158,7 +2289,7 @@
                         </button>
                         <div class="wf-clue-body" id="clue_op_brute">
                             <strong>Tactical Guidance:</strong>
-                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                            <ol>
                                 <li>The gateway locks clients out with <em>HTTP 429 Too Many Requests</em> after 3 failed tries.</li>
                                 <li>Check <strong>Spoof Header: X-Forwarded-For: 127.0.0.1</strong> to trick the proxy into treating requests as internal local loopback traffic, resetting the lockout.</li>
                                 <li>Review the admin maintenance memo: <em>"Emergency PIN is in the 7400-7500 range. The final two digits correspond to the release year of the World Wide Web project (1991 -> 91)."</em> Deduce the 4 digits and click <em>Test PIN</em>!</li>
@@ -2203,7 +2334,7 @@
                                 <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
                             </div>
                         </div>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; margin-bottom: 1rem;">
+                        <div class="wf-port-grid">
                             <button type="button" class="btn btn-outline" onclick="probeHoneypotPort(2222)">🔍 Probe Port 2222</button>
                             <button type="button" class="btn btn-outline" onclick="probeHoneypotPort(502)">🔍 Probe Port 502</button>
                             <button type="button" class="btn btn-outline" onclick="probeHoneypotPort(8080)">🔍 Probe Port 8080</button>
@@ -2217,7 +2348,7 @@
                         </button>
                         <div class="wf-clue-body" id="clue_op_honeypot">
                             <strong>Tactical Guidance:</strong>
-                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                            <ol>
                                 <li>Honeypots emulate standard protocols but leak signatures in banners (e.g. Python fake SSH shells, emulated PLC Modbus daemons, web decoy traps).</li>
                                 <li>Probe each port one by one and review the terminal heuristic analysis.</li>
                                 <li>Identify which port serves authentic, non-emulated OpenSSL TLS production daemon certificates to establish an admin session and capture the flag.</li>
@@ -2246,7 +2377,7 @@
                     </div>
                     <p class="wf-scenario-desc">
                         A proprietary security dongle validates activation keys using this disassembled x86 instruction routine:
-                        <pre style="background: #000; padding: 0.8rem 1rem; border-radius: 6px; font-family: var(--font-mono); color: #00f0ff; margin: 0.8rem 0; font-size: 0.9rem;">
+                        <pre class="wf-asm-block">
 0x00401000: MOV  EAX, [INPUT_KEY]     ; Load decimal user input
 0x00401005: XOR  EAX, 0x1337          ; Bitwise XOR with 0x1337
 0x0040100A: ADD  EAX, 0x05A0          ; Add decimal 1440 (0x05A0)
@@ -2269,7 +2400,7 @@
                                 <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
                             </div>
                         </div>
-                        <div class="lock-input-group" style="max-width: 100%; margin-bottom: 1rem;">
+                        <div class="lock-input-group">
                             <input type="number" id="debuggerInputKey" class="lock-input" placeholder="Enter calculated decimal key (e.g. 15XXX)">
                             <button type="button" class="btn btn-outline" onclick="stepDebugger()">▶ Step Instruction</button>
                             <button type="button" class="btn btn-outline" onclick="resetDebugger()">↺ Reset Registers</button>
@@ -2282,7 +2413,7 @@
                         </button>
                         <div class="wf-clue-body" id="clue_op_reverse">
                             <strong>Tactical Guidance:</strong>
-                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                            <ol>
                                 <li>Work backwards from target <code>0x2DEB</code> (decimal 11755) to set <code>Zero Flag (ZF) = 1</code>:</li>
                                 <li>Undo <code>ADD EAX, 0x05A0</code>: Subtract <code>0x05A0</code> (decimal 1440) from <code>0x2DEB</code> (decimal 11755).</li>
                                 <li>Undo <code>XOR EAX, 0x1337</code>: Recall that XOR is self-inverting (<code>(A ^ B) ^ B = A</code>). Apply XOR with <code>0x1337</code> (decimal 4919) to your intermediate value.</li>
@@ -2329,7 +2460,7 @@
                                 <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <div class="wf-btn-row">
                             <button type="button" class="btn btn-outline" onclick="inspectPhishHeader()">📧 Step 1: Inspect RFC-5322 Headers</button>
                             <button type="button" class="btn btn-outline" onclick="extractMacro()">📜 Step 2: Extract VBA Macro Stream</button>
                             <button type="button" class="btn btn-outline" onclick="deobfuscatePayload()">🔓 Step 3: Deobfuscate PowerShell Payload</button>
@@ -2342,7 +2473,7 @@
                         </button>
                         <div class="wf-clue-body" id="clue_op_phish">
                             <strong>Tactical Guidance:</strong>
-                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                            <ol>
                                 <li>Inspect the RFC-5322 email headers: Notice the mismatch between the claimed <code>From</code> address and the relay <code>Return-Path</code>, along with failed DKIM.</li>
                                 <li>Extract the VBA macro stream to find the obfuscated <code>powershell.exe -EncodedCommand</code> download cradle.</li>
                                 <li>Deobfuscate the Base64 string to uncover the malicious C2 download script and extract the embedded infection flag.</li>
@@ -2386,11 +2517,11 @@
                                 <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
                             </div>
                         </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.8rem;">
-                            <div style="font-family: var(--font-mono); color: #ff0055; font-size: 0.95rem;">
+                        <div class="wf-ransom-topbar">
+                            <div class="wf-countdown-timer">
                                 ⏱️ DEFUSAL COUNTDOWN: <strong id="ransomCountdown">04:59</strong>
                             </div>
-                            <div style="display: flex; gap: 0.6rem;">
+                            <div class="wf-countdown-actions">
                                 <button type="button" class="btn btn-outline" onclick="dumpScadaHeap()">💾 Step 1: Dump Memory Heap (PID 4192)</button>
                                 <button type="button" class="btn btn-outline" onclick="revertScadaPayload()">🛡️ Step 2: Inject Recovered Key &amp; Defuse</button>
                             </div>
@@ -2403,7 +2534,7 @@
                         </button>
                         <div class="wf-clue-body" id="clue_op_ransom">
                             <strong>Tactical Guidance:</strong>
-                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                            <ol>
                                 <li>Click <em>Dump Memory Heap (PID 4192)</em> to inspect process RAM blocks before they are scrubbed.</li>
                                 <li>Scan the memory output to locate the cryptographic string markers <code>AES_KEY=</code> and <code>AES_IV=</code>.</li>
                                 <li>Click <em>Inject Recovered Key &amp; Defuse</em> to decrypt the SCADA cooling valve controller, halt the defusal countdown, and extract the flag.</li>
@@ -2448,7 +2579,7 @@
                                 <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <div class="wf-btn-row">
                             <button type="button" class="btn btn-outline" onclick="scanAutoruns()">🔎 Step 1: Scan HKLM Run Keys</button>
                             <button type="button" class="btn btn-outline" onclick="unhookDriver()">⚡ Step 2: Unhook svchost_rootkit.sys</button>
                             <button type="button" class="btn btn-outline" onclick="purgeMalwareRegistry()">🗑️ Step 3: Delete Persistence Key</button>
@@ -2461,7 +2592,7 @@
                         </button>
                         <div class="wf-clue-body" id="clue_op_malware">
                             <strong>Tactical Guidance:</strong>
-                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                            <ol>
                                 <li>Audit the startup keys: Look for an unsigned driver payload hiding under <code>HKLM\...\Run</code>.</li>
                                 <li>Click <em>Unhook svchost_rootkit.sys</em> to detach the SSDT kernel hook and unmask the hidden rootkit process.</li>
                                 <li>Click <em>Delete Persistence Key</em> to shred the driver file, remove the registry autostart entry, and recover the flag.</li>
@@ -2506,18 +2637,18 @@
                                 <span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <div class="wf-btn-row">
                             <button type="button" class="btn btn-outline" onclick="inspectDdosFlow()">📊 Step 1: Capture NetFlow Sample</button>
                         </div>
                         <div class="wf-console-output" id="ddosOutput">// NetFlow collector idle. Click "Step 1: Capture NetFlow Sample" to analyze inbound packet distributions...</div>
                         
                         <!-- Scrubbing Rule Builder Form -->
-                        <div style="background: rgba(14, 18, 30, 0.95); padding: 1.2rem; border-radius: 8px; border: 1px solid rgba(0, 240, 255, 0.2); margin-top: 1rem;">
-                            <h4 style="font-family: var(--font-head); font-size: 1rem; color: #fff; margin-bottom: 0.8rem;">EDGE ACL SCRUBBING POLICY BUILDER</h4>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.8rem; margin-bottom: 1rem;">
+                        <div class="wf-scrub-panel">
+                            <h4 class="wf-scrub-title">EDGE ACL SCRUBBING POLICY BUILDER</h4>
+                            <div class="wf-scrub-grid">
                                 <div>
-                                    <label style="font-family: var(--font-mono); font-size: 0.78rem; color: #a0a5c0; display: block; margin-bottom: 0.3rem;">ACTION</label>
-                                    <select id="ddosRuleAction" class="lock-input" style="padding: 0.5rem 0.8rem; width: 100%;">
+                                    <label class="wf-scrub-label">ACTION</label>
+                                    <select id="ddosRuleAction" class="lock-input wf-scrub-input">
                                         <option value="" selected disabled>-- Select Action --</option>
                                         <option value="ACCEPT">ACCEPT (Allow Traffic)</option>
                                         <option value="DROP">DROP (Blackhole Subnet)</option>
@@ -2525,8 +2656,8 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label style="font-family: var(--font-mono); font-size: 0.78rem; color: #a0a5c0; display: block; margin-bottom: 0.3rem;">PROTOCOL</label>
-                                    <select id="ddosRuleProto" class="lock-input" style="padding: 0.5rem 0.8rem; width: 100%;">
+                                    <label class="wf-scrub-label">PROTOCOL</label>
+                                    <select id="ddosRuleProto" class="lock-input wf-scrub-input">
                                         <option value="" selected disabled>-- Select Protocol --</option>
                                         <option value="TCP_SYN">TCP SYN Flag</option>
                                         <option value="UDP">UDP Amplification</option>
@@ -2534,8 +2665,8 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label style="font-family: var(--font-mono); font-size: 0.78rem; color: #a0a5c0; display: block; margin-bottom: 0.3rem;">SOURCE CIDR</label>
-                                    <input type="text" id="ddosRuleCidr" class="lock-input" style="padding: 0.5rem 0.8rem; width: 100%;" placeholder="Enter offending CIDR from NetFlow (e.g. 198.51.X.0/24)">
+                                    <label class="wf-scrub-label">SOURCE CIDR</label>
+                                    <input type="text" id="ddosRuleCidr" class="lock-input wf-scrub-input" placeholder="Enter offending CIDR from NetFlow (e.g. 198.51.X.0/24)">
                                 </div>
                             </div>
                             <button type="button" class="btn btn-outline" onclick="deployDdosFilter()">🚀 Step 2: Deploy Scrubbing Rule to Border Edge Router</button>
@@ -2547,7 +2678,7 @@
                         </button>
                         <div class="wf-clue-body" id="clue_op_ddos">
                             <strong>Tactical Guidance:</strong>
-                            <ol style="margin-left: 1.2rem; margin-top: 0.4rem;">
+                            <ol>
                                 <li>Click <em>Step 1: Capture NetFlow Sample</em> to observe inbound flows. Identify the top talker subnet generating 98%+ of the saturated TCP SYN traffic.</li>
                                 <li>In the ACL Rule Builder, set Action to <strong>DROP</strong>, Protocol to <strong>TCP SYN Flag</strong>, and specify that offending source CIDR subnet.</li>
                                 <li>Click <em>Step 2: Deploy Scrubbing Rule to Border Edge Router</em>. Inbound link saturation will drop to normal baseline, defending the server and producing the flag.</li>
@@ -2574,11 +2705,11 @@
                     <button type="button" class="btn btn-primary" onclick="openScorecard()">
                         📜 Open Official Score Sheet &amp; Certificate
                     </button>
-                    <button type="button" class="btn btn-outline" style="border-color: #ffd700; color: #ffd700;" onclick="submitRound2ToGoogleSheet()">
+                    <button type="button" class="btn btn-outline btn-gold" onclick="submitRound2ToGoogleSheet()">
                         🚀 Submit Round 2 to Google Sheet (ROUND_DATA)
                     </button>
                 </div>
-                <div id="finalsSubmitFeedback" style="margin-top: 1.2rem; font-family: var(--font-mono); font-size: 0.95rem;"></div>
+                <div id="finalsSubmitFeedback" class="finals-submit-feedback"></div>
             </div>
 
         </div>
@@ -4499,15 +4630,24 @@
         // === Matrix Rain ===
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        resize(); window.addEventListener('resize', resize);
         const chars = 'DECODEARENA01';
-        const fs = 14, cols = Math.floor(canvas.width / fs);
-        const drops = Array(cols).fill(1);
+        const fs = 14;
+        let drops = [];
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const cols = Math.max(1, Math.floor(canvas.width / fs));
+            if (drops.length !== cols) {
+                drops = Array(cols).fill(1);
+            }
+        }
+        resize();
+        window.addEventListener('resize', resize, { passive: true });
         function drawMatrix() {
             ctx.fillStyle = 'rgba(10,10,15,0.08)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#00f0ff'; ctx.font = `${fs}px monospace`;
+            ctx.fillStyle = '#00f0ff';
+            ctx.font = `${fs}px monospace`;
             for (let i = 0; i < drops.length; i++) {
                 ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fs, drops[i] * fs);
                 if (drops[i] * fs > canvas.height && Math.random() > 0.975) drops[i] = 0;
@@ -4519,6 +4659,8 @@
         // === Particles ===
         (function() {
             const c = document.getElementById('particles');
+            if (!c) return;
+            const frag = document.createDocumentFragment();
             for (let i = 0; i < 15; i++) {
                 const p = document.createElement('div');
                 p.className = 'particle';
@@ -4526,14 +4668,15 @@
                 p.style.animationDelay = `${Math.random()*6}s`;
                 p.style.animationDuration = `${4+Math.random()*4}s`;
                 p.style.background = ['var(--cyan)','var(--magenta)','var(--green)'][Math.floor(Math.random()*3)];
-                c.appendChild(p);
+                frag.appendChild(p);
             }
+            c.appendChild(frag);
         })();
 
         // === Nav scroll ===
         window.addEventListener('scroll', () => {
             document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
-        });
+        }, { passive: true });
 
         // Close mobile nav on link click
         document.querySelectorAll('.nav-links a').forEach(a => {
